@@ -20,6 +20,7 @@ models/
 .pytest_cache/
 .coverage
 htmlcov/
+out/
 
 .vscode/
 .idea/
