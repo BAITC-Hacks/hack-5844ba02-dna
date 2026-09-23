@@ -82,6 +82,7 @@ def assign_base_roles(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
         if row.n_cycles >= temporal["cycles_min_count"]: local_flags.append("cycles")
         external = pd.notna(row.pass_ratio) and row.pass_ratio > cfg["roles"]["transit"]["max_pass"]
         if _is_isolated(row):
+            local_flags.append("isolated")
             role, score, ev = "peripheral", cfg["roles"]["peripheral_isolated_score"], f"Нет переводов ≥{minimum} KZT в выгрузке"
         elif _is_frontier(row, cfg):
             probability = float(row.p_terminal)
