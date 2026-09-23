@@ -9,7 +9,7 @@ import pandas as pd
 LOG = logging.getLogger(__name__)
 
 
-def export_all(features: pd.DataFrame, edges: pd.DataFrame, clusters: pd.DataFrame, top: pd.DataFrame, layout: pd.DataFrame, cfg: dict, stage_seconds: dict[str, float], started: float, frontier: dict | None = None, resilience: dict | None = None, cycles: list[list[str]] | None = None) -> None:
+def export_all(features: pd.DataFrame, edges: pd.DataFrame, clusters: pd.DataFrame, top: pd.DataFrame, layout: pd.DataFrame, cfg: dict, stage_seconds: dict[str, float], started: float, frontier: dict | None = None, resilience: dict | None = None, cycles: list[list[str]] | None = None, cluster_stability: dict | None = None, sensitivity: dict | None = None) -> None:
     """Сериализует все семь контрактных файлов, gid в JSON всегда строкой."""
     export_started = time.perf_counter()
     out = Path(cfg["_out"]); out.mkdir(parents=True, exist_ok=True)
@@ -28,7 +28,8 @@ def export_all(features: pd.DataFrame, edges: pd.DataFrame, clusters: pd.DataFra
     depth_four = features.depth.eq(cfg["data"]["max_depth"]) & features.out_deg.eq(0)
     frontier_summary["n_terminal_est"] = int((depth_four & features.role.eq("terminal")).sum())
     frontier_summary["n_frontier"] = int((depth_four & features.role.eq("frontier")).sum())
-    summary = {"role_counts": {str(key): int(value) for key, value in features.role.value_counts().sort_index().items()}, "n_clusters": int((clusters.cluster_id != cfg["clusters"]["isolated_cluster_id"]).sum()), "elapsed_seconds": time.perf_counter() - started, "stage_seconds": stage_seconds, "thresholds": thresholds, "frontier": frontier_summary}
+    n_clusters = int((clusters.cluster_id != cfg["clusters"]["isolated_cluster_id"]).sum())
+    summary = {"role_counts": {str(key): int(value) for key, value in features.role.value_counts().sort_index().items()}, "n_clusters": n_clusters, "clusters": {"n": n_clusters, **(cluster_stability or {})}, "sensitivity": sensitivity or {}, "elapsed_seconds": time.perf_counter() - started, "stage_seconds": stage_seconds, "thresholds": thresholds, "frontier": frontier_summary}
     (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     (out / "resilience.json").write_text(json.dumps(resilience or {"n_removed": []}, ensure_ascii=False), encoding="utf-8")
     (out / "cycles.json").write_text(json.dumps(cycles or [], ensure_ascii=False), encoding="utf-8")

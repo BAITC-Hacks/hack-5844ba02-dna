@@ -94,6 +94,12 @@ clusters:
   min_seeds_for_collection: 2
   small_fragment_max_nodes: 20
   min_transit_share: 0.2       # ≥20% transit: сообщество описывается как транзитная цепочка
+  stability_runs: 5
+  bridge_betweenness_percentile: 98.0
+
+sensitivity:
+  role_threshold_factors: [0.8, 1.2]
+  top_n: 20
 
 export:
   evidence_max_chars: 200
