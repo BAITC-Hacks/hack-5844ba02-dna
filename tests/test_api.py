@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from api.main import CommonRequest, get_common, get_ego, get_graph, get_node, get_node_card, get_path, get_resilience, get_summary, get_top, health, reload_data, search
+from api.main import AssistantRequest, CommonRequest, ask_assistant, get_common, get_ego, get_graph, get_node, get_node_card, get_path, get_resilience, get_summary, get_top, health, reload_data, search
 
 
 def setup_module():
@@ -70,3 +70,14 @@ def test_ego_path_common_keep_gid_strings():
     assert path["gids"][0] == first and path["gids"][-1] == second
     common = get_common(CommonRequest(gids=[first, second]))
     assert all(isinstance(gid, str) for gid in common["common_receivers"] + common["common_senders"])
+
+
+def test_assistant_without_key_returns_503(monkeypatch):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("NVIDIA_API_KEY", raising=False)
+    try:
+        ask_assistant(AssistantRequest(question="Who is important?"))
+    except HTTPException as error:
+        assert error.status_code == 503
+    else:
+        raise AssertionError("assistant should require a configured key")

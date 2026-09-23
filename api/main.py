@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from .cards import build_card
+from . import assistant
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "out"
@@ -33,6 +34,11 @@ graph = nx.DiGraph()
 
 class CommonRequest(BaseModel):
     gids: list[str] = Field(min_length=1, max_length=20)
+
+
+class AssistantRequest(BaseModel):
+    question: str = Field(min_length=1, max_length=4000)
+    history: list[dict[str, str]] = Field(default_factory=list, max_length=20)
 
 
 def parse_value(value: str) -> Any:
@@ -186,6 +192,25 @@ def get_common(request: CommonRequest) -> dict[str, Any]:
     receiver_sets = [{str(value) for value in graph.successors(gid)} for gid in gids]
     sender_sets = [{str(value) for value in graph.predecessors(gid)} for gid in gids]
     return {"gids": gids, "common_receivers": sorted(set.intersection(*receiver_sets)) if receiver_sets else [], "common_senders": sorted(set.intersection(*sender_sets)) if sender_sets else []}
+
+
+@app.post("/api/assistant")
+def ask_assistant(request: AssistantRequest) -> dict[str, Any]:
+    try:
+        return assistant.answer(request.question, request.history)
+    except assistant.llm.LLMUnavailable as error:
+        raise HTTPException(status_code=503, detail=str(error))
+
+
+@app.post("/api/node/{gid}/card/llm")
+def explain_card(gid: str) -> dict[str, Any]:
+    card = get_node_card(gid)
+    try:
+        result = assistant.answer("Составь краткую справку по фактам этой карточки: " + json.dumps(card, ensure_ascii=False), [])
+    except assistant.llm.LLMUnavailable as error:
+        raise HTTPException(status_code=503, detail=str(error))
+    result["evidence"] = card["why"]
+    return result
 
 
 @app.get("/api/top")
