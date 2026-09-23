@@ -15,6 +15,7 @@ from .load import build_graph, load, sanity_check
 from .roles import apply_coordinators, assign_base_roles
 from .resilience import calculate_resilience
 from .scoring import score_nodes, top_nodes
+from .temporal import add_temporal_features
 
 
 def _run_stage(stage_seconds: dict[str, float], name: str, function, *args):
@@ -42,6 +43,7 @@ def main() -> None:
     features = _run_stage(stage_seconds, "basic_features", basic_features, graph, nodes)
     features = _run_stage(stage_seconds, "enrich_features", enrich_features, graph, features, cfg)
     features = _run_stage(stage_seconds, "flow", add_seed_flow, graph, features, cfg)
+    features, cycles = _run_stage(stage_seconds, "temporal", add_temporal_features, graph, features, transactions, cfg)
     features, frontier = _run_stage(stage_seconds, "frontier", add_frontier_probability, features, transactions, cfg)
     features = _run_stage(stage_seconds, "assign_base_roles", assign_base_roles, features, cfg)
     features = _run_stage(stage_seconds, "apply_coordinators", apply_coordinators, features, graph, cfg)
@@ -51,7 +53,7 @@ def main() -> None:
     layout = _run_stage(stage_seconds, "layout", make_layout, graph, cfg)
     resilience = _run_stage(stage_seconds, "resilience", calculate_resilience, graph, features, cfg)
     top = _run_stage(stage_seconds, "top_nodes", top_nodes, features, cfg)
-    export_all(features, edges, clusters, top, layout, cfg, stage_seconds, started, frontier, resilience)
+    export_all(features, edges, clusters, top, layout, cfg, stage_seconds, started, frontier, resilience, cycles)
     elapsed = time.perf_counter() - started
     print("Роли:", features.role.value_counts().sort_index().to_dict())
     print("Кластеров:", int((clusters.cluster_id != cfg["clusters"]["isolated_cluster_id"]).sum()))

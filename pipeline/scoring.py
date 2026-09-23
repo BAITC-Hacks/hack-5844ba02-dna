@@ -18,8 +18,7 @@ def score_nodes(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
         "role": _rank(role_values),
         "betweenness": _rank(result.betweenness),
         "degree": _rank(result.in_deg + result.out_deg),
-        # Temporal signals are introduced in stage D; retain their configured zero contribution now.
-        "temporal": pd.Series(0.0, index=result.index),
+        "temporal": pd.concat([_rank(result.fast_pass_share), _rank(result.near_threshold_share), _rank(result.n_cycles), result.max_sync_payers.ge(cfg["roles"]["temporal"]["sync_min_payers"]).astype(float)], axis=1).mean(axis=1),
     }
     contributions = {name: components[name] * weights[name] for name in weights}
     raw = sum(contributions.values())
@@ -35,7 +34,7 @@ def top_nodes(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     ordered = features.sort_values(["priority_score", "gid"], ascending=[False, True]).head(cfg["scoring"]["top_n"]).copy()
     rows = []
     for rank, row in enumerate(ordered.itertuples(index=False), 1):
-        values = {"seed_flow_kzt": f"{row.seed_flow_kzt / 1_000_000:.1f} млн", "n_seed_upstream": row.n_seed_upstream, "role": row.role, "betweenness": row.betweenness, "degree": row.in_deg + row.out_deg, "temporal": 0}
+        values = {"seed_flow_kzt": f"{row.seed_flow_kzt / 1_000_000:.1f} млн", "n_seed_upstream": row.n_seed_upstream, "role": row.role, "betweenness": row.betweenness, "degree": row.in_deg + row.out_deg, "temporal": f"быстрые переводы {row.fast_pass_share:.0%}"}
         breakdown = json.loads(row.score_breakdown)
         factors = sorted(breakdown, key=breakdown.get, reverse=True)[:3]
         human = ", ".join(f"{name}: {values[name]}" for name in factors)

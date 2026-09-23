@@ -75,6 +75,11 @@ def assign_base_roles(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     minimum = cfg["data"]["min_tx_kzt"]
     for _, row in result.iterrows():
         local_flags: list[str] = []
+        temporal = cfg["roles"]["temporal"]
+        if row.fast_pass_share >= temporal["fast_pass_min_share"]: local_flags.append("fast_pass")
+        if row.max_sync_payers >= temporal["sync_min_payers"]: local_flags.append("sync_in")
+        if row.near_threshold_share > temporal["near_threshold_min_share"]: local_flags.append("near_threshold")
+        if row.n_cycles >= temporal["cycles_min_count"]: local_flags.append("cycles")
         external = pd.notna(row.pass_ratio) and row.pass_ratio > cfg["roles"]["transit"]["max_pass"]
         if _is_isolated(row):
             role, score, ev = "peripheral", cfg["roles"]["peripheral_isolated_score"], f"Нет переводов ≥{minimum} KZT в выгрузке"
@@ -96,7 +101,10 @@ def assign_base_roles(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
         elif _is_transit(row, cfg):
             c = cfg["roles"]["transit"]
             role, score = "transit", _score(row.pass_ratio, c["min_pass"], result.pass_ratio.dropna(), cfg)
-            ev = f"Признаки транзита: получено {format_kzt(row.in_kzt)}, отдано {row.pass_ratio * 100:.0f}%, {row.in_deg}→{row.out_deg} контрагента"
+            if row.fast_pass_share >= temporal["fast_pass_min_share"]:
+                score = min(cfg["roles"]["score_ceiling"], score + c["fast_pass_bonus"])
+            timing = f", медиана задержки {row.median_lag_days:.0f} дн." if pd.notna(row.median_lag_days) else ""
+            ev = f"Признаки транзита: получено {format_kzt(row.in_kzt)}, отдано {row.pass_ratio * 100:.0f}%{timing}, {row.in_deg}→{row.out_deg} контрагента"
         elif _is_terminal(row, cfg):
             role, score, ev = "terminal", cfg["roles"]["score_floor"], f"Вероятный конечный получатель: {row.in_deg} плательщиков, получено {format_kzt(row.in_kzt)}, исходящих нет"
         else:
