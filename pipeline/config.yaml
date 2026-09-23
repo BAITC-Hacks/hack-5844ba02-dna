@@ -74,3 +74,8 @@ export:
 layout:
   scale: 4000
   iterations: 50
+
+resilience:
+  # Removal levels cover the presentation point (20) and the full curve.
+  n_removed: [0, 5, 10, 20, 50]
+  random_runs: 20

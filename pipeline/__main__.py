@@ -12,6 +12,7 @@ from .frontier import add_frontier_probability
 from .layout import make_layout
 from .load import build_graph, load, sanity_check
 from .roles import apply_coordinators, assign_base_roles
+from .resilience import calculate_resilience
 from .scoring import score_nodes, top_nodes
 
 
@@ -46,11 +47,15 @@ def main() -> None:
     features = _run_stage(stage_seconds, "score_nodes", score_nodes, features, cfg)
     features, clusters = _run_stage(stage_seconds, "renumber_and_describe", renumber_and_describe, features, edges, cfg)
     layout = _run_stage(stage_seconds, "layout", make_layout, graph, cfg)
+    resilience = _run_stage(stage_seconds, "resilience", calculate_resilience, graph, features, cfg)
     top = _run_stage(stage_seconds, "top_nodes", top_nodes, features, cfg)
-    export_all(features, edges, clusters, top, layout, cfg, stage_seconds, started, frontier)
+    export_all(features, edges, clusters, top, layout, cfg, stage_seconds, started, frontier, resilience)
     elapsed = time.perf_counter() - started
     print("Роли:", features.role.value_counts().sort_index().to_dict())
     print("Кластеров:", int((clusters.cluster_id != cfg["clusters"]["isolated_cluster_id"]).sum()))
+    n20 = resilience["n_removed"].index(20) if 20 in resilience["n_removed"] else -1
+    if n20 >= 0:
+        print(f"При удалении топ-20: lwcc {resilience['by_priority']['lwcc_size'][n20]} (по степени {resilience['by_degree']['lwcc_size'][n20]}, случайно {resilience['random']['lwcc_size'][n20]:.1f})")
     print(top.head(10)[["gid", "role", "priority_score", "why"]].to_string(index=False))
     print(f"Время: {elapsed:.2f} с")
 
