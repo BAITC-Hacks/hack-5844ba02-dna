@@ -9,6 +9,29 @@ import pandas as pd
 LOG = logging.getLogger(__name__)
 
 
+def _pagerank_without_scipy(graph: nx.DiGraph, alpha: float = 0.85, steps: int = 100) -> dict[int, float]:
+    """Deterministic weighted PageRank fallback when NetworkX SciPy is unavailable."""
+    nodes = list(graph.nodes())
+    if not nodes:
+        return {}
+    score = {node: 1.0 / len(nodes) for node in nodes}
+    for _ in range(steps):
+        next_score = {node: (1.0 - alpha) / len(nodes) for node in nodes}
+        dangling = sum(score[node] for node in nodes if graph.out_degree(node) == 0)
+        share = alpha * (dangling / len(nodes))
+        for node in nodes:
+            next_score[node] += share
+        for source in nodes:
+            outgoing = list(graph.out_edges(source, data="sum_kzt"))
+            total = sum(float(weight or 0.0) for _, _, weight in outgoing)
+            if not outgoing or total <= 0:
+                continue
+            for _, target, weight in outgoing:
+                next_score[target] += alpha * score[source] * float(weight) / total
+        score = next_score
+    return score
+
+
 def basic_features(graph: nx.DiGraph, nodes: pd.DataFrame) -> pd.DataFrame:
     """Считает степени, обороты и PageRank из стартового решения."""
     result = nodes[["gid", "depth", "is_seed"]].copy()
@@ -18,7 +41,11 @@ def basic_features(graph: nx.DiGraph, nodes: pd.DataFrame) -> pd.DataFrame:
     result["out_kzt"] = result.gid.map(dict(graph.out_degree(weight="sum_kzt"))).fillna(0.0)
     result["in_tx"] = result.gid.map(dict(graph.in_degree(weight="n_tx"))).fillna(0).astype(int)
     result["out_tx"] = result.gid.map(dict(graph.out_degree(weight="n_tx"))).fillna(0).astype(int)
-    result["pagerank"] = result.gid.map(nx.pagerank(graph, weight="sum_kzt")).fillna(0.0)
+    try:
+        pagerank = nx.pagerank(graph, weight="sum_kzt")
+    except ModuleNotFoundError:
+        pagerank = _pagerank_without_scipy(graph)
+    result["pagerank"] = result.gid.map(pagerank).fillna(0.0)
     return result
 
 
