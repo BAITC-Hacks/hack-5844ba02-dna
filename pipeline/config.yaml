@@ -44,7 +44,7 @@ roles:
     cycles_min_count: 1
   frontier:
     # Cutoff for classifying fourth-generation truncation as a likely terminal.
-    terminal_threshold: 0.5
+    terminal_threshold: 0.65
     train_depths: [1, 2, 3]
     cv_folds: 5
     max_iter: 1000
@@ -59,11 +59,6 @@ scoring:
     betweenness: 0.15
     degree: 0.10
     temporal: 0.10
-  must_have_weights:
-    n_seed_upstream: 0.35
-    role: 0.30
-    betweenness: 0.20
-    degree: 0.15
   role_weights:
     coordinator: 1.0
     consolidator: 0.9
@@ -86,7 +81,7 @@ temporal:
   near_threshold_min_kzt: 5000
   near_threshold_max_kzt: 6000
   round_kzt: 10000
-  cycle_length_bound: 4
+  cycle_length_bound: 5
   cycle2_min_kzt: 5000
 
 clusters:
