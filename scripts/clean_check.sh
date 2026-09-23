@@ -8,7 +8,17 @@ cleanup() {
   if [[ -n "$server_pid" ]]; then kill "$server_pid" 2>/dev/null || true; fi
   rm -rf "$tmp"
 }
-trap cleanup EXIT
+finish() {
+  code=$?
+  cleanup
+  if [[ "$code" -eq 0 ]]; then
+    echo "OK"
+  else
+    echo "FAIL" >&2
+  fi
+  exit "$code"
+}
+trap finish EXIT
 
 fail() { echo "FAIL: $*" >&2; exit 1; }
 
@@ -28,5 +38,8 @@ for _ in $(seq 1 30); do
   sleep 1
 done
 grep -q '"status":"ok"' /tmp/money-graph-health.json || fail "health check failed"
+grep -q '"out_loaded":true' /tmp/money-graph-health.json || fail "pipeline output was not loaded"
+curl --silent --fail 'http://127.0.0.1:18000/api/top?limit=20' >/tmp/money-graph-top.json
+.venv/bin/python3 -c 'import json; rows=json.load(open("/tmp/money-graph-top.json")); assert len(rows) == 20; assert all(isinstance(row["gid"], str) for row in rows)'
 elapsed=$(( $(date +%s) - started ))
 echo "elapsed_seconds=$elapsed"

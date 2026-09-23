@@ -19,6 +19,6 @@ mock:
 	$(VPYTHON) scripts/make_mock_out.py
 
 test:
-	$(VPYTHON) -m pytest -q tests/test_api.py
+	$(VPYTHON) -m pytest -q
 
 all: pipeline serve
