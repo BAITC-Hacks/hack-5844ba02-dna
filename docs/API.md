@@ -2,7 +2,13 @@
 
 The FastAPI service reads pipeline artifacts from `out/`. All browser-facing `gid`, `id`, `source`, and `target` values are strings because identifiers exceed JavaScript's safe integer range. If the required outputs are missing or malformed, the server still starts and data endpoints return HTTP 503 with an explanation.
 
-Interactive OpenAPI documentation is available at `http://localhost:8000/docs` while the server is running.
+The service publishes three synchronized API references while it is running:
+
+- Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs) — interactive requests and schemas;
+- ReDoc: [http://localhost:8000/redoc](http://localhost:8000/redoc) — readable reference documentation;
+- OpenAPI 3 schema: [http://localhost:8000/openapi.json](http://localhost:8000/openapi.json) — import into Postman, Insomnia, or other tooling.
+
+Swagger endpoints are grouped into `System`, `Graph`, `Analytics`, `Cards`, and `Assistant`. The schema documents `gid` path parameters as strings.
 
 | Method | Path | Parameters | Returns |
 |---|---|---|---|

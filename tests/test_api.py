@@ -29,6 +29,7 @@ from api.main import (
     health,
     reload_data,
     search,
+    app,
 )
 
 
@@ -64,6 +65,17 @@ def test_health_and_summary() -> None:
     summary = get_summary()
     assert summary["n_nodes"] == len(get_graph()["nodes"])
     assert "n_seed" in summary
+
+
+def test_openapi_contract_and_swagger_metadata() -> None:
+    schema = app.openapi()
+    assert schema["info"]["title"] == "Money Graph API"
+    assert schema["info"]["version"] == "2.0.0"
+    assert {tag["name"] for tag in schema["tags"]} == {"System", "Graph", "Analytics", "Cards", "Assistant"}
+    assert "/api/graph" in schema["paths"]
+    assert "/api/assistant" in schema["paths"]
+    gid_schema = schema["paths"]["/api/node/{gid}"]["get"]["parameters"][0]["schema"]
+    assert gid_schema["type"] == "string"
 
 
 def test_graph_filter_and_string_identifiers() -> None:
