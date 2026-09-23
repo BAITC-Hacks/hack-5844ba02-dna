@@ -31,7 +31,7 @@ def test_existing_and_missing_node():
         get_node("999999999999999999")
     except HTTPException as error:
         assert error.status_code == 404
-        assert "was not found" in error.detail
+        assert error.detail == "gid 999999999999999999 не найден"
     else:
         raise AssertionError("missing node did not return 404")
 
@@ -44,7 +44,7 @@ def test_health_without_llm_key(monkeypatch):
     monkeypatch.delenv("LLM_PROVIDER", raising=False)
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("NVIDIA_API_KEY", raising=False)
-    assert health() == {"status": "ok", "llm_available": False, "provider": "none"}
+    assert health() == {"status": "ok", "out_loaded": True, "llm_available": False, "provider": None}
 
 
 def test_node_card_has_next_steps_and_string_gid():
