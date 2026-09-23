@@ -217,17 +217,7 @@ def get_path(src: str, dst: str) -> dict[str, Any]:
 
 @app.post("/api/common")
 def get_common(request: CommonRequest) -> dict[str, Any]:
-    # Block B expands this response to two hops with amount summaries.
-    gids = [str(gid) for gid in request.gids]
-    for gid in gids:
-        get_node(gid)
-    receivers = [{str(item) for item in store.graph.successors(gid)} for gid in gids]
-    senders = [{str(item) for item in store.graph.predecessors(gid)} for gid in gids]
-    return {
-        "gids": gids,
-        "common_receivers": sorted(set.intersection(*receivers)) if receivers else [],
-        "common_senders": sorted(set.intersection(*senders)) if senders else [],
-    }
+    return _node_call(store.common_counterparties, [str(gid) for gid in request.gids])
 
 
 @app.post("/api/assistant")

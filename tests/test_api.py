@@ -69,7 +69,7 @@ def test_ego_path_common_keep_gid_strings():
     path = get_path(first, second)
     assert path["gids"][0] == first and path["gids"][-1] == second
     common = get_common(CommonRequest(gids=[first, second]))
-    assert all(isinstance(gid, str) for gid in common["common_receivers"] + common["common_senders"])
+    assert all(isinstance(row["gid"], str) for row in common["common_receivers"] + common["common_senders"])
 
 
 def test_assistant_without_key_returns_503(monkeypatch):
