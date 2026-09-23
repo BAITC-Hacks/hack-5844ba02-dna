@@ -34,10 +34,16 @@ bash scripts/clean_check.sh
 ## Docker
 
 ```bash
-docker compose up --build
+docker compose up --build --wait
 ```
 
-Образ основан на Python 3.11. Каталог `data/` подключается только для чтения, `out/` — для выходных файлов. Файл `.env` не обязателен. Для AI-ассистента скопируйте `.env.example` в `.env` и добавьте ключ OpenAI или NVIDIA.
+Образ основан на Python 3.11. Compose сначала полностью рассчитывает пайплайн, затем запускает FastAPI; `--wait` завершается после успешной проверки `/api/health`. Каталог `data/` подключается только для чтения, `out/` — для выходных файлов. Файл `.env` не обязателен. Для AI-ассистента скопируйте `.env.example` в `.env` и добавьте ключ OpenAI или NVIDIA.
+
+Остановка контейнера:
+
+```bash
+docker compose down
+```
 
 ## Выходные файлы
 
