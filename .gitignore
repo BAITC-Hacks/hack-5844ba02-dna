@@ -23,6 +23,7 @@ models/
 .coverage
 htmlcov/
 out/
+review/
 
 .vscode/
 .idea/

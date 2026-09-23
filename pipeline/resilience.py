@@ -30,8 +30,12 @@ def calculate_resilience(graph: nx.DiGraph, features: pd.DataFrame, cfg: dict) -
     seeds = set(features.loc[features.is_seed.astype(bool), "gid"].astype(int))
     priority = features.sort_values(["priority_score", "gid"], ascending=[False, True]).gid.astype(int).tolist()
     degree = features.assign(_degree=features.in_deg + features.out_deg).sort_values(["_degree", "gid"], ascending=[False, True]).gid.astype(int).tolist()
+    nonseed = features.loc[~features.is_seed.astype(bool)]
+    priority_nonseed = nonseed.sort_values(["priority_score", "gid"], ascending=[False, True]).gid.astype(int).tolist()
+    degree_nonseed = nonseed.assign(_degree=nonseed.in_deg + nonseed.out_deg).sort_values(["_degree", "gid"], ascending=[False, True]).gid.astype(int).tolist()
     result = {"n_removed": levels}
-    for name, ordered in (("by_priority", priority), ("by_degree", degree)):
+    for name, ordered in (("by_priority", priority), ("by_degree", degree),
+                          ("by_priority_nonseed", priority_nonseed), ("by_degree_nonseed", degree_nonseed)):
         values = [_after_removal(graph, seeds, ordered[:level]) for level in levels]
         result[name] = {"lwcc_size": [item[0] for item in values], "seed_reachable": [item[1] for item in values]}
     random_lwcc, random_reachable = [], []

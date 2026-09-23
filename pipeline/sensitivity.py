@@ -9,14 +9,22 @@ import pandas as pd
 from .roles import apply_coordinators, assign_base_roles
 from .scoring import score_nodes
 
+_SCALED_ROLE_THRESHOLDS = {
+    "coordinator": {"min_pays_seeds", "s1_min_in_deg", "s2_min_in_deg", "s2_min_out_deg", "s3_min_hub_payers", "s3_min_in_deg", "s3_min_out_deg"},
+    "distributor": {"min_out_deg", "min_out_in_ratio"},
+    "consolidator": {"min_in_deg", "max_out_in_ratio", "min_seed_upstream", "alt_min_in_deg"},
+    "transit": {"min_in_deg", "min_out_deg", "max_in_deg", "max_out_deg", "min_pass", "max_pass"},
+    "terminal": {"min_in_deg"},
+    "temporal": {"fast_pass_min_share", "sync_min_payers", "near_threshold_min_share", "cycles_min_count"},
+}
+
 
 def _scale_role_thresholds(config: dict, factor: float) -> dict:
-    """Scale rule cutoffs while leaving scoring calibration and bonuses unchanged."""
+    """Scale only named decision cutoffs, never warning limits or score bonuses."""
     cfg = deepcopy(config)
-    for section in ("coordinator", "distributor", "consolidator", "transit", "terminal", "temporal"):
-        for name, value in cfg["roles"][section].items():
-            if isinstance(value, (int, float)) and (name.startswith("min_") or name.startswith("max_")):
-                cfg["roles"][section][name] = value * factor
+    for section, names in _SCALED_ROLE_THRESHOLDS.items():
+        for name in names:
+            cfg["roles"][section][name] *= factor
     cfg["roles"]["frontier"]["terminal_threshold"] *= factor
     return cfg
 
