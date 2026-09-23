@@ -62,6 +62,7 @@ clusters:
   top_gids: 5
   min_seeds_for_collection: 2
   small_fragment_max_nodes: 20
+  min_transit_share: 0.2       # ≥20% transit: сообщество описывается как транзитная цепочка
 
 export:
   evidence_max_chars: 200

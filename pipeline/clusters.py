@@ -40,6 +40,8 @@ def renumber_and_describe(features: pd.DataFrame, edges: pd.DataFrame, cfg: dict
             hypothesis = f"Сбор выручки: {n_seed} seed → {roles['consolidator']} точек консолидации, оборот {internal / 1_000_000:.2f} млн"
         elif roles.get("distributor", 0) or roles.get("coordinator", 0):
             max_out = int(group.out_deg.max()); hypothesis = f"Распределительный узел: веерная рассылка на {max_out} получателей"
+        elif roles.get("transit", 0) / len(group) >= cfg["clusters"]["min_transit_share"]:
+            hypothesis = f"Транзитные цепочки: {roles['transit']} узлов пропускают средства дальше"
         elif n_seed == 1 and len(group) < cfg["clusters"]["small_fragment_max_nodes"]: hypothesis = "Периферийный фрагмент одного seed"
         else: hypothesis = "Состав ролей: " + ", ".join(f"{role} {count}" for role, count in sorted(roles.items()))
         rows.append({"cluster_id": int(cid), "n_nodes": len(group), "n_seed": n_seed, "sum_kzt_internal": internal, "top_gids": ";".join(str(int(gid)) for gid in top.gid), "hypothesis": hypothesis[:200], "role_counts": json.dumps(roles, ensure_ascii=False, sort_keys=True)})

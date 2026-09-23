@@ -14,6 +14,15 @@ from .roles import apply_coordinators, assign_base_roles
 from .scoring import score_nodes, top_nodes
 
 
+def _run_stage(stage_seconds: dict[str, float], name: str, function, *args):
+    """Выполняет один этап и записывает его длительность в секундах."""
+    stage_started = time.perf_counter()
+    value = function(*args)
+    stage_seconds[name] = time.perf_counter() - stage_started
+    logging.getLogger(__name__).info("Этап %s: %.3f с", name, stage_seconds[name])
+    return value
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=Path, default=Path("data"))
@@ -23,17 +32,21 @@ def main() -> None:
     started = time.perf_counter()
     with (Path(__file__).parent / "config.yaml").open(encoding="utf-8") as stream: cfg = yaml.safe_load(stream)
     cfg["_out"] = str(args.out)
-    edges, nodes, _ = load(args.data); sanity_check(edges, nodes, _); graph = build_graph(edges, nodes)
-    features = enrich_features(graph, basic_features(graph, nodes), cfg)
-    features = assign_base_roles(features, cfg)
-    features = apply_coordinators(features, graph, cfg)
-    features = cluster_nodes(graph, features, cfg)
-    features = score_nodes(features, cfg)
-    features, clusters = renumber_and_describe(features, edges, cfg)
-    layout = make_layout(graph, cfg)
-    top = top_nodes(features, cfg)
+    stage_seconds: dict[str, float] = {}
+    edges, nodes, transactions = _run_stage(stage_seconds, "load", load, args.data)
+    _run_stage(stage_seconds, "sanity_check", sanity_check, edges, nodes, transactions)
+    graph = _run_stage(stage_seconds, "build_graph", build_graph, edges, nodes)
+    features = _run_stage(stage_seconds, "basic_features", basic_features, graph, nodes)
+    features = _run_stage(stage_seconds, "enrich_features", enrich_features, graph, features, cfg)
+    features = _run_stage(stage_seconds, "assign_base_roles", assign_base_roles, features, cfg)
+    features = _run_stage(stage_seconds, "apply_coordinators", apply_coordinators, features, graph, cfg)
+    features = _run_stage(stage_seconds, "cluster_nodes", cluster_nodes, graph, features, cfg)
+    features = _run_stage(stage_seconds, "score_nodes", score_nodes, features, cfg)
+    features, clusters = _run_stage(stage_seconds, "renumber_and_describe", renumber_and_describe, features, edges, cfg)
+    layout = _run_stage(stage_seconds, "layout", make_layout, graph, cfg)
+    top = _run_stage(stage_seconds, "top_nodes", top_nodes, features, cfg)
+    export_all(features, edges, clusters, top, layout, cfg, stage_seconds, started)
     elapsed = time.perf_counter() - started
-    export_all(features, edges, clusters, top, layout, cfg, elapsed)
     print("Роли:", features.role.value_counts().sort_index().to_dict())
     print("Кластеров:", int((clusters.cluster_id != cfg["clusters"]["isolated_cluster_id"]).sum()))
     print(top.head(10)[["gid", "role", "priority_score", "why"]].to_string(index=False))
