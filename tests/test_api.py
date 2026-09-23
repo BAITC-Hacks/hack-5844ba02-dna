@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from api.main import get_graph, get_node, get_top, reload_data, search
+from api.main import get_graph, get_node, get_top, health, reload_data, search
 
 
 def setup_module():
@@ -38,3 +38,10 @@ def test_existing_and_missing_node():
 
 def test_top_endpoint():
     assert len(get_top(20)) == 20
+
+
+def test_health_without_llm_key(monkeypatch):
+    monkeypatch.delenv("LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("NVIDIA_API_KEY", raising=False)
+    assert health() == {"status": "ok", "llm_available": False, "provider": "none"}

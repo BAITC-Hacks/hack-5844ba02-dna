@@ -1,18 +1,24 @@
 .PHONY: install pipeline serve all mock test
 
+PYTHON ?= python3
+VENV ?= .venv
+VPYTHON = $(VENV)/bin/python3
+
 install:
-	python -m pip install -r requirements.txt
+	$(PYTHON) -m venv $(VENV)
+	$(VPYTHON) -m pip install --upgrade pip
+	$(VPYTHON) -m pip install -r requirements.txt
 
 pipeline:
-	python -m pipeline --data data --out out
+	$(VPYTHON) -m pipeline --data data --out out
 
 serve:
-	uvicorn api.main:app --host 0.0.0.0 --port 8000
+	$(VPYTHON) -m uvicorn api.main:app --host 0.0.0.0 --port 8000
 
 mock:
-	python scripts/make_mock_out.py
+	$(VPYTHON) scripts/make_mock_out.py
 
 test:
-	pytest -q tests/test_api.py
+	$(VPYTHON) -m pytest -q tests/test_api.py
 
 all: pipeline serve

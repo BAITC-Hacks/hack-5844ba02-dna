@@ -2,6 +2,7 @@
 
 import csv
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -62,12 +63,27 @@ def reload_data() -> None:
     top_data = read_csv("top_nodes.csv")
 
 
+def llm_status() -> tuple[bool, str]:
+    provider = os.getenv("LLM_PROVIDER", "").strip().lower()
+    if provider == "openai":
+        return bool(os.getenv("OPENAI_API_KEY")), provider
+    if provider == "nvidia":
+        return bool(os.getenv("NVIDIA_API_KEY")), provider
+    return False, provider or "none"
+
+
 reload_data()
 
 
 @app.get("/")
 def index() -> FileResponse:
     return FileResponse(WEB / "index.html")
+
+
+@app.get("/api/health")
+def health() -> dict[str, Any]:
+    available, provider = llm_status()
+    return {"status": "ok", "llm_available": available, "provider": provider}
 
 
 @app.get("/api/graph")

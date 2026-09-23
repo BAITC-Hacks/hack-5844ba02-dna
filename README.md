@@ -12,6 +12,8 @@ make serve
 
 Open [http://localhost:8000](http://localhost:8000). For real data, run `make pipeline` first, then start the server. `make all` runs the real pipeline and starts the server.
 
+For the Stage 2 GPU setup and NVIDIA Brev workflow, see [docs/BREV_SETUP.md](docs/BREV_SETUP.md).
+
 ## Output contract
 
 The API reads `out/graph.json`, `out/nodes_roles.csv`, `out/top_nodes.csv`, and `out/clusters.csv`. GIDs are kept as strings throughout Python and JavaScript because the real identifiers exceed JavaScript's safe integer range.
