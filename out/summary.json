@@ -1,11 +1,11 @@
 {
   "role_counts": {
-    "consolidator": 24,
-    "coordinator": 54,
-    "distributor": 14,
-    "frontier": 40,
-    "peripheral": 577,
-    "terminal": 1477,
+    "consolidator": 38,
+    "coordinator": 22,
+    "distributor": 15,
+    "frontier": 108,
+    "peripheral": 594,
+    "terminal": 1409,
     "transit": 62
   },
   "n_clusters": 44,
@@ -14,30 +14,30 @@
     "ari_mean": 0.6597578065605183
   },
   "sensitivity": {
-    "0.8": 0.9,
-    "1.2": 0.95
+    "0.8": 0.7,
+    "1.2": 0.85
   },
-  "elapsed_seconds": 8.251414750004187,
+  "elapsed_seconds": 8.10989691701252,
   "stage_seconds": {
-    "load": 0.08822183305164799,
-    "sanity_check": 0.00864483299665153,
-    "build_graph": 0.024624250014312565,
-    "basic_features": 0.01275804196484387,
-    "enrich_features": 0.9993380410014652,
-    "flow": 0.29635741701349616,
-    "temporal": 0.9839946659631096,
-    "frontier": 0.02441233303397894,
-    "assign_base_roles": 0.08624254202004522,
-    "cluster_nodes": 0.23934170801658183,
-    "bridge_flags": 0.006075540964957327,
-    "apply_coordinators": 0.047991791972890496,
-    "score_nodes": 0.02843741700053215,
-    "sensitivity": 0.32115008297841996,
-    "renumber_and_describe": 0.02392662497004494,
-    "layout": 4.130904832971282,
-    "resilience": 0.878175750025548,
-    "top_nodes": 0.001962583977729082,
-    "export": 0.04443883401108906
+    "load": 0.0479619589750655,
+    "sanity_check": 0.005174792022444308,
+    "build_graph": 0.02361791697330773,
+    "basic_features": 0.010718916018959135,
+    "enrich_features": 1.035460792016238,
+    "flow": 0.3127012079930864,
+    "temporal": 0.9709353329963051,
+    "frontier": 0.01999762502964586,
+    "assign_base_roles": 0.08557308302260935,
+    "cluster_nodes": 0.229737457993906,
+    "bridge_flags": 0.005991708021610975,
+    "apply_coordinators": 0.035537582996767014,
+    "score_nodes": 0.02724929101532325,
+    "sensitivity": 0.28817420901032165,
+    "renumber_and_describe": 0.024534083961043507,
+    "layout": 4.022627499944065,
+    "resilience": 0.9230438750237226,
+    "top_nodes": 0.0021996659925207496,
+    "export": 0.03422558296006173
   },
   "thresholds": {
     "seed": 42,
@@ -59,8 +59,9 @@
         "s2_min_in_deg": 5,
         "s2_min_out_deg": 20,
         "s3_min_hub_payers": 2,
-        "s3_min_in_or_out_deg": 5,
-        "max_expected": 40
+        "s3_min_in_deg": 5,
+        "s3_min_out_deg": 5,
+        "max_expected": 30
       },
       "distributor": {
         "min_out_deg": 20,
@@ -88,7 +89,7 @@
         "cycles_min_count": 1
       },
       "frontier": {
-        "terminal_threshold": 0.5,
+        "terminal_threshold": 0.65,
         "train_depths": [
           1,
           2,
@@ -109,12 +110,6 @@
         "betweenness": 0.15,
         "degree": 0.1,
         "temporal": 0.1
-      },
-      "must_have_weights": {
-        "n_seed_upstream": 0.35,
-        "role": 0.3,
-        "betweenness": 0.2,
-        "degree": 0.15
       },
       "role_weights": {
         "coordinator": 1.0,
@@ -139,7 +134,7 @@
       "near_threshold_min_kzt": 5000,
       "near_threshold_max_kzt": 6000,
       "round_kzt": 10000,
-      "cycle_length_bound": 4,
+      "cycle_length_bound": 5,
       "cycle2_min_kzt": 5000
     },
     "clusters": {
@@ -188,7 +183,7 @@
       "last_in_day": -0.21872054904667895
     },
     "n_train": 1723,
-    "n_terminal_est": 404,
-    "n_frontier": 40
+    "n_terminal_est": 336,
+    "n_frontier": 108
   }
 }
