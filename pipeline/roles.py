@@ -126,7 +126,8 @@ def apply_coordinators(features: pd.DataFrame, graph, cfg: dict) -> pd.DataFrame
         if row.pays_seeds >= c["min_pays_seeds"] and row.in_deg >= c["s1_min_in_deg"]: signals.append("S1")
         if row.in_deg >= c["s2_min_in_deg"] and row.out_deg >= c["s2_min_out_deg"]: signals.append("S2")
         hub_payers = hub_payer_counts[int(row.gid)]
-        if hub_payers >= c["s3_min_hub_payers"] and (row.in_deg >= c["s3_min_in_or_out_deg"] or row.out_deg >= c["s3_min_in_or_out_deg"]):
+        if (hub_payers >= c["s3_min_hub_payers"] and row.in_deg >= c["s3_min_in_deg"]
+                and row.out_deg >= c["s3_min_out_deg"]):
             signals.append("S3")
         if signals:
             previous = row.role

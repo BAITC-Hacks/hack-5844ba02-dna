@@ -18,9 +18,10 @@ roles:
     s2_min_in_deg: 5
     s2_min_out_deg: 20
     s3_min_hub_payers: 2
-    # Two hub payers alone are common; require visible collection or onward distribution.
-    s3_min_in_or_out_deg: 5
-    max_expected: 40
+    # Two hub payers alone are common; require both visible collection and onward distribution.
+    s3_min_in_deg: 5
+    s3_min_out_deg: 5
+    max_expected: 30
   distributor:
     min_out_deg: 20
     min_out_in_ratio: 0.5
