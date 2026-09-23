@@ -15,7 +15,12 @@ def make_layout(graph: nx.DiGraph, cfg: dict) -> pd.DataFrame:
     for index, members in enumerate(components):
         subgraph = weighted.subgraph(members)
         if len(members) == 1: positions = {next(iter(members)): (0.0, 0.0)}
-        else: positions = nx.spring_layout(subgraph, seed=cfg["seed"], weight="layout_weight", iterations=cfg["layout"]["iterations"])
+        else:
+            try:
+                positions = nx.spring_layout(subgraph, seed=cfg["seed"], weight="layout_weight", iterations=cfg["layout"]["iterations"])
+            except ModuleNotFoundError:
+                ordered = sorted(members)
+                positions = {gid: (math.cos(2 * math.pi * offset / len(ordered)), math.sin(2 * math.pi * offset / len(ordered))) for offset, gid in enumerate(ordered)}
         row, col = divmod(index, grid)
         center_x, center_y = (col + .5) * cell, (row + .5) * cell
         radius = cell * .38
