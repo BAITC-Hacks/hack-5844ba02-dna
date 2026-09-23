@@ -3,6 +3,8 @@
 import csv
 import json
 import os
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +25,8 @@ nodes_by_id: dict[str, dict[str, Any]] = {}
 edges_by_node: dict[str, list[dict[str, Any]]] = {}
 clusters_data: list[dict[str, Any]] = []
 top_data: list[dict[str, Any]] = []
+summary_data: dict[str, Any] = {}
+resilience_data: dict[str, Any] = {}
 graph = nx.DiGraph()
 
 
@@ -46,7 +50,7 @@ def read_csv(name: str) -> list[dict[str, Any]]:
 
 
 def reload_data() -> None:
-    global graph_data, nodes_by_id, edges_by_node, clusters_data, top_data, graph
+    global graph_data, nodes_by_id, edges_by_node, clusters_data, top_data, summary_data, resilience_data, graph
     graph_path = OUT / "graph.json"
     graph_data = json.loads(graph_path.read_text(encoding="utf-8")) if graph_path.exists() else {"nodes": [], "edges": []}
     graph_data["nodes"] = [{**node, "id": str(node["id"])} for node in graph_data.get("nodes", [])]
@@ -62,6 +66,10 @@ def reload_data() -> None:
         edges_by_node.setdefault(edge["target"], []).append({"gid": edge["source"], "role": nodes_by_id.get(edge["source"], {}).get("role", ""), "sum_kzt": edge.get("sum_kzt", 0), "n_tx": edge.get("n_tx", 0)})
     clusters_data = read_csv("clusters.csv")
     top_data = read_csv("top_nodes.csv")
+    summary_path = OUT / "summary.json"
+    resilience_path = OUT / "resilience.json"
+    summary_data = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.exists() else {}
+    resilience_data = json.loads(resilience_path.read_text(encoding="utf-8")) if resilience_path.exists() else {}
 
 
 def llm_status() -> tuple[bool, str]:
@@ -133,6 +141,26 @@ def get_top(limit: int = Query(default=50, ge=1, le=500)) -> list[dict[str, Any]
 @app.get("/api/clusters")
 def get_clusters() -> list[dict[str, Any]]:
     return clusters_data
+
+
+@app.get("/api/summary")
+def get_summary() -> dict[str, Any]:
+    return summary_data
+
+
+@app.get("/api/resilience")
+def get_resilience() -> dict[str, Any]:
+    return resilience_data
+
+
+@app.post("/api/pipeline/run")
+def run_pipeline() -> dict[str, Any]:
+    command = [sys.executable, "-m", "pipeline", "--data", str(ROOT / "data"), "--out", str(OUT)]
+    result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=300)
+    if result.returncode != 0:
+        raise HTTPException(status_code=500, detail=result.stderr[-2000:] or "Pipeline failed")
+    reload_data()
+    return {"ok": True, "stdout": result.stdout[-2000:], "summary": summary_data}
 
 
 @app.post("/api/reload")

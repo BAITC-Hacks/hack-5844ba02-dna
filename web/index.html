@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Money Graph</title><link rel="stylesheet" href="/web/style.css"><link rel="stylesheet" href="/web/stage2.css">
+  <title>Money Graph</title><link rel="stylesheet" href="/web/style.css"><link rel="stylesheet" href="/web/stage2.css"><link rel="stylesheet" href="/web/stage2c.css">
 </head>
 <body>
   <header class="topbar">
@@ -11,14 +11,16 @@
     <button id="reset" class="ghost">Reset selection</button>
   </header>
   <div class="notice">Conclusions are hypotheses for review, not assertions of guilt.</div>
+  <div id="summary" class="summary-strip">Loading summary…</div>
   <main>
-    <section class="canvas-panel"><div class="tabs"><button class="tab active" data-tab="graph">Graph</button><button class="tab" data-tab="top">Top</button><button class="tab" data-tab="clusters">Clusters</button><button id="basket-export" class="tab">Export review list</button></div>
+    <section class="canvas-panel"><div class="tabs"><button class="tab active" data-tab="graph">Graph</button><button class="tab" data-tab="top">Top</button><button class="tab" data-tab="clusters">Clusters</button><button class="tab" data-tab="resilience">Resilience</button><button id="basket-export" class="tab">Export review list</button></div>
       <div id="graph-view" class="view active"><div id="cy"></div><div id="legend"></div><div id="loading">Loading graph…</div></div>
       <div id="top-view" class="view"><div class="table-wrap"><button id="top-export" class="cluster-btn">Export top CSV</button><table id="top-table"><thead><tr><th>Rank</th><th>GID</th><th>Role</th><th>Priority</th><th>Why</th></tr></thead><tbody></tbody></table></div></div>
       <div id="clusters-view" class="view"><div class="table-wrap"><table id="clusters-table"><thead><tr><th>Cluster</th><th>Nodes</th><th>Seeds</th><th>Internal KZT</th><th>Hypothesis</th><th></th></tr></thead><tbody></tbody></table></div></div>
+      <div id="resilience-view" class="view"><div class="resilience-wrap"><button id="rerun-pipeline" class="cluster-btn">Recalculate pipeline</button><p id="resilience-status">Loading resilience…</p><div class="chart-box"><canvas id="lwcc-chart"></canvas></div><div class="chart-box"><canvas id="seed-chart"></canvas></div><p class="chart-caption">The faster a curve falls, the more accurately the ranking identifies structurally important nodes.</p><strong id="drop-summary"></strong></div></div>
     </section>
     <aside id="side" class="side"><div class="empty">Select a node to inspect its flows.</div></aside>
   </main>
-  <script src="/web/vendor/cytoscape.min.js"></script><script src="/web/app.js"></script>
+  <script src="/web/vendor/cytoscape.min.js"></script><script src="/web/vendor/chart.umd.min.js"></script><script src="/web/app.js"></script><script src="/web/stage2c.js"></script>
 </body>
 </html>

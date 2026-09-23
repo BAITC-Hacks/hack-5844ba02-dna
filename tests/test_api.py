@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from api.main import get_graph, get_node, get_node_card, get_top, health, reload_data, search
+from api.main import get_graph, get_node, get_node_card, get_resilience, get_summary, get_top, health, reload_data, search
 
 
 def setup_module():
@@ -53,3 +53,8 @@ def test_node_card_has_next_steps_and_string_gid():
     assert card["gid"] == gid
     assert isinstance(card["next_steps"], list)
     assert "flows" in card and "connections" in card
+
+
+def test_summary_and_resilience_are_available():
+    assert isinstance(get_summary(), dict)
+    assert isinstance(get_resilience(), dict)
