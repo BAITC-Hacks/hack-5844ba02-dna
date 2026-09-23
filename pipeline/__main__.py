@@ -8,6 +8,7 @@ import yaml
 from .clusters import cluster_nodes, renumber_and_describe
 from .export import export_all
 from .features import basic_features, enrich_features
+from .frontier import add_frontier_probability
 from .layout import make_layout
 from .load import build_graph, load, sanity_check
 from .roles import apply_coordinators, assign_base_roles
@@ -38,6 +39,7 @@ def main() -> None:
     graph = _run_stage(stage_seconds, "build_graph", build_graph, edges, nodes)
     features = _run_stage(stage_seconds, "basic_features", basic_features, graph, nodes)
     features = _run_stage(stage_seconds, "enrich_features", enrich_features, graph, features, cfg)
+    features, frontier = _run_stage(stage_seconds, "frontier", add_frontier_probability, features, transactions, cfg)
     features = _run_stage(stage_seconds, "assign_base_roles", assign_base_roles, features, cfg)
     features = _run_stage(stage_seconds, "apply_coordinators", apply_coordinators, features, graph, cfg)
     features = _run_stage(stage_seconds, "cluster_nodes", cluster_nodes, graph, features, cfg)
@@ -45,7 +47,7 @@ def main() -> None:
     features, clusters = _run_stage(stage_seconds, "renumber_and_describe", renumber_and_describe, features, edges, cfg)
     layout = _run_stage(stage_seconds, "layout", make_layout, graph, cfg)
     top = _run_stage(stage_seconds, "top_nodes", top_nodes, features, cfg)
-    export_all(features, edges, clusters, top, layout, cfg, stage_seconds, started)
+    export_all(features, edges, clusters, top, layout, cfg, stage_seconds, started, frontier)
     elapsed = time.perf_counter() - started
     print("Роли:", features.role.value_counts().sort_index().to_dict())
     print("Кластеров:", int((clusters.cluster_id != cfg["clusters"]["isolated_cluster_id"]).sum()))

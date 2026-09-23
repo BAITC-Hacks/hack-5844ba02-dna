@@ -79,7 +79,13 @@ def assign_base_roles(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
         if _is_isolated(row):
             role, score, ev = "peripheral", cfg["roles"]["peripheral_isolated_score"], f"Нет переводов ≥{minimum} KZT в выгрузке"
         elif _is_frontier(row, cfg):
-            role, score, ev = "frontier", cfg["roles"]["frontier"]["score"], f"{cfg['data']['max_depth']}-е колено, исходящие не наблюдались (обрыв обхода), получено {format_kzt(row.in_kzt)}"
+            probability = float(row.p_terminal)
+            if probability >= cfg["roles"]["frontier"]["terminal_threshold"]:
+                role, score = "terminal", probability
+                ev = f"{cfg['data']['max_depth']}-е колено, исходящие не наблюдались; вероятно конечный, P={probability:.2f} — оценка по аналогам"
+            else:
+                role, score = "frontier", 1.0 - probability
+                ev = f"{cfg['data']['max_depth']}-е колено, обрыв обхода; вероятно передаёт дальше, P(конечный)={probability:.2f} — оценка по аналогам"
         elif _is_distributor(row, cfg):
             role, score = "distributor", _score(row.out_deg, cfg["roles"]["distributor"]["min_out_deg"], result.out_deg, cfg)
             ev = f"Веерная рассылка: {row.out_deg} получателей, отдано {format_kzt(row.out_kzt)}"

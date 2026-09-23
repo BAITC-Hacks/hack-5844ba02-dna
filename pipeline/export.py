@@ -9,12 +9,12 @@ import pandas as pd
 LOG = logging.getLogger(__name__)
 
 
-def export_all(features: pd.DataFrame, edges: pd.DataFrame, clusters: pd.DataFrame, top: pd.DataFrame, layout: pd.DataFrame, cfg: dict, stage_seconds: dict[str, float], started: float) -> None:
+def export_all(features: pd.DataFrame, edges: pd.DataFrame, clusters: pd.DataFrame, top: pd.DataFrame, layout: pd.DataFrame, cfg: dict, stage_seconds: dict[str, float], started: float, frontier: dict | None = None) -> None:
     """Сериализует все семь контрактных файлов, gid в JSON всегда строкой."""
     export_started = time.perf_counter()
     out = Path(cfg["_out"]); out.mkdir(parents=True, exist_ok=True)
     result = features.merge(layout, on="gid", how="left")
-    columns = ["gid", "role", "role_score", "cluster_id", "priority_score", "evidence", "depth", "is_seed", "in_deg", "out_deg", "in_kzt", "out_kzt", "in_tx", "out_tx", "pass_ratio", "n_seed_upstream", "betweenness", "flags", "score_breakdown"]
+    columns = ["gid", "role", "role_score", "cluster_id", "priority_score", "evidence", "depth", "is_seed", "in_deg", "out_deg", "in_kzt", "out_kzt", "in_tx", "out_tx", "pass_ratio", "n_seed_upstream", "p_terminal", "betweenness", "flags", "score_breakdown"]
     result[columns].to_csv(out / "nodes_roles.csv", index=False)
     clusters.to_csv(out / "clusters.csv", index=False)
     top.to_csv(out / "top_nodes.csv", index=False)
@@ -24,6 +24,10 @@ def export_all(features: pd.DataFrame, edges: pd.DataFrame, clusters: pd.DataFra
     thresholds = {key: value for key, value in cfg.items() if key != "_out"}
     stage_seconds["export"] = time.perf_counter() - export_started
     LOG.info("Этап export: %.3f с", stage_seconds["export"])
-    summary = {"role_counts": {str(key): int(value) for key, value in features.role.value_counts().sort_index().items()}, "n_clusters": int((clusters.cluster_id != cfg["clusters"]["isolated_cluster_id"]).sum()), "elapsed_seconds": time.perf_counter() - started, "stage_seconds": stage_seconds, "thresholds": thresholds, "frontier": {"auc": None}}
+    frontier_summary = dict(frontier or {"auc": None, "coefficients": {}})
+    depth_four = features.depth.eq(cfg["data"]["max_depth"]) & features.out_deg.eq(0)
+    frontier_summary["n_terminal_est"] = int((depth_four & features.role.eq("terminal")).sum())
+    frontier_summary["n_frontier"] = int((depth_four & features.role.eq("frontier")).sum())
+    summary = {"role_counts": {str(key): int(value) for key, value in features.role.value_counts().sort_index().items()}, "n_clusters": int((clusters.cluster_id != cfg["clusters"]["isolated_cluster_id"]).sum()), "elapsed_seconds": time.perf_counter() - started, "stage_seconds": stage_seconds, "thresholds": thresholds, "frontier": frontier_summary}
     (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     (out / "resilience.json").write_text(json.dumps({"n_removed": []}), encoding="utf-8")

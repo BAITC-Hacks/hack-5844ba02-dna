@@ -35,7 +35,11 @@ roles:
     min_pass: 0.8
     max_pass: 1.2
   frontier:
-    score: 0.5
+    # Cutoff for classifying fourth-generation truncation as a likely terminal.
+    terminal_threshold: 0.5
+    train_depths: [1, 2, 3]
+    cv_folds: 5
+    max_iter: 1000
   terminal:
     min_in_deg: 1
 
