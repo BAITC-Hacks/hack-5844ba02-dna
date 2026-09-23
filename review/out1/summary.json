@@ -9,7 +9,22 @@
     "transit": 55
   },
   "n_clusters": 44,
-  "elapsed_seconds": 9.390343624982052,
+  "elapsed_seconds": 6.1871868330053985,
+  "stage_seconds": {
+    "load": 0.030762583017349243,
+    "sanity_check": 0.00518237502546981,
+    "build_graph": 0.00414099998306483,
+    "basic_features": 0.07471766701200977,
+    "enrich_features": 1.076870791031979,
+    "assign_base_roles": 0.10094350000144914,
+    "apply_coordinators": 0.14245858299545944,
+    "cluster_nodes": 0.07677695801248774,
+    "score_nodes": 0.026742541987914592,
+    "renumber_and_describe": 0.04683770798146725,
+    "layout": 4.566662791999988,
+    "top_nodes": 0.0017183329910039902,
+    "export": 0.030198124994058162
+  },
   "thresholds": {
     "seed": 42,
     "data": {
@@ -81,7 +96,8 @@
       "isolated_cluster_id": 0,
       "top_gids": 5,
       "min_seeds_for_collection": 2,
-      "small_fragment_max_nodes": 20
+      "small_fragment_max_nodes": 20,
+      "min_transit_share": 0.2
     },
     "export": {
       "evidence_max_chars": 200
