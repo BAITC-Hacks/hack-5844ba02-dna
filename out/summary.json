@@ -3,9 +3,9 @@
     "consolidator": 24,
     "coordinator": 54,
     "distributor": 14,
-    "frontier": 40,
+    "frontier": 444,
     "peripheral": 577,
-    "terminal": 1477,
+    "terminal": 1073,
     "transit": 62
   },
   "n_clusters": 44,
@@ -17,27 +17,27 @@
     "0.8": 0.9,
     "1.2": 0.95
   },
-  "elapsed_seconds": 8.251414750004187,
+  "elapsed_seconds": 14.188356623999425,
   "stage_seconds": {
-    "load": 0.08822183305164799,
-    "sanity_check": 0.00864483299665153,
-    "build_graph": 0.024624250014312565,
-    "basic_features": 0.01275804196484387,
-    "enrich_features": 0.9993380410014652,
-    "flow": 0.29635741701349616,
-    "temporal": 0.9839946659631096,
-    "frontier": 0.02441233303397894,
-    "assign_base_roles": 0.08624254202004522,
-    "cluster_nodes": 0.23934170801658183,
-    "bridge_flags": 0.006075540964957327,
-    "apply_coordinators": 0.047991791972890496,
-    "score_nodes": 0.02843741700053215,
-    "sensitivity": 0.32115008297841996,
-    "renumber_and_describe": 0.02392662497004494,
-    "layout": 4.130904832971282,
-    "resilience": 0.878175750025548,
-    "top_nodes": 0.001962583977729082,
-    "export": 0.04443883401108906
+    "load": 0.06616886199844885,
+    "sanity_check": 0.009600009998393944,
+    "build_graph": 0.005737485997087788,
+    "basic_features": 0.022044414003175916,
+    "enrich_features": 1.6555083849998482,
+    "flow": 0.43700706500021624,
+    "temporal": 2.012227068997163,
+    "frontier": 0.06772916699992493,
+    "assign_base_roles": 0.1831325700004527,
+    "cluster_nodes": 0.3280685900026583,
+    "bridge_flags": 0.009236876998329535,
+    "apply_coordinators": 0.07719481800086214,
+    "score_nodes": 0.04218620599931455,
+    "sensitivity": 0.5417425090017787,
+    "renumber_and_describe": 0.04372027200224693,
+    "layout": 7.175184224000986,
+    "resilience": 1.4467960900001344,
+    "top_nodes": 0.0031820339972910006,
+    "export": 0.055284352998569375
   },
   "thresholds": {
     "seed": 42,
@@ -180,15 +180,15 @@
   "frontier": {
     "auc": 0.6841486826426585,
     "coefficients": {
-      "log1p_in_kzt": -0.3536752248192,
-      "log1p_in_amount": 0.4212058784117881,
-      "in_deg": -0.2690758086726543,
-      "log1p_in_tx": -0.37929604489875823,
-      "first_in_day": 0.24438929061288872,
-      "last_in_day": -0.21872054904667895
+      "log1p_in_kzt": -0.353675224818975,
+      "log1p_in_amount": 0.4212058784115794,
+      "in_deg": -0.26907580867269615,
+      "log1p_in_tx": -0.3792960448988999,
+      "first_in_day": 0.24438929061286033,
+      "last_in_day": -0.21872054904662774
     },
     "n_train": 1723,
-    "n_terminal_est": 404,
-    "n_frontier": 40
+    "n_terminal_est": 0,
+    "n_frontier": 444
   }
 }

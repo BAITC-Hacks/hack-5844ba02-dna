@@ -1,34 +1,123 @@
-﻿# Money Graph viewer
+# Граф денег
 
-An offline-first FastAPI + Cytoscape.js screen for reviewing the financial-network outputs produced by the pipeline. The viewer is deliberately limited to the MUST-HAVE scope: graph inspection, node search, node flow details, top nodes, and cluster highlighting.
+Локальный аналитический инструмент для восстановления структуры финансовой сети: воспроизводимый Python-пайплайн назначает роли всем узлам, строит кластеры и рейтинг, а FastAPI + Cytoscape.js дают AML-аналитику поиск, направленные связи, карточки и следующие шаги проверки.
 
-## Run
+Все выводы являются гипотезами для проверки, а не утверждениями о виновности.
+
+![Схема решения](docs/solution-diagram.svg)
+
+## Быстрый запуск
+
+Требуется Python 3.11–3.14. Из корня репозитория:
 
 ```bash
-make install
-python scripts/make_mock_out.py  # use this until the pipeline participant supplies out/
-make serve
+make install && make all
 ```
 
-Open [http://localhost:8000](http://localhost:8000). For real data, run `make pipeline` first, then start the server. `make all` runs the real pipeline and starts the server.
+Команда создаёт `.venv`, устанавливает фиксированные зависимости, рассчитывает артефакты из `data/*.parquet` и запускает приложение на [http://localhost:8000](http://localhost:8000).
 
-For the Stage 2 GPU setup and NVIDIA Brev workflow, see [docs/BREV_SETUP.md](docs/BREV_SETUP.md).
+Проверка без запуска сервера:
 
-## Output contract
+```bash
+make pipeline
+make test
+```
 
-The API reads `out/graph.json`, `out/nodes_roles.csv`, `out/top_nodes.csv`, and `out/clusters.csv`. GIDs are kept as strings throughout Python and JavaScript because the real identifiers exceed JavaScript's safe integer range.
+Полная проверка в свежем локальном клоне:
 
-- `graph.json`: positioned nodes and directed, weighted edges.
-- `nodes_roles.csv`: node roles, scores, metrics, evidence, flags, and score breakdown.
-- `top_nodes.csv`: ranked analyst review queue.
-- `clusters.csv`: cluster sizes, internal turnover, and hypotheses.
+```bash
+bash scripts/clean_check.sh
+```
 
-## Viewer behavior
+Для разработки интерфейса без исходного датасета доступен `make mock`. Эта команда создаёт только демонстрационные данные и не используется для финальных экспортов.
 
-The graph uses the supplied `x`/`y` coordinates, role colors, seed diamonds/strong borders, frontier dashed borders, priority-based node sizes, and directed arrows. Selecting a node highlights its neighborhood and loads incoming/outgoing tables. Search accepts a GID prefix or suffix. The Top and Clusters tabs link back to the graph.
+## Docker
 
-## Role rules
+```bash
+docker compose up --build
+```
 
-TODO — the role rules and thresholds will be documented by participant A in the pipeline deliverable.
+Образ основан на Python 3.11. Каталог `data/` подключается только для чтения, `out/` — для выходных файлов. Файл `.env` не обязателен. Для AI-ассистента скопируйте `.env.example` в `.env` и добавьте ключ OpenAI или NVIDIA.
 
-All conclusions are investigative hypotheses for review, not assertions of guilt.
+## Выходные файлы
+
+Пайплайн `python3 -m pipeline --data data --out out` создаёт:
+
+- `nodes_roles.csv` — 2 248 узлов, роль, уверенность, кластер, приоритет и объяснение;
+- `clusters.csv` — размер, seed, внутренний оборот, ключевые gids и гипотеза по каждому кластеру;
+- `top_nodes.csv` — Top-50 узлов для первоочередной проверки;
+- `graph.json` — строки gid, направленные рёбра и готовые координаты;
+- `features.parquet`, `summary.json`, `resilience.json`, `cycles.json` — расширенные признаки и бонусная аналитика.
+
+CSV сохраняют `gid` как `int64` по контракту кейса. В JSON и HTTP API все gids являются строками, поскольку значения около `1e17` превышают безопасный целый диапазон JavaScript.
+
+## Правила ролей
+
+Пороговые значения находятся только в `pipeline/config.yaml`. Правила применяются в указанном порядке, после чего отдельный проход может назначить роль `coordinator`.
+
+| Роль | Формальное правило | Интерпретация |
+|---|---|---|
+| `frontier` | `depth = 4` и `out_deg = 0` | Обрыв четырёхколенного обхода; не считается terminal |
+| `distributor` | `out_deg ≥ 20` и для не-seed `out_kzt ≥ 0.5 × in_kzt` | Признаки веерного распределения |
+| `consolidator` | `in_deg ≥ 5` и `out_kzt ≤ 0.5 × in_kzt`, либо `n_seed_upstream ≥ 3` и `in_deg ≥ 3` | Признаки накопления от нескольких участников |
+| `transit` | не seed; `in_deg` и `out_deg` от 1 до 3; `0.8 ≤ pass_ratio ≤ 1.2` | Большая часть наблюдаемого входа передаётся дальше |
+| `terminal` | `out_deg = 0`, `depth < 4`, `in_deg ≥ 1` | Вероятный конечный получатель внутри наблюдаемой глубины |
+| `peripheral` | изолированный узел или ни одно более сильное правило | Ролевые признаки не обнаружены |
+| `coordinator` | S1: платит ≥2 seed и `in_deg ≥ 3`; S2: `in_deg ≥ 5` и `out_deg ≥ 20`; S3: ≥2 плательщика с ролями consolidator/distributor и `in_deg` или `out_deg ≥ 5` | Кандидат в координирующий узел; требует отдельной проверки |
+
+`role_score` показывает выраженность сработавшего правила относительно распределения признака. Для узлов `frontier` отдельно рассчитывается `p_terminal` по аналогам глубин 1–3, но их основная роль остаётся `frontier`, чтобы не скрыть артефакт обрыва.
+
+## Приоритет проверки
+
+`priority_score` — нормированная взвешенная сумма процентильных рангов:
+
+- seed-поток — 25%;
+- число seed выше по потоку за два колена — 20%;
+- вес роли — 20%;
+- betweenness — 15%;
+- степень — 10%;
+- временные признаки, близкие к порогу суммы и циклы — 10%.
+
+Для seed применяется множитель 0.7: известные исходные клиенты не должны автоматически вытеснять неизвестные структурные узлы из верхней части рейтинга. `score_breakdown` и поле `why` показывают основные вклады.
+
+## Интерфейс и API
+
+Экран использует готовую раскладку, показывает направление денег, роли, кластеры, Top-50 и карточку узла. Поиск принимает полный gid, префикс или последние цифры. Клик по соседу открывает его карточку.
+
+API также предоставляет ego-сеть, направленный путь, общих контрагентов, циклы, устойчивость, пересчёт пайплайна и детерминированные следующие шаги. Полный контракт: [docs/API.md](docs/API.md).
+
+AI-ассистент уже реализован и является необязательным. Он использует function calling над графом, поддерживает OpenAI и NVIDIA API и не влияет на работу основного приложения без ключей.
+
+## Ограничения данных
+
+- Обход заканчивается на четвёртом колене. 444 узла без исходящих на `depth=4` — `frontier`, а не доказанные конечные получатели.
+- Выгрузка строилась по исходящим переводам. Наблюдаемый вход любого узла может быть неполным; `pass_ratio > 1.2` рассматривается как возможное внешнее фондирование.
+- Для seed входящие суммы особенно неполны, поэтому их `pass_ratio` не рассчитывается.
+- Переводы ниже 5 000 KZT отсутствуют; дробление ниже порога нельзя подтвердить этой выборкой.
+- Доступны только внутрибaнковские переводы за июль 2026 года. Нет ФИО, балансов, наличных и межбанковских операций.
+- Роли не имеют размеченной истины. Правила и модель frontier дают объяснимые гипотезы, а не юридические выводы.
+
+## Структура
+
+```text
+data/       исходные parquet-файлы
+pipeline/   загрузка, признаки, роли, кластеры, рейтинг и экспорт
+api/        GraphStore, FastAPI, карточки и AI-ассистент
+web/        офлайн-интерфейс и локальные vendor-библиотеки
+out/        готовые артефакты
+tests/      приёмочные тесты API и пайплайна
+scripts/    mock-генератор и проверка свежего клона
+```
+
+## Масштабирование до 1 млн узлов
+
+Текущая реализация оптимальна для графа в несколько тысяч узлов. Для порядка 1 млн узлов потребуется:
+
+- заменить NetworkX на igraph, graph-tool или распределённое графовое хранилище;
+- рассчитывать betweenness приближённо на выборке, а не для всех пар;
+- применять Leiden/Louvain по частям и хранить промежуточные признаки в Parquet;
+- выполнять bounded BFS, cycle search и устойчивость только для выбранных подграфов;
+- отдавать интерфейсу серверные ego-сети и агрегированные уровни детализации вместо полного graph.json;
+- разделить пакетный расчёт и read-only API, добавив кэш и версионирование артефактов.
+
+GPU не требуется для воспроизводимости основного решения. NVIDIA Brev можно использовать для демонстрации AI-ассистента; инструкция находится в [docs/BREV_SETUP.md](docs/BREV_SETUP.md).
