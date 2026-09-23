@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from api.main import get_graph, get_node, get_top, health, reload_data, search
+from api.main import get_graph, get_node, get_node_card, get_top, health, reload_data, search
 
 
 def setup_module():
@@ -45,3 +45,11 @@ def test_health_without_llm_key(monkeypatch):
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("NVIDIA_API_KEY", raising=False)
     assert health() == {"status": "ok", "llm_available": False, "provider": "none"}
+
+
+def test_node_card_has_next_steps_and_string_gid():
+    gid = get_graph()["nodes"][0]["id"]
+    card = get_node_card(gid)
+    assert card["gid"] == gid
+    assert isinstance(card["next_steps"], list)
+    assert "flows" in card and "connections" in card

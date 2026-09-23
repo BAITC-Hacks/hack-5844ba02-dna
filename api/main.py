@@ -10,6 +10,7 @@ import networkx as nx
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from .cards import build_card
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "out"
@@ -116,6 +117,12 @@ def get_node(gid: str) -> dict[str, Any]:
     node["incoming"] = [{"gid": str(edge["source"]), "role": nodes_by_id.get(str(edge["source"]), {}).get("role", ""), "sum_kzt": edge.get("sum_kzt", 0), "n_tx": edge.get("n_tx", 0)} for edge in graph_data["edges"] if edge["target"] == gid]
     node["outgoing"] = [{"gid": str(edge["target"]), "role": nodes_by_id.get(str(edge["target"]), {}).get("role", ""), "sum_kzt": edge.get("sum_kzt", 0), "n_tx": edge.get("n_tx", 0)} for edge in graph_data["edges"] if edge["source"] == gid]
     return node
+
+
+@app.get("/api/node/{gid}/card")
+def get_node_card(gid: str) -> dict[str, Any]:
+    node = get_node(gid)
+    return build_card(str(gid), node, node["incoming"], node["outgoing"], nodes_by_id)
 
 
 @app.get("/api/top")
