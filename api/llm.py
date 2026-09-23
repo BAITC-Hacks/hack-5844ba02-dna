@@ -19,12 +19,12 @@ def provider_candidates() -> list[tuple[str, str, str]]:
             continue
         base_url = "https://integrate.api.nvidia.com/v1" if provider == "nvidia" else None
         model = os.getenv("OPENAI_MODEL" if provider == "openai" else "NVIDIA_MODEL", "").strip()
-        model = model or ("gpt-4o-mini" if provider == "openai" else "meta/llama-3.1-8b-instruct")
+        model = model or ("gpt-4o-mini" if provider == "openai" else "meta/llama-3.3-70b-instruct")
         result.append((provider, key, model))
     return result
 
 
-def complete(messages: list[dict[str, Any]], tools: list[dict[str, Any]]) -> Any:
+def complete(messages: list[dict[str, Any]], tools: list[dict[str, Any]] | None = None) -> Any:
     """Run one chat completion, trying the configured provider then fallback."""
     candidates = provider_candidates()
     if not candidates:
@@ -40,7 +40,10 @@ def complete(messages: list[dict[str, Any]], tools: list[dict[str, Any]]) -> Any
             if provider == "nvidia":
                 kwargs["base_url"] = "https://integrate.api.nvidia.com/v1"
             client = OpenAI(**kwargs)
-            return client.chat.completions.create(model=model, messages=messages, tools=tools, tool_choice="auto")
+            request: dict[str, Any] = {"model": model, "messages": messages}
+            if tools:
+                request.update({"tools": tools, "tool_choice": "auto"})
+            return client.chat.completions.create(**request)
         except Exception as error:
             last_error = error
     raise LLMUnavailable(f"All configured LLM providers failed: {last_error}")

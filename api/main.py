@@ -232,9 +232,7 @@ def ask_assistant(request: AssistantRequest) -> dict[str, Any]:
 def explain_card(gid: str) -> dict[str, Any]:
     card = get_node_card(gid)
     try:
-        result = assistant.answer(
-            "Составь краткую справку только по фактам этой карточки: " + json.dumps(card, ensure_ascii=False), []
-        )
+        result = assistant.answer_card(card)
     except assistant.llm.LLMUnavailable as error:
         raise HTTPException(status_code=503, detail=str(error)) from error
     result["evidence"] = card.get("summary", {}).get("evidence", card.get("why"))
