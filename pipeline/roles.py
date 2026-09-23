@@ -86,8 +86,12 @@ def assign_base_roles(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
             role, score, ev = "peripheral", cfg["roles"]["peripheral_isolated_score"], f"Нет переводов ≥{minimum} KZT в выгрузке"
         elif _is_frontier(row, cfg):
             probability = float(row.p_terminal)
-            role, score = "frontier", 1.0 - probability
-            ev = f"{cfg['data']['max_depth']}-е колено, обрыв обхода; P(конечный)={probability:.2f} — оценка по аналогам"
+            if probability >= cfg["roles"]["frontier"]["terminal_threshold"]:
+                role, score = "terminal", probability
+                ev = f"{cfg['data']['max_depth']}-е колено, исходящие не наблюдались; вероятно конечный, P={probability:.2f} — оценка по аналогам"
+            else:
+                role, score = "frontier", 1.0 - probability
+                ev = f"{cfg['data']['max_depth']}-е колено, обрыв обхода; вероятно передаёт дальше, P(конечный)={probability:.2f} — оценка по аналогам"
         elif _is_distributor(row, cfg):
             role, score = "distributor", _score(row.out_deg, cfg["roles"]["distributor"]["min_out_deg"], result.out_deg, cfg)
             ev = f"Веерная рассылка: {row.out_deg} получателей, отдано {format_kzt(row.out_kzt)}"
@@ -142,5 +146,5 @@ def apply_coordinators(features: pd.DataFrame, graph, cfg: dict) -> pd.DataFrame
     result["flags"] = result["flags"].map(lambda x: ";".join(x))
     coordinator_count = int(result["role"].eq("coordinator").sum())
     if coordinator_count > c["max_expected"]:
-        LOG.warning("Coordinator count %d exceeds configured maximum %d; review S3 sensitivity", coordinator_count, c["max_expected"])
+        LOG.info("Coordinator count %d exceeds configured maximum %d; review S3 sensitivity", coordinator_count, c["max_expected"])
     return result
