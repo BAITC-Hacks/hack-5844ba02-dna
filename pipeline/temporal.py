@@ -7,7 +7,11 @@ import pandas as pd
 
 
 def _fast_pass(incoming: pd.DataFrame, outgoing: pd.DataFrame, settings: dict) -> tuple[float, float]:
-    """Greedily match an incoming payment to one usable, similar outgoing payment."""
+    """Estimate observed amount with one compatible prompt outgoing payment.
+
+    This is a compatibility signal, not evidence that the same money was passed on:
+    dates have day precision and opening balances are unknown.
+    """
     if incoming.empty or outgoing.empty:
         return 0.0, float("nan")
     used: set[int] = set()
@@ -19,7 +23,7 @@ def _fast_pass(incoming: pd.DataFrame, outgoing: pd.DataFrame, settings: dict) -
                 continue
             if settings["fast_pass_min_ratio"] * payment.sum_kzt <= candidate.sum_kzt <= settings["fast_pass_max_ratio"] * payment.sum_kzt:
                 used.add(candidate.Index)
-                matched += float(payment.sum_kzt)
+                matched += min(float(payment.sum_kzt), float(candidate.sum_kzt))
                 lags.append((candidate.date - payment.date).days)
                 break
     return matched / float(incoming.sum_kzt.sum()), float(np.median(lags)) if lags else float("nan")

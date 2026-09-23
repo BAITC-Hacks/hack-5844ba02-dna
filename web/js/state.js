@@ -1,0 +1,2 @@
+let saved='light';try{saved=localStorage.getItem('trace-theme')||'light'}catch{} export const state = new Proxy({tab:'graph',node:null,mode:'all',threshold:0,review:[],theme:saved}, {set(o,k,v){const old=o[k];o[k]=v; if(old!==v) window.dispatchEvent(new CustomEvent('state',{detail:{key:k,value:v}})); return true;}});
+export const watch=(key,fn)=>window.addEventListener('state',e=>e.detail.key===key&&fn(e.detail.value));

@@ -14,7 +14,7 @@ def export_all(features: pd.DataFrame, edges: pd.DataFrame, clusters: pd.DataFra
     export_started = time.perf_counter()
     out = Path(cfg["_out"]); out.mkdir(parents=True, exist_ok=True)
     result = features.merge(layout, on="gid", how="left")
-    columns = ["gid", "role", "role_score", "cluster_id", "priority_score", "evidence", "depth", "is_seed", "in_deg", "out_deg", "in_kzt", "out_kzt", "in_tx", "out_tx", "pass_ratio", "seed_flow_kzt", "seed_share", "n_seed_upstream", "p_terminal", "betweenness", "fast_pass_share", "max_sync_payers", "near_threshold_share", "n_cycles", "flags", "score_breakdown"]
+    columns = ["gid", "role", "role_score", "cluster_id", "priority_score", "evidence", "depth", "is_seed", "in_deg", "out_deg", "in_kzt", "out_kzt", "in_tx", "out_tx", "pass_ratio", "seed_flow_kzt", "seed_share", "seed_flow_converged", "seed_flow_residual", "n_seed_upstream", "p_terminal", "betweenness", "fast_pass_share", "max_sync_payers", "near_threshold_share", "n_cycles", "flags", "score_breakdown"]
     result[columns].to_csv(out / "nodes_roles.csv", index=False)
     clusters.to_csv(out / "clusters.csv", index=False)
     top.to_csv(out / "top_nodes.csv", index=False)
@@ -29,7 +29,12 @@ def export_all(features: pd.DataFrame, edges: pd.DataFrame, clusters: pd.DataFra
     frontier_summary["n_terminal_est"] = int((depth_four & features.role.eq("terminal")).sum())
     frontier_summary["n_frontier"] = int((depth_four & features.role.eq("frontier")).sum())
     n_clusters = int((clusters.cluster_id != cfg["clusters"]["isolated_cluster_id"]).sum())
-    summary = {"role_counts": {str(key): int(value) for key, value in features.role.value_counts().sort_index().items()}, "n_clusters": n_clusters, "clusters": {"n": n_clusters, **(cluster_stability or {})}, "sensitivity": sensitivity or {}, "elapsed_seconds": time.perf_counter() - started, "stage_seconds": stage_seconds, "thresholds": thresholds, "frontier": frontier_summary}
+    flow_summary = {
+        "method": "proportional mixing of observed transfers; seed share starts at 1",
+        "converged": bool(features["seed_flow_converged"].iloc[0]),
+        "residual": float(features["seed_flow_residual"].iloc[0]),
+    }
+    summary = {"role_counts": {str(key): int(value) for key, value in features.role.value_counts().sort_index().items()}, "n_clusters": n_clusters, "clusters": {"n": n_clusters, **(cluster_stability or {})}, "sensitivity": sensitivity or {}, "elapsed_seconds": time.perf_counter() - started, "stage_seconds": stage_seconds, "thresholds": thresholds, "frontier": frontier_summary, "flow": flow_summary}
     (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     (out / "resilience.json").write_text(json.dumps(resilience or {"n_removed": []}, ensure_ascii=False), encoding="utf-8")
     (out / "cycles.json").write_text(json.dumps(cycles or [], ensure_ascii=False), encoding="utf-8")

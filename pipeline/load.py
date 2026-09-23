@@ -3,6 +3,7 @@ from pathlib import Path
 import logging
 
 import networkx as nx
+import numpy as np
 import pandas as pd
 
 LOG = logging.getLogger(__name__)
@@ -24,12 +25,27 @@ def sanity_check(edges: pd.DataFrame, nodes: pd.DataFrame, transactions: pd.Data
     """Проверяет согласованность агрегированных и исходных переводов."""
     required_edges = {"src", "dst", "sum_kzt", "n_tx", "depth"}
     required_nodes = {"gid", "depth", "is_seed"}
-    if not required_edges.issubset(edges) or not required_nodes.issubset(nodes):
+    required_transactions = {"src", "dst", "sum_kzt", "date"}
+    if (not required_edges.issubset(edges) or not required_nodes.issubset(nodes)
+            or not required_transactions.issubset(transactions)):
         raise ValueError("Входные parquet-файлы не соответствуют контракту")
+    if nodes["gid"].duplicated().any() or edges.duplicated(["src", "dst"]).any():
+        raise ValueError("gid и агрегированные пары src/dst должны быть уникальны")
+    numeric = pd.concat([edges["sum_kzt"], transactions["sum_kzt"]], ignore_index=True)
+    if not np.isfinite(numeric).all() or numeric.lt(0).any():
+        raise ValueError("Суммы переводов должны быть конечными и неотрицательными")
+    node_ids = set(nodes["gid"])
+    endpoints = set(edges["src"]).union(edges["dst"]).union(transactions["src"]).union(transactions["dst"])
+    if not endpoints.issubset(node_ids):
+        raise ValueError("В переводах есть endpoint, отсутствующий в nodes")
     aggregate = transactions.groupby(["src", "dst"], as_index=False).agg(sum_kzt=("sum_kzt", "sum"), n_tx=("sum_kzt", "size"))
     check = edges.merge(aggregate, on=["src", "dst"], how="outer", suffixes=("_edge", "_tx"), indicator=True)
     if not (check["_merge"] == "both").all():
         raise ValueError("edges и transactions расходятся по парам src/dst")
+    if not np.isclose(check["sum_kzt_edge"], check["sum_kzt_tx"], rtol=1e-9, atol=0.01).all():
+        raise ValueError("Суммы edges и transactions расходятся")
+    if not check["n_tx_edge"].eq(check["n_tx_tx"]).all():
+        raise ValueError("Счётчики n_tx в edges и transactions расходятся")
     incident = set(edges["src"]).union(edges["dst"])
     orphans = set(nodes["gid"]) - incident
     LOG.info("Данные: %d узлов, %d рёбер, %d транзакций, %d изолированных", len(nodes), len(edges), len(transactions), len(orphans))

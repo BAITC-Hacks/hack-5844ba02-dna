@@ -1,27 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru" data-theme="dark">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Money Graph</title><link rel="stylesheet" href="/web/style.css"><link rel="stylesheet" href="/web/stage2.css"><link rel="stylesheet" href="/web/stage2c.css"><link rel="stylesheet" href="/web/stage2d.css"><link rel="stylesheet" href="/web/stage2e.css">
+  <meta name="color-scheme" content="dark light"><title>Trace / аналитическая консоль</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">{"imports":{"cytoscape":"./vendor/cytoscape.esm.mjs","chart.js":"./vendor/chart-adapter.js"}}</script>
 </head>
 <body>
   <header class="topbar">
-    <div><span class="eyebrow">AML ANALYTICS</span><h1>Money Graph</h1></div>
-    <div class="search-wrap"><input id="search" placeholder="Search by full GID or last digits" autocomplete="off"><div id="suggestions" class="suggestions"></div></div>
-    <button id="reset" class="ghost">Reset selection</button>
+    <a class="brand" href="#graph" aria-label="Trace — главная"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5-6 6 3 5-5M4 12l6 7 5-4 5 3"/></svg><span>TRACE</span></a>
+    <div class="search-wrap"><label class="sr-only" for="search">Поиск gid</label><input id="search" autocomplete="off" placeholder="Найти gid или последние цифры…" aria-expanded="false" aria-controls="suggestions"><kbd>/</kbd><div id="suggestions" class="suggestions" role="listbox"></div></div>
+    <div id="summary-chips" class="summary-chips" aria-label="Сводка"></div>
+    <div class="top-actions"><button id="toggle-filters" class="icon-btn" title="Показать или скрыть рабочую панель" aria-pressed="false">☰</button><button id="review-btn" class="icon-btn" title="Перечень на проверку">◎ <b id="review-count">0</b></button><button id="run" class="button primary">Пересчитать</button><button id="theme" class="icon-btn" title="Тема">◐</button><button id="help" class="icon-btn" title="Горячие клавиши">?</button></div>
   </header>
-  <div class="notice">Conclusions are hypotheses for review, not assertions of guilt.</div>
-  <div id="summary" class="summary-strip">Loading summary…</div>
-  <main>
-    <section class="canvas-panel"><div class="tabs"><button class="tab active" data-tab="graph">Graph</button><button class="tab" data-tab="top">Top</button><button class="tab" data-tab="clusters">Clusters</button><button class="tab" data-tab="resilience">Resilience</button><button class="tab" data-tab="assistant">Assistant</button><button id="basket-export" class="tab">Export review list</button></div>
-      <div id="graph-view" class="view active"><div id="cy"></div><div id="legend"></div><div id="loading">Loading graph…</div></div>
-      <div id="top-view" class="view"><div class="table-wrap"><button id="top-export" class="cluster-btn">Export top CSV</button><table id="top-table"><thead><tr><th>Rank</th><th>GID</th><th>Role</th><th>Priority</th><th>Why</th></tr></thead><tbody></tbody></table></div></div>
-      <div id="clusters-view" class="view"><div class="table-wrap"><table id="clusters-table"><thead><tr><th>Cluster</th><th>Nodes</th><th>Seeds</th><th>Internal KZT</th><th>Hypothesis</th><th></th></tr></thead><tbody></tbody></table></div></div>
-      <div id="resilience-view" class="view"><div class="resilience-wrap"><button id="rerun-pipeline" class="cluster-btn">Recalculate pipeline</button><p id="resilience-status">Loading resilience…</p><div class="chart-box"><canvas id="lwcc-chart"></canvas></div><div class="chart-box"><canvas id="seed-chart"></canvas></div><p class="chart-caption">The faster a curve falls, the more accurately the ranking identifies structurally important nodes.</p><strong id="drop-summary"></strong></div></div>
-      <div id="assistant-view" class="view"><div class="assistant-wrap"><p id="assistant-status">Checking LLM availability…</p><div class="assistant-examples"><button>Who collects money from these seeds?</button><button>Show a path between two nodes.</button><button>Which consolidators are in cluster 1?</button></div><textarea id="assistant-question" rows="5" placeholder="Ask about the loaded graph…"></textarea><button id="assistant-send" class="cluster-btn">Ask assistant</button><div id="assistant-answer"></div><details><summary>Tool calls</summary><pre id="assistant-tools"></pre></details></div></div>
+  <main class="shell">
+    <nav class="tabs" role="tablist" aria-label="Разделы"><button role="tab" data-tab="graph">01 Граф</button><button role="tab" data-tab="top">02 Топ</button><button role="tab" data-tab="clusters">03 Кластеры</button><button role="tab" data-tab="resilience">04 Устойчивость</button><button role="tab" data-tab="assistant">05 Ассистент</button></nav>
+    <section class="workspace">
+      <div id="view" class="view"></div>
+      <aside id="card" class="card-panel" aria-label="Карточка узла"><button id="close-card" class="close">×</button><div class="empty">Выберите узел на графе<br><small>или найдите его по gid</small></div></aside>
     </section>
-    <aside id="side" class="side"><div class="empty">Select a node to inspect its flows.</div></aside>
   </main>
-  <script src="/web/vendor/cytoscape.min.js"></script><script src="/web/vendor/chart.umd.min.js"></script><script src="/web/app.js"></script><script src="/web/stage2c.js"></script><script src="/web/stage2d.js"></script><script src="/web/stage2e.js"></script>
-</body>
-</html>
+  <dialog id="palette"><form method="dialog" class="palette"><input id="palette-input" placeholder="Команда или gid…" autofocus><div id="palette-results"></div><footer><kbd>↑↓</kbd> навигация <kbd>↵</kbd> выбрать <kbd>esc</kbd> закрыть</footer></form></dialog>
+  <dialog id="review"><div class="dialog-head"><h2>Перечень на проверку</h2><button onclick="this.closest('dialog').close()">×</button></div><div id="review-list"></div><button id="export-review" class="button">Экспорт CSV</button></dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script type="module" src="./stage2-layout.js"></script><script type="module" src="./app.js"></script>
+</body></html>

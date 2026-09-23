@@ -20,6 +20,8 @@ def add_seed_flow(graph: nx.DiGraph, features: pd.DataFrame, cfg: dict) -> pd.Da
     share = {gid: 1.0 if gid in seed_ids else 0.0 for gid in gids}
     settings = cfg["flow"]
     seed_in: dict[int, float] = {gid: 0.0 for gid in gids}
+    converged = False
+    residual = float("inf")
     for _ in range(int(settings["max_iter"])):
         seed_in = {gid: 0.0 for gid in gids}
         for source, target, attrs in graph.edges(data=True):
@@ -28,13 +30,16 @@ def add_seed_flow(graph: nx.DiGraph, features: pd.DataFrame, cfg: dict) -> pd.Da
             gid: 1.0 if gid in seed_ids else float(np.clip(seed_in[gid] / max(float(denominator[gid]), 1.0), 0.0, 1.0))
             for gid in gids
         }
-        delta = max(abs(updated[gid] - share[gid]) for gid in gids)
+        residual = max(abs(updated[gid] - share[gid]) for gid in gids)
         share = updated
-        if delta <= float(settings["tol"]):
+        if residual <= float(settings["tol"]):
+            converged = True
             break
     seed_in = {gid: 0.0 for gid in gids}
     for source, target, attrs in graph.edges(data=True):
         seed_in[int(target)] += float(attrs["sum_kzt"]) * share[int(source)]
     result["seed_flow_kzt"] = result.gid.map(seed_in).astype(float)
     result["seed_share"] = result.gid.map(share).astype(float)
+    result["seed_flow_converged"] = converged
+    result["seed_flow_residual"] = residual
     return result

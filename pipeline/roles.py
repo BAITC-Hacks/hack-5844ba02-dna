@@ -68,6 +68,13 @@ def _peripheral_evidence(row: pd.Series) -> str:
     return f"Периферийный узел: {row.in_deg} входящих, {row.out_deg} исходящих, оборот {format_kzt(row.in_kzt + row.out_kzt)}"
 
 
+def _observed_passage(row: pd.Series) -> str:
+    """Describe the observable in-period ratio without inventing a funding source."""
+    if pd.isna(row.pass_ratio):
+        return "отношение входящих и исходящих для seed не оценивается"
+    return f"наблюдаемое отношение исходящих к входящим {row.pass_ratio * 100:.0f}%"
+
+
 def assign_base_roles(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     """Назначает первую сработавшую роль в порядке спецификации MUST-HAVE."""
     result = features.copy()
@@ -80,7 +87,10 @@ def assign_base_roles(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
         if row.max_sync_payers >= temporal["sync_min_payers"]: local_flags.append("sync_in")
         if row.near_threshold_share > temporal["near_threshold_min_share"]: local_flags.append("near_threshold")
         if row.n_cycles >= temporal["cycles_min_count"]: local_flags.append("cycles")
-        external = pd.notna(row.pass_ratio) and row.pass_ratio > cfg["roles"]["transit"]["max_pass"]
+        outgoing_exceeds_observed_incoming = (
+            pd.notna(row.pass_ratio)
+            and row.pass_ratio > cfg["roles"]["transit"]["max_pass"]
+        )
         if _is_isolated(row):
             local_flags.append("isolated")
             role, score, ev = "peripheral", cfg["roles"]["peripheral_isolated_score"], f"Нет переводов ≥{minimum} KZT в выгрузке"
@@ -98,22 +108,23 @@ def assign_base_roles(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
         elif _is_consolidator(row, cfg):
             c = cfg["roles"]["consolidator"]
             score = max(_score(row.in_deg, c["min_in_deg"], result.in_deg, cfg), _score(row.n_seed_upstream, c["min_seed_upstream"], result.n_seed_upstream, cfg))
-            role, ev = "consolidator", f"Признаки консолидации: {row.in_deg} плательщиков, деньги от {row.n_seed_upstream} seed за ≤2 колена, seed-поток {format_kzt(row.seed_flow_kzt)}, дальше ушло {row.pass_ratio * 100 if pd.notna(row.pass_ratio) else 0:.0f}%"
+            cutoff = cfg["features"]["seed_upstream_cutoff"]
+            role, ev = "consolidator", f"Признаки консолидации: {row.in_deg} плательщиков, направленные пути от {row.n_seed_upstream} seed за ≤{cutoff} колена; модельная оценка seed-потока {format_kzt(row.seed_flow_kzt)}, {_observed_passage(row)}"
         elif _is_transit(row, cfg):
             c = cfg["roles"]["transit"]
             role, score = "transit", _score(row.pass_ratio, c["min_pass"], result.pass_ratio.dropna(), cfg)
             if row.fast_pass_share >= temporal["fast_pass_min_share"]:
                 score = min(cfg["roles"]["score_ceiling"], score + c["fast_pass_bonus"])
             timing = f", медиана задержки {row.median_lag_days:.0f} дн." if pd.notna(row.median_lag_days) else ""
-            ev = f"Признаки транзита: получено {format_kzt(row.in_kzt)}, отдано {row.pass_ratio * 100:.0f}%{timing}, {row.in_deg}→{row.out_deg} контрагента"
+            ev = f"Признаки транзита: получено {format_kzt(row.in_kzt)}, {_observed_passage(row)}{timing}, {row.in_deg}→{row.out_deg} контрагента"
         elif _is_terminal(row, cfg):
             role, score, ev = "terminal", cfg["roles"]["score_floor"], f"Вероятный конечный получатель: {row.in_deg} плательщиков, получено {format_kzt(row.in_kzt)}, исходящих нет"
         else:
             role, score, ev = "peripheral", cfg["roles"]["score_floor"], _peripheral_evidence(row)
-        if external:
-            local_flags.append("external_funding")
+        if outgoing_exceeds_observed_incoming:
+            local_flags.append("outgoing_exceeds_observed_incoming")
             if role == "peripheral":
-                ev += "; есть источники вне выборки"
+                ev += "; наблюдаемый выход выше входа, остаток/источник за период неизвестен"
         roles.append(role); scores.append(score); evidence.append(_trim(ev, cfg)); flags.append(local_flags)
     result["role"], result["role_score"], result["evidence"], result["flags"] = roles, scores, evidence, flags
     return result

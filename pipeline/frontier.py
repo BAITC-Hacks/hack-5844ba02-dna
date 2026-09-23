@@ -29,7 +29,11 @@ def _add_incoming_profile(features: pd.DataFrame, transactions: pd.DataFrame) ->
 
 
 def add_frontier_probability(features: pd.DataFrame, transactions: pd.DataFrame, cfg: dict) -> tuple[pd.DataFrame, dict]:
-    """Train a scaled logistic model and score terminal-looking depth-four nodes."""
+    """Score depth-four truncation against an early-depth terminal proxy.
+
+    The result is a model similarity score, not a calibrated probability that money
+    stopped: outgoing data beyond the traversal frontier are unavailable.
+    """
     result = _add_incoming_profile(features, transactions)
     settings = cfg["roles"]["frontier"]
     train = result.loc[(~result.is_seed.astype(bool)) & result.depth.isin(settings["train_depths"]) & result.in_deg.ge(1)]
@@ -49,6 +53,6 @@ def add_frontier_probability(features: pd.DataFrame, transactions: pd.DataFrame,
     result["p_terminal"] = np.where(result.out_deg.eq(0), 1.0, 0.0)
     result.loc[truncated, "p_terminal"] = model.predict_proba(result.loc[truncated, FEATURE_NAMES])[:, 1]
     coefficients = dict(zip(FEATURE_NAMES, (float(v) for v in model.named_steps["logisticregression"].coef_[0]), strict=True))
-    metadata = {"auc": auc, "coefficients": coefficients, "n_train": int(len(train))}
+    metadata = {"auc": auc, "coefficients": coefficients, "n_train": int(len(train)), "target": "proxy: out_deg == 0 at depths 1–3", "scope": "model similarity only; not observed retention"}
     LOG.info("Frontier-модель: AUC %.3f, обучающих узлов %d", auc, len(train))
     return result, metadata

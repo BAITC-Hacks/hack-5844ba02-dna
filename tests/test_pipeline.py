@@ -12,6 +12,9 @@ import pandas as pd
 import pytest
 import yaml
 
+from pipeline.load import sanity_check
+from pipeline.temporal import _fast_pass
+
 
 ROOT = Path(__file__).resolve().parents[1]
 ALLOWED_ROLES = {"consolidator", "transit", "distributor", "terminal", "coordinator", "peripheral", "frontier"}
@@ -47,9 +50,13 @@ def test_contract_and_json_identifiers(output_dir: Path) -> None:
     assert set(nodes["role"]).issubset(ALLOWED_ROLES)
     assert nodes["role_score"].between(0, 1).all()
     assert nodes["priority_score"].between(0, 1).all()
+    breakdown = nodes["score_breakdown"].map(json.loads)
+    assert np.allclose(breakdown.map(lambda item: sum(item.values())), nodes["priority_score"], rtol=0, atol=1e-12)
     assert nodes["evidence"].str.len().le(200).all()
     assert nodes["evidence"].map(lambda text: bool(re.search(r"\d", text))).all()
     assert not nodes["evidence"].str.lower().str.contains("виновен|преступник").any()
+    assert not nodes["evidence"].str.contains(r"есть источники вне выборки|деньги от \d+ seed", case=False, regex=True).any()
+    assert not nodes["flags"].fillna("").str.contains("external_funding").any()
     graph = json.loads((output_dir / "graph.json").read_text(encoding="utf-8"))
     assert len(graph["nodes"]) == 2248 and len(graph["edges"]) == 3119
     assert all(isinstance(node["id"], str) for node in graph["nodes"])
@@ -80,6 +87,8 @@ def test_features_and_frontier_rule(output_dir: Path) -> None:
     assert nodes.loc[frontier, "evidence"].str.contains("аналог", case=False).all()
     assert nodes.loc[frontier, "p_terminal"].notna().all()
     assert nodes["seed_flow_kzt"].ge(0).all()
+    assert nodes["seed_flow_converged"].all()
+    assert nodes["seed_flow_residual"].le(cfg["flow"]["tol"]).all()
 
 
 def test_clusters_top_graph_and_resilience_contract(output_dir: Path) -> None:
@@ -107,6 +116,29 @@ def test_summary_cycles_and_coordinators(output_dir: Path) -> None:
     assert summary["frontier"]["auc"] > 0.5
     assert 5 <= int(nodes.role.eq("coordinator").sum()) <= 30
     assert all(isinstance(gid, str) for cycle in cycles for gid in cycle)
+
+
+def test_sanity_check_rejects_aggregate_mutations() -> None:
+    """A matching pair alone is insufficient: amount and transaction count matter."""
+    edges = pd.read_parquet(ROOT / "data" / "edges.parquet")
+    nodes = pd.read_parquet(ROOT / "data" / "nodes.parquet")
+    transactions = pd.read_parquet(ROOT / "data" / "transactions.parquet")
+    changed_amount = edges.copy()
+    changed_amount.loc[0, "sum_kzt"] += 12_345
+    with pytest.raises(ValueError, match="Суммы"):
+        sanity_check(changed_amount, nodes, transactions)
+    changed_count = edges.copy()
+    changed_count.loc[0, "n_tx"] += 7
+    with pytest.raises(ValueError, match="Счётчики"):
+        sanity_check(changed_count, nodes, transactions)
+
+
+def test_fast_pass_counts_compatible_amount_not_whole_input() -> None:
+    incoming = pd.DataFrame({"date": pd.to_datetime(["2026-07-01"]), "sum_kzt": [100_000.0]})
+    outgoing = pd.DataFrame({"date": pd.to_datetime(["2026-07-01"]), "sum_kzt": [50_000.0]})
+    share, lag = _fast_pass(incoming, outgoing, yaml.safe_load((ROOT / "pipeline" / "config.yaml").read_text(encoding="utf-8"))["temporal"])
+    assert share == 0.5
+    assert lag == 0
 
 
 def test_output_csv_is_deterministic(tmp_path: Path) -> None:
