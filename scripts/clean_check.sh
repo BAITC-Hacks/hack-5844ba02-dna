@@ -12,7 +12,7 @@ trap cleanup EXIT
 
 fail() { echo "FAIL: $*" >&2; exit 1; }
 
-git clone --quiet --local . "$tmp/repo"
+git clone --quiet --no-local . "$tmp/repo"
 cd "$tmp/repo"
 python3 -m venv .venv
 .venv/bin/python3 -m pip install --quiet --upgrade pip
