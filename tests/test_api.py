@@ -8,6 +8,7 @@ from typing import Any
 
 import pytest
 from fastapi import HTTPException
+from fastapi.testclient import TestClient
 
 from api.graph_store import GraphStore, StoreUnavailable
 from api.main import (
@@ -65,6 +66,9 @@ def test_health_and_summary() -> None:
     summary = get_summary()
     assert summary["n_nodes"] == len(get_graph()["nodes"])
     assert "n_seed" in summary
+    assert summary["nodes"] == summary["n_nodes"]
+    assert summary["seeds"] == summary["n_seed"]
+    assert summary["roles"] == summary["role_counts"]
 
 
 def test_openapi_contract_and_swagger_metadata() -> None:
@@ -76,6 +80,15 @@ def test_openapi_contract_and_swagger_metadata() -> None:
     assert "/api/assistant" in schema["paths"]
     gid_schema = schema["paths"]["/api/node/{gid}"]["get"]["parameters"][0]["schema"]
     assert gid_schema["type"] == "string"
+
+
+def test_frontend_and_root_relative_assets_are_served() -> None:
+    client = TestClient(app)
+    assert client.get("/").status_code == 200
+    assert "TRACE" in client.get("/").text
+    assert client.get("/style.css").status_code == 200
+    assert client.get("/app.js").status_code == 200
+    assert client.get("/js/api.js").status_code == 200
 
 
 def test_graph_filter_and_string_identifiers() -> None:
@@ -121,6 +134,11 @@ def test_card_has_deterministic_review_sections() -> None:
     assert set(card["top_counterparties"]) == {"incoming", "outgoing"}
     assert all(len(card["top_counterparties"][key]) <= 3 for key in ("incoming", "outgoing"))
     assert isinstance(card["next_steps"], list) and card["next_steps"]
+    assert card["role"] == card["summary"]["role"]
+    assert card["evidence"] == card["summary"]["evidence"]
+    assert card["metrics"]["in_kzt"] == card["flows"]["in_kzt"]
+    assert card["payers"] == card["top_counterparties"]["incoming"]
+    assert card["payees"] == card["top_counterparties"]["outgoing"]
     _assert_gid_strings(card)
 
 
@@ -151,7 +169,9 @@ def test_top_filters_and_cluster_detail() -> None:
     assert all(isinstance(row["gid"], str) for row in get_top(50, exclude_seed=True))
     cluster = get_cluster(cluster_id)
     assert cluster["nodes"] and "role_counts" in cluster and "internal_edges" in cluster
-    assert any(str(row["cluster_id"]) == str(cluster_id) for row in get_clusters())
+    cluster_rows = get_clusters()
+    assert any(str(row["cluster_id"]) == str(cluster_id) for row in cluster_rows)
+    assert all({"id", "size", "seed_count", "turnover_kzt", "roles"}.issubset(row) for row in cluster_rows)
     _assert_gid_strings(first)
     _assert_gid_strings(cluster)
 
@@ -165,6 +185,9 @@ def test_resilience_returns_every_strategy() -> None:
     }
     payload = get_resilience()
     assert set(payload["strategies"]) == expected
+    assert payload["removed"] == payload["n_removed"]
+    assert payload["priority"] == payload["by_priority"]
+    assert payload["degree"] == payload["by_degree"]
 
 
 def test_cycles_filter_and_string_gids() -> None:

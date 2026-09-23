@@ -9,6 +9,8 @@ services:
       OPENAI_MODEL: ${OPENAI_MODEL:-}
       NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
       NVIDIA_MODEL: ${NVIDIA_MODEL:-meta/llama-3.3-70b-instruct}
+      OUT_DIR: /app/out
+      DATA_DIR: /app/data
     volumes:
       - ./data:/app/data:ro
       - ./out:/app/out

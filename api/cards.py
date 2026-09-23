@@ -100,6 +100,11 @@ def build_card(
         "seed_flow_kzt": node.get("seed_flow_kzt"),
         "pass_ratio": pass_ratio,
     }
+    metrics = {
+        **flows,
+        "counterparties": len({str(row.get("gid")) for row in incoming + outgoing}),
+        "p_terminal": node.get("p_terminal"),
+    }
     return {
         "gid": str(gid),
         "summary": {"role": role, "evidence": evidence},
@@ -112,6 +117,13 @@ def build_card(
         "p_terminal": node.get("p_terminal"),
         # Backward-compatible aliases for the current frontend.
         "role": role,
+        "role_score": node.get("role_score"),
+        "priority_score": node.get("priority_score", node.get("priority")),
+        "cluster_id": node.get("cluster_id", node.get("cluster")),
+        "evidence": evidence,
         "why": evidence,
         "connections": top_counterparties,
+        "metrics": metrics,
+        "payers": top_counterparties["incoming"],
+        "payees": top_counterparties["outgoing"],
     }

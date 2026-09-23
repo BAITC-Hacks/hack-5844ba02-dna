@@ -170,6 +170,9 @@ class GraphStore:
             ]
             self.summary.setdefault("n_nodes", len(self.nodes_by_id))
             self.summary.setdefault("n_seed", sum(bool(node.get("is_seed")) for node in nodes))
+            self.summary.setdefault("nodes", self.summary["n_nodes"])
+            self.summary.setdefault("seeds", self.summary["n_seed"])
+            self.summary.setdefault("roles", self.summary.get("role_counts", {}))
             self.loaded, self.error = True, None
         except Exception as error:  # malformed artifacts must not prevent server startup
             self._reset(f"Pipeline output could not be loaded: {error}")
@@ -275,7 +278,13 @@ class GraphStore:
             key for key, value in self.resilience.items()
             if isinstance(value, dict) and {"lwcc_size", "seed_reachable"}.issubset(value)
         ]
-        return {**self.resilience, "strategies": strategies}
+        return {
+            **self.resilience,
+            "strategies": strategies,
+            "removed": self.resilience.get("n_removed", []),
+            "priority": self.resilience.get("by_priority", {}),
+            "degree": self.resilience.get("by_degree", {}),
+        }
 
     def cycles_for(self, gid: str | None = None) -> list[list[str]]:
         self.require_loaded()

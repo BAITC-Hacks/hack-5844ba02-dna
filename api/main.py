@@ -22,7 +22,8 @@ from .graph_store import GraphStore, StoreUnavailable
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "out"
+OUT = Path(os.getenv("OUT_DIR", str(ROOT / "out"))).expanduser().resolve()
+DATA = Path(os.getenv("DATA_DIR", str(ROOT / "data"))).expanduser().resolve()
 WEB = ROOT / "web"
 
 API_DESCRIPTION = """
@@ -71,7 +72,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.mount("/web", StaticFiles(directory=WEB), name="web")
+app.mount("/web", StaticFiles(directory=WEB), name="web-legacy")
 
 store = GraphStore(OUT)
 
@@ -186,7 +187,22 @@ def get_top(
 
 @app.get("/api/clusters", tags=["Analytics"], summary="Получить список кластеров")
 def get_clusters() -> list[dict[str, Any]]:
-    return _service_call(lambda: (store.require_loaded(), store.clusters)[1])
+    def payload() -> list[dict[str, Any]]:
+        store.require_loaded()
+        rows = []
+        for raw in store.clusters:
+            row = dict(raw)
+            row.setdefault("id", row.get("cluster_id"))
+            row.setdefault("size", row.get("n_nodes"))
+            row.setdefault("seed_count", row.get("n_seed"))
+            row.setdefault("turnover_kzt", row.get("sum_kzt_internal"))
+            row.setdefault("roles", row.get("role_counts") or {})
+            if isinstance(row.get("top_gids"), str):
+                row["top_gids"] = [gid for gid in row["top_gids"].split(";") if gid]
+            rows.append(row)
+        return rows
+
+    return _service_call(payload)
 
 
 @app.get("/api/cluster/{cluster_id}", tags=["Analytics"], summary="Получить детали кластера")
@@ -218,7 +234,7 @@ def reload_endpoint() -> dict[str, Any]:
 @app.post("/api/pipeline/run", tags=["System"], summary="Запустить локальный пайплайн и перечитать результат")
 def run_pipeline() -> dict[str, Any]:
     started = time.perf_counter()
-    command = [sys.executable, "-m", "pipeline", "--data", str(ROOT / "data"), "--out", str(OUT)]
+    command = [sys.executable, "-m", "pipeline", "--data", str(DATA), "--out", str(OUT)]
     try:
         result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=300)
     except subprocess.TimeoutExpired as error:
@@ -229,13 +245,16 @@ def run_pipeline() -> dict[str, Any]:
     if not store.loaded:
         raise HTTPException(status_code=500, detail=store.error)
     roles = store.summary.get("role_counts", store.summary.get("roles", {}))
-    return {"ok": True, "elapsed_sec": round(time.perf_counter() - started, 3), "roles": roles}
+    elapsed_sec = round(time.perf_counter() - started, 3)
+    return {"ok": True, "elapsed_sec": elapsed_sec, "duration_ms": round(elapsed_sec * 1000), "roles": roles}
 
 
 @app.get("/api/node/{gid}/card", tags=["Cards"], summary="Получить объяснимую карточку узла")
 def get_node_card(gid: str) -> dict[str, Any]:
     node = get_node(gid)
-    return build_card(str(gid), node, node["incoming"], node["outgoing"], store.nodes_by_id)
+    card = build_card(str(gid), node, node["incoming"], node["outgoing"], store.nodes_by_id)
+    card["llm_available"] = llm_status()[0]
+    return card
 
 
 @app.get("/api/node/{gid}/ego", tags=["Graph"], summary="Построить ограниченную ego-сеть")
@@ -290,3 +309,8 @@ def explain_card(gid: str) -> dict[str, Any]:
         raise HTTPException(status_code=503, detail=str(error)) from error
     result["evidence"] = card.get("summary", {}).get("evidence", card.get("why"))
     return result
+
+
+# Keep this mount last: API and documentation routes above take precedence, while
+# root-relative frontend assets such as /style.css and /js/api.js remain available.
+app.mount("/", StaticFiles(directory=WEB, html=True), name="frontend")
