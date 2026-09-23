@@ -1,0 +1,68 @@
+2026-09-23T15:29:57.896582+05:00
+git rev-parse --show-toplevel
+C:/Users/dkapa/Desktop/hackalem/repo-audit
+
+git status --short --branch
+## main...origin/main
+?? review/audit-20260923/
+
+git for-each-ref --format=%(refname) %(objectname) refs/remotes
+refs/remotes/origin/HEAD 3e3f6e49da69b458a80fd9a0965852b6f0c87cb8
+refs/remotes/origin/codex/ui-integration d2908a9c3efe35e4ee06ff30c93a676ac57c2c8b
+refs/remotes/origin/main 3e3f6e49da69b458a80fd9a0965852b6f0c87cb8
+refs/remotes/origin/pipeline 3fcae5444bd3af717081d658a15768f48564d680
+refs/remotes/origin/stage2-extension 2b43466b18eff53fa605b96955f5716c4204bbee
+refs/remotes/origin/stage2-final f57bae495ee66fd578c5feff87ef84be96a3258c
+
+git log --all --graph --format=%H %an %ad %s --date=iso
+* 2b43466b18eff53fa605b96955f5716c4204bbee Aibek 2026-09-23 15:12:18 +0500 stage 2-ext
+| * f57bae495ee66fd578c5feff87ef84be96a3258c Aibek 2026-09-23 15:11:51 +0500 stage 2
+| * c46419fefc4c2ff6aa2ba09be7dfe327001fa483 Aibek 2026-09-23 15:11:40 +0500 stage2: verify integration candidate
+|/  
+* bbd3f81f4381abcef4bb36d8d6fbf13e39d3e3ea Aibek 2026-09-23 15:05:55 +0500 stage2: add deterministic layout fallback
+* 033d12a3978adaf344e9e6a51dc213fb66ceacae Aibek 2026-09-23 15:05:12 +0500 stage2: keep pipeline portable without scipy
+* dc830739defb8418eade9b7b91621d4b0feac7c5 Aibek 2026-09-23 15:02:20 +0500 stage2: pin binary-compatible pyarrow
+* 34a4f2f53b76c402fb1f9977951513acdd2e0a38 Aibek 2026-09-23 15:00:24 +0500 stage2: fix clean-check portability
+* 295adf03d567acc75237720b5496aa13ec7bb144 Aibek 2026-09-23 14:55:22 +0500 stage2: block E grounded assistant
+* 1213fe68bcfa5f225518e58fefa6edda51b43796 Aibek 2026-09-23 14:51:23 +0500 stage2: block D ego networks and paths
+* 7b65dfe6729c6f5adde4dacc9ab82b1af6b3aac4 Aibek 2026-09-23 14:49:26 +0500 stage2: block C resilience and summary
+* 20e1cdfabe43d6cf453c8c31fb5799d64b18bad0 Aibek 2026-09-23 14:46:25 +0500 stage2: block B node cards and review actions
+* 99848db0f59e2fbbbc59056975e769c7c1f56c2c Aibek 2026-09-23 14:40:59 +0500 stage2: block A reproducible startup
+| * 3e3f6e49da69b458a80fd9a0965852b6f0c87cb8 kuznargi 2026-09-23 14:59:39 +0500 feat: last updates
+| * 3173bd9ec19ebe090310257abe705066464dc9a1 kuznargi 2026-09-23 14:47:59 +0500 stage2: tighten coordinator signal s3
+| * 690c4bf95165a8e1db45831deafaa04233d9fa83 kuznargi 2026-09-23 14:35:56 +0500 stage2: stability
+| * af693ae6be296251bef95cc914906300b1e3e6f1 kuznargi 2026-09-23 14:33:58 +0500 stage2: temporal patterns and cycles
+| * ac2777ef4283d2385a392d85d6a9809ef56c5a6b kuznargi 2026-09-23 14:32:10 +0500 stage2: seed flow attribution
+| * 199afc05943c45846031029abfe158e4c00e4b41 kuznargi 2026-09-23 14:30:24 +0500 stage2: resilience
+| * f3f473ff1019400916f5b4bc7f6ab20cde62bb43 kuznargi 2026-09-23 14:29:20 +0500 stage2: frontier model
+| * 83facbb98170029f83bcb651ef33c91db6a8d2aa kuznargi 2026-09-23 15:02:44 +0500 chore: remove outdated duplicate md file
+| * d49f069495eb7a636fdcb4f5edfe20795d2d4192 kuznargi 2026-09-23 14:24:58 +0500 fix: complete must-have pipeline contract
+|/  
+* d2908a9c3efe35e4ee06ff30c93a676ac57c2c8b Aibek 2026-09-23 14:23:05 +0500 fix: duplicate md
+*   e3b3556ec9138c0e01047b7baa0ab262a989f3a1 januzaj2018 2026-09-23 14:19:46 +0500 Merge pull request #1 from BAITC-Hacks/must-have-viewer
+|\  
+| * 067e8b7396adad395267b06ab74e467b91f91da3 Aibek 2026-09-23 14:14:45 +0500 mock
+* | ca5f4a996c5b700691913b47b09c303e9e0442a7 kuznargi 2026-09-23 14:16:25 +0500 feat: added out, starter and etc
+* | 3fcae5444bd3af717081d658a15768f48564d680 kuznargi 2026-09-23 14:14:25 +0500 feat: add must-have money graph pipeline
+* | 6ac1a16bb3edded2492e851087df053b8c9d1381 kuznargi 2026-09-23 13:59:46 +0500 feat: added config.yaml
+|/  
+* 9db2273ce8c60294ddbcd5198f3c1425c1cd2e7a Aibek 2026-09-23 13:55:28 +0500 yaml
+* d4cbbe073a2091c23a04804b07cbe9b64b593204 Aibek 2026-09-23 13:51:15 +0500 .gitignore
+* 7ab8eca499ea07eae469a77508b4520d74bbbf6c KapDan04 2026-09-23 13:48:08 +0500 docs: describe project structure and expected deliverables
+* 7c3113c27af24498dd8001e989f8a2894665137a Aibek 2026-09-23 13:38:41 +0500 req
+* b1dc28063d1868a021461e63607c1bf1439b7664 decentra-hackathon[bot] 2026-09-12 16:54:48 +0000 Initial commit
+
+git diff --name-status origin/stage2-final origin/stage2-extension
+M	.gitignore
+A	api/__pycache__/__init__.cpython-314.pyc
+A	api/__pycache__/main.cpython-314.pyc
+D	docs/STAGE2_INTEGRATION_REPORT.md
+M	out/clusters.csv
+M	out/graph.json
+M	out/nodes_roles.csv
+M	out/top_nodes.csv
+A	scripts/__pycache__/make_mock_out.cpython-314.pyc
+A	tests/__pycache__/conftest.cpython-314-pytest-9.0.3.pyc
+A	tests/__pycache__/test_api.cpython-314-pytest-9.0.3.pyc
+A	tests/__pycache__/test_pipeline.cpython-313-pytest-8.3.2.pyc
+

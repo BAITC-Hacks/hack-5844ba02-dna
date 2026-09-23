@@ -1,0 +1,49 @@
+[
+  {
+    "branch": "stage2-extension",
+    "test": "pipeline",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\stage2-extension-env\\Scripts\\python.exe",
+      "-m",
+      "pipeline",
+      "--data",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\materials\\data (1)\\data",
+      "--out",
+      "fresh-output"
+    ],
+    "cwd": "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\stage2-extension",
+    "seconds": 173.568,
+    "returncode": 0,
+    "status": "PASS"
+  },
+  {
+    "branch": "stage2-extension",
+    "test": "diagnostics",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\stage2-extension-env\\Scripts\\python.exe",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\diagnose.py",
+      "stage2-extension"
+    ],
+    "cwd": "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\stage2-extension",
+    "seconds": 25.535,
+    "returncode": 0,
+    "status": "PASS"
+  },
+  {
+    "branch": "stage2-extension",
+    "test": "pytest",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\stage2-extension-env\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "tests",
+      "--basetemp",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\stage2-extension-pytest-tmp"
+    ],
+    "cwd": "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\stage2-extension",
+    "seconds": 28.729,
+    "returncode": 1,
+    "status": "FAIL"
+  }
+]

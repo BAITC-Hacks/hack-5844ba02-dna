@@ -1,0 +1,49 @@
+[
+  {
+    "branch": "codex_ui-integration",
+    "test": "pipeline",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\codex_ui-integration-env\\Scripts\\python.exe",
+      "-m",
+      "pipeline",
+      "--data",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\materials\\data (1)\\data",
+      "--out",
+      "fresh-output"
+    ],
+    "cwd": "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\codex_ui-integration",
+    "seconds": 194.908,
+    "returncode": 0,
+    "status": "PASS"
+  },
+  {
+    "branch": "codex_ui-integration",
+    "test": "diagnostics",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\codex_ui-integration-env\\Scripts\\python.exe",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\diagnose.py",
+      "codex_ui-integration"
+    ],
+    "cwd": "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\codex_ui-integration",
+    "seconds": 33.171,
+    "returncode": 0,
+    "status": "PASS"
+  },
+  {
+    "branch": "codex_ui-integration",
+    "test": "pytest",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\codex_ui-integration-env\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "tests",
+      "--basetemp",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\codex_ui-integration-pytest-tmp"
+    ],
+    "cwd": "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\codex_ui-integration",
+    "seconds": 21.692,
+    "returncode": 1,
+    "status": "FAIL"
+  }
+]

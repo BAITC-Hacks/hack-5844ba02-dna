@@ -1,0 +1,40 @@
+INFO Этап load: 1.349 с
+INFO Данные: 2248 узлов, 3119 рёбер, 4840 транзакций, 19 изолированных
+INFO Этап sanity_check: 0.064 с
+INFO Этап build_graph: 0.129 с
+INFO Этап basic_features: 0.152 с
+INFO Расчёт betweenness
+INFO Этап enrich_features: 10.105 с
+INFO Этап flow: 6.721 с
+INFO Этап temporal: 37.402 с
+INFO Frontier-модель: AUC 0.684, обучающих узлов 1723
+INFO Этап frontier: 0.632 с
+INFO Этап assign_base_roles: 4.533 с
+INFO Этап cluster_nodes: 7.896 с
+INFO Этап bridge_flags: 0.222 с
+WARNING Coordinator count 54 exceeds configured maximum 40; review S3 sensitivity
+INFO Этап apply_coordinators: 2.794 с
+INFO Этап score_nodes: 1.309 с
+WARNING Coordinator count 69 exceeds configured maximum 32; review S3 sensitivity
+WARNING Coordinator count 49 exceeds configured maximum 48; review S3 sensitivity
+INFO Этап sensitivity: 11.284 с
+INFO Этап renumber_and_describe: 0.620 с
+INFO Этап layout: 123.958 с
+INFO Этап resilience: 17.755 с
+INFO Этап top_nodes: 0.016 с
+INFO Этап export: 0.647 с
+Роли: {'consolidator': 24, 'coordinator': 54, 'distributor': 14, 'frontier': 40, 'peripheral': 577, 'terminal': 1477, 'transit': 62}
+Кластеров: 44
+При удалении топ-20: lwcc 1567 (по степени 1188, случайно 1846.8)
+               gid         role  priority_score                                                                                                                                                                                          why
+100000003115284100  coordinator        1.000000                                    Кандидат в координирующий узел: 8 плательщиков → 2 получателей; сигналы S3 Главные факторы: seed_flow_kzt: 0.8 млн, n_seed_upstream: 4, role: coordinator
+100000008165763100 consolidator        0.968006 Признаки консолидации: 15 плательщиков, деньги от 3 seed за ≤2 колена, seed-поток 189 тыс., дальше ушло 109% Главные факторы: seed_flow_kzt: 0.2 млн, n_seed_upstream: 3, role: consolidator
+100000005074393100  coordinator        0.959928                                    Кандидат в координирующий узел: 4 плательщиков → 6 получателей; сигналы S3 Главные факторы: seed_flow_kzt: 0.2 млн, role: coordinator, n_seed_upstream: 2
+100000005287097100  coordinator        0.959894                                    Кандидат в координирующий узел: 2 плательщиков → 9 получателей; сигналы S3 Главные факторы: seed_flow_kzt: 0.1 млн, role: coordinator, n_seed_upstream: 2
+100000004156082100  coordinator        0.958569                                   Кандидат в координирующий узел: 5 плательщиков → 26 получателей; сигналы S2 Главные факторы: seed_flow_kzt: 0.1 млн, n_seed_upstream: 3, role: coordinator
+100000004015047100 consolidator        0.956111    Признаки консолидации: 9 плательщиков, деньги от 4 seed за ≤2 колена, seed-поток 585 тыс., дальше ушло 8% Главные факторы: seed_flow_kzt: 0.6 млн, n_seed_upstream: 4, role: consolidator
+100000004403675100  coordinator        0.953335                                    Кандидат в координирующий узел: 4 плательщиков → 5 получателей; сигналы S3 Главные факторы: seed_flow_kzt: 0.1 млн, role: coordinator, n_seed_upstream: 2
+100000006889963100 consolidator        0.952863   Признаки консолидации: 4 плательщиков, деньги от 4 seed за ≤2 колена, seed-поток 533 тыс., дальше ушло 31% Главные факторы: seed_flow_kzt: 0.5 млн, n_seed_upstream: 4, role: consolidator
+100000000331309100  coordinator        0.951697                                   Кандидат в координирующий узел: 5 плательщиков → 99 получателей; сигналы S2 Главные факторы: seed_flow_kzt: 0.0 млн, n_seed_upstream: 3, role: coordinator
+100000007908818100  coordinator        0.949745                                    Кандидат в координирующий узел: 4 плательщиков → 6 получателей; сигналы S3 Главные факторы: seed_flow_kzt: 0.4 млн, n_seed_upstream: 4, role: coordinator
+Время: 227.71 с

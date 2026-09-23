@@ -1,0 +1,279 @@
+{
+  "manifest": [
+    {
+      "path": "00_START_HERE.md",
+      "copies": [
+        "Team tasks\\00_START_HERE.md",
+        "My tasks\\00_START_HERE.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "01_SHARED_RULES.md",
+      "copies": [
+        "Team tasks\\01_SHARED_RULES.md",
+        "My tasks\\01_SHARED_RULES.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "02_PROMPT_PERSON_1_ANALYTICS.md",
+      "copies": [
+        "Team tasks\\02_PROMPT_PERSON_1_ANALYTICS.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "03_PROMPT_PERSON_2_PIPELINE_TESTS.md",
+      "copies": [
+        "Team tasks\\03_PROMPT_PERSON_2_PIPELINE_TESTS.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "04_PROMPT_PERSON_3_UI_INTEGRATION.md",
+      "copies": [
+        "My tasks\\04_PROMPT_PERSON_3_UI_INTEGRATION.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "05_CONTRACTS_V1.md",
+      "copies": [
+        "Team tasks\\05_CONTRACTS_V1.md",
+        "My tasks\\05_CONTRACTS_V1.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "06_HOURLY_COMMITS_INTEGRATION.md",
+      "copies": [
+        "Team tasks\\06_HOURLY_COMMITS_INTEGRATION.md",
+        "My tasks\\06_HOURLY_COMMITS_INTEGRATION.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "07_VALIDATION_CHECKLIST.md",
+      "copies": [
+        "Team tasks\\07_VALIDATION_CHECKLIST.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "08_DATA_AND_METHOD_REVIEW.md",
+      "copies": [
+        "Team tasks\\08_DATA_AND_METHOD_REVIEW.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "09_TIMELINE_AND_DEMO.md",
+      "copies": [
+        "Team tasks\\09_TIMELINE_AND_DEMO.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "10_README_OUTLINE.md",
+      "copies": [
+        "Team tasks\\10_README_OUTLINE.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "11_HANDOFF_TEMPLATE.md",
+      "copies": [
+        "Team tasks\\11_HANDOFF_TEMPLATE.md",
+        "My tasks\\11_HANDOFF_TEMPLATE.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "12_RECOVERY_AND_CHANGE_PROMPT.md",
+      "copies": [
+        "Team tasks\\12_RECOVERY_AND_CHANGE_PROMPT.md",
+        "My tasks\\12_RECOVERY_AND_CHANGE_PROMPT.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "13_METHOD_REFERENCE.md",
+      "copies": [
+        "Team tasks\\13_METHOD_REFERENCE.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "14_REVIEW_OTHER_AI.md",
+      "copies": [
+        "Team tasks\\14_REVIEW_OTHER_AI.md",
+        "My tasks\\14_REVIEW_OTHER_AI.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "15_OBSERVED_PROJECT_STATE.md",
+      "copies": [
+        "Team tasks\\15_OBSERVED_PROJECT_STATE.md",
+        "My tasks\\15_OBSERVED_PROJECT_STATE.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "16_OWNERSHIP_TEMPLATE.md",
+      "copies": [
+        "Team tasks\\16_OWNERSHIP_TEMPLATE.md",
+        "My tasks\\16_OWNERSHIP_TEMPLATE.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "pipeline_task_updates/AGENTS.md",
+      "copies": [
+        "Team tasks\\pipeline_task_updates\\AGENTS.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "pipeline_task_updates/CONFIG_MIGRATION.md",
+      "copies": [
+        "Team tasks\\pipeline_task_updates\\CONFIG_MIGRATION.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "pipeline_task_updates/TASK.md",
+      "copies": [
+        "Team tasks\\pipeline_task_updates\\TASK.md"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "reference/data_audit.json",
+      "copies": [
+        "Team tasks\\reference\\data_audit.json"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "reference/demo_candidates.json",
+      "copies": [
+        "Team tasks\\reference\\demo_candidates.json"
+      ],
+      "matches_manifest": true,
+      "found": true
+    },
+    {
+      "path": "reference/graph_fixture.json",
+      "copies": [
+        "Team tasks\\reference\\graph_fixture.json"
+      ],
+      "matches_manifest": true,
+      "found": true
+    }
+  ],
+  "archives": [
+    {
+      "path": "starter (1)/starter/README.md",
+      "sha256": "7e7024ab0ff98cb435a291112c55ece7f09a2c640490cd218a343b0c8a3d5a3c",
+      "identical_main": false,
+      "metadata": false
+    },
+    {
+      "path": "starter (1)/starter/requirements.txt",
+      "sha256": "ea287c15a50d9d30b0bac2eacf3f29f8515b0107e27597b9b6efa10bf6cd47a9",
+      "identical_main": false,
+      "metadata": false
+    },
+    {
+      "path": "starter (1)/starter/starter.py",
+      "sha256": "21a16355f8c6a7f19f6ab29163ab864638bdea20c55ae52262c591f93b95ee46",
+      "identical_main": false,
+      "metadata": false
+    },
+    {
+      "path": "starter (1)/__MACOSX/starter/._README.md",
+      "sha256": "958886261aa026c5975a1db00d4df304e774d382f4df654ff03b4878b62e448b",
+      "identical_main": false,
+      "metadata": true
+    },
+    {
+      "path": "starter (1)/__MACOSX/starter/._requirements.txt",
+      "sha256": "50f45b4bf45baa33b9cdeb59e4ca50b3415fc358c076fa65cc7de194523321e6",
+      "identical_main": false,
+      "metadata": true
+    },
+    {
+      "path": "starter (1)/__MACOSX/starter/._starter.py",
+      "sha256": "00daa3e6ab764c03853c0e5f95ea8e3c3cb03e7e685c4758142605e4788d8efd",
+      "identical_main": false,
+      "metadata": true
+    },
+    {
+      "path": "data (1)/data/edges.parquet",
+      "sha256": "4e71dde5cd3115bcb26e91202665532ee6581cf8233a9fc8059ea59fb7358a38",
+      "identical_main": true,
+      "metadata": false
+    },
+    {
+      "path": "data (1)/data/nodes.parquet",
+      "sha256": "d2a45b0df6e9352832d5fb09839d10b9e23f898156c3bab263b051b31cc0296d",
+      "identical_main": true,
+      "metadata": false
+    },
+    {
+      "path": "data (1)/data/transactions.parquet",
+      "sha256": "c30c5317b5439591dde86f2058dc47a3d19b2900c055ded994fe547f6fb7e7da",
+      "identical_main": true,
+      "metadata": false
+    },
+    {
+      "path": "data (1)/__MACOSX/._data",
+      "sha256": "382e520ec67f782753db3c554d713eba1bf29780a38c353f7dff83a0b26d7815",
+      "identical_main": false,
+      "metadata": true
+    },
+    {
+      "path": "data (1)/__MACOSX/data/._edges.parquet",
+      "sha256": "ca2d53cd08615d0c884c3af9817e5e3953c3093423d7e17132ee9bd9c99ff884",
+      "identical_main": false,
+      "metadata": true
+    },
+    {
+      "path": "data (1)/__MACOSX/data/._nodes.parquet",
+      "sha256": "dce7e63364925bbb9883b80ba40daecc0cd91f261bb5b1b55a412f84f73eec91",
+      "identical_main": false,
+      "metadata": true
+    },
+    {
+      "path": "data (1)/__MACOSX/data/._transactions.parquet",
+      "sha256": "dce7e63364925bbb9883b80ba40daecc0cd91f261bb5b1b55a412f84f73eec91",
+      "identical_main": false,
+      "metadata": true
+    }
+  ],
+  "original_audit_sha256": "b86714273b52891df1f3d322141d9c9bab29f17d69c3951eb854fd840dbdaa78",
+  "legacy_package_exists": false
+}

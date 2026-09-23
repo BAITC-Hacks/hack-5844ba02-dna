@@ -1,0 +1,25 @@
+dcc0ff4abddde9a0da504b755b195c3ac50ca074
+100644 ccac5e26c037b4ab3b8cc13343eb59e7780c6d53 1	out/clusters.csv
+100644 a5fc08938999cce4438d9b26def60b70fbf8704b 2	out/clusters.csv
+100644 11383b780885f4d84e4d1fd5ef87c93e17e9f121 3	out/clusters.csv
+100644 a405934a279363e77e0d78b3b0c8290a6eb2e340 1	out/graph.json
+100644 b348123fd79a596479c6b808e7565f10264345a6 2	out/graph.json
+100644 0e56046c8ab2793aaa84da2b77dd1e594cdec031 3	out/graph.json
+100644 3e9b2cd528db9133054f767de5281a51b67bbc97 1	out/nodes_roles.csv
+100644 02ce8451227ee1bcceef2f53121f0a374ea65e3c 2	out/nodes_roles.csv
+100644 8008f14773596eb5652e221896fc8a4fe005d20d 3	out/nodes_roles.csv
+100644 ab0dd17c372f6fc705671f020887b91d2cca1eb1 1	out/top_nodes.csv
+100644 5445858e0408e6b2ea338d077e75b2997aee378d 2	out/top_nodes.csv
+100644 a45af206ae9eedb7fdaaac9694b49b4fc24b47f7 3	out/top_nodes.csv
+100644 fac656902f625d0914595155102ea73286f5ddbb 1	tests/__pycache__/test_pipeline.cpython-313-pytest-8.3.2.pyc
+100644 c95f687ae2e628a6f1d01a98125bf3ca8fb33b95 2	tests/__pycache__/test_pipeline.cpython-313-pytest-8.3.2.pyc
+
+Auto-merging out/clusters.csv
+CONFLICT (content): Merge conflict in out/clusters.csv
+Auto-merging out/graph.json
+CONFLICT (content): Merge conflict in out/graph.json
+Auto-merging out/nodes_roles.csv
+CONFLICT (content): Merge conflict in out/nodes_roles.csv
+Auto-merging out/top_nodes.csv
+CONFLICT (content): Merge conflict in out/top_nodes.csv
+CONFLICT (modify/delete): tests/__pycache__/test_pipeline.cpython-313-pytest-8.3.2.pyc deleted in f57bae495ee66fd578c5feff87ef84be96a3258c and modified in 3e3f6e49da69b458a80fd9a0965852b6f0c87cb8.  Version 3e3f6e49da69b458a80fd9a0965852b6f0c87cb8 of tests/__pycache__/test_pipeline.cpython-313-pytest-8.3.2.pyc left in tree.

@@ -1,0 +1,49 @@
+[
+  {
+    "branch": "main",
+    "test": "pipeline",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\main-env\\Scripts\\python.exe",
+      "-m",
+      "pipeline",
+      "--data",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\materials\\data (1)\\data",
+      "--out",
+      "fresh-output"
+    ],
+    "cwd": "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\main",
+    "seconds": 262.215,
+    "returncode": 0,
+    "status": "PASS"
+  },
+  {
+    "branch": "main",
+    "test": "diagnostics",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\main-env\\Scripts\\python.exe",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\diagnose.py",
+      "main"
+    ],
+    "cwd": "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\main",
+    "seconds": 26.993,
+    "returncode": 0,
+    "status": "PASS"
+  },
+  {
+    "branch": "main",
+    "test": "pytest",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\main-env\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "tests",
+      "--basetemp",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\main-pytest-tmp"
+    ],
+    "cwd": "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\main",
+    "seconds": 36.016,
+    "returncode": 1,
+    "status": "FAIL"
+  }
+]

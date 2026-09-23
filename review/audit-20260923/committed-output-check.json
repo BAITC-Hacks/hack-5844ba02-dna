@@ -1,0 +1,1347 @@
+{
+  "pipeline": {},
+  "codex_ui-integration": {
+    "out": {
+      "clusters.csv": {
+        "rows": 45,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis",
+          "role_counts"
+        ]
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 2248,
+        "edges": 3119
+      },
+      "nodes_roles.csv": {
+        "rows": 2248,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "pass_ratio",
+          "n_seed_upstream",
+          "betweenness",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "coordinator": 158,
+          "peripheral": 532,
+          "terminal": 1024,
+          "distributor": 14,
+          "consolidator": 21,
+          "transit": 55,
+          "frontier": 444
+        },
+        "max_breakdown_error": 0.28485323461694734,
+        "bad_breakdown": 2248,
+        "example": {
+          "gid": "100000003684369100",
+          "role": "coordinator",
+          "role_score": "1.0",
+          "cluster_id": "5",
+          "priority_score": "0.6991467653830526",
+          "evidence": "Кандидат в координирующий узел: 24 плательщиков → 62 получателей; сигналы S2",
+          "depth": "0",
+          "is_seed": "True",
+          "in_deg": "24",
+          "out_deg": "62",
+          "in_kzt": "3848436.0",
+          "out_kzt": "8588655.0",
+          "pass_ratio": "",
+          "n_seed_upstream": "3",
+          "betweenness": "0.002271159210598796",
+          "flags": "distributor;S2",
+          "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+        },
+        "frontier_roles": {
+          "frontier": 444
+        },
+        "external_claims": 251,
+        "max_evidence": 106
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "elapsed_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    },
+    "review/out1": {
+      "clusters.csv": {
+        "rows": 45,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis",
+          "role_counts"
+        ]
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 2248,
+        "edges": 3119
+      },
+      "nodes_roles.csv": {
+        "rows": 2248,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "pass_ratio",
+          "n_seed_upstream",
+          "betweenness",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "coordinator": 158,
+          "peripheral": 532,
+          "terminal": 1024,
+          "distributor": 14,
+          "consolidator": 21,
+          "transit": 55,
+          "frontier": 444
+        },
+        "max_breakdown_error": 0.28485323461694734,
+        "bad_breakdown": 2248,
+        "example": {
+          "gid": "100000003684369100",
+          "role": "coordinator",
+          "role_score": "1.0",
+          "cluster_id": "5",
+          "priority_score": "0.6991467653830526",
+          "evidence": "Кандидат в координирующий узел: 24 плательщиков → 62 получателей; сигналы S2",
+          "depth": "0",
+          "is_seed": "True",
+          "in_deg": "24",
+          "out_deg": "62",
+          "in_kzt": "3848436.0",
+          "out_kzt": "8588655.0",
+          "pass_ratio": "",
+          "n_seed_upstream": "3",
+          "betweenness": "0.002271159210598796",
+          "flags": "distributor;S2",
+          "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+        },
+        "frontier_roles": {
+          "frontier": 444
+        },
+        "external_claims": 251,
+        "max_evidence": 106
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "elapsed_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    },
+    "review/out2": {
+      "clusters.csv": {
+        "rows": 45,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis",
+          "role_counts"
+        ]
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 2248,
+        "edges": 3119
+      },
+      "nodes_roles.csv": {
+        "rows": 2248,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "pass_ratio",
+          "n_seed_upstream",
+          "betweenness",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "coordinator": 158,
+          "peripheral": 532,
+          "terminal": 1024,
+          "distributor": 14,
+          "consolidator": 21,
+          "transit": 55,
+          "frontier": 444
+        },
+        "max_breakdown_error": 0.28485323461694734,
+        "bad_breakdown": 2248,
+        "example": {
+          "gid": "100000003684369100",
+          "role": "coordinator",
+          "role_score": "1.0",
+          "cluster_id": "5",
+          "priority_score": "0.6991467653830526",
+          "evidence": "Кандидат в координирующий узел: 24 плательщиков → 62 получателей; сигналы S2",
+          "depth": "0",
+          "is_seed": "True",
+          "in_deg": "24",
+          "out_deg": "62",
+          "in_kzt": "3848436.0",
+          "out_kzt": "8588655.0",
+          "pass_ratio": "",
+          "n_seed_upstream": "3",
+          "betweenness": "0.002271159210598796",
+          "flags": "distributor;S2",
+          "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+        },
+        "frontier_roles": {
+          "frontier": 444
+        },
+        "external_claims": 251,
+        "max_evidence": 106
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "elapsed_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    }
+  },
+  "main": {
+    "out": {
+      "clusters.csv": {
+        "rows": 45,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis",
+          "role_counts"
+        ]
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 2248,
+        "edges": 3119
+      },
+      "nodes_roles.csv": {
+        "rows": 2248,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "in_tx",
+          "out_tx",
+          "pass_ratio",
+          "seed_flow_kzt",
+          "seed_share",
+          "n_seed_upstream",
+          "p_terminal",
+          "betweenness",
+          "fast_pass_share",
+          "max_sync_payers",
+          "near_threshold_share",
+          "n_cycles",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "coordinator": 54,
+          "peripheral": 577,
+          "terminal": 1477,
+          "distributor": 14,
+          "consolidator": 24,
+          "transit": 62,
+          "frontier": 40
+        },
+        "max_breakdown_error": 0.27755254999004486,
+        "bad_breakdown": 2248,
+        "example": {
+          "gid": "100000003684369100",
+          "role": "coordinator",
+          "role_score": "1.0",
+          "cluster_id": "5",
+          "priority_score": "0.6974474500099551",
+          "evidence": "Кандидат в координирующий узел: 24 плательщиков → 62 получателей; сигналы S2",
+          "depth": "0",
+          "is_seed": "True",
+          "in_deg": "24",
+          "out_deg": "62",
+          "in_kzt": "3848436.0",
+          "out_kzt": "8588655.0",
+          "in_tx": "58",
+          "out_tx": "67",
+          "pass_ratio": "",
+          "seed_flow_kzt": "500392.2515996266",
+          "seed_share": "1.0",
+          "n_seed_upstream": "3",
+          "p_terminal": "0.0",
+          "betweenness": "0.002271159210598796",
+          "fast_pass_share": "0.7794862640303749",
+          "max_sync_payers": "6",
+          "near_threshold_share": "0.0",
+          "n_cycles": "1",
+          "flags": "fast_pass;sync_in;cycles;bridge;distributor;S2",
+          "score_breakdown": "{\"betweenness\": 0.149, \"degree\": 0.1, \"n_seed_upstream\": 0.198, \"role\": 0.198, \"seed_flow_kzt\": 0.248, \"temporal\": 0.082}"
+        },
+        "frontier_roles": {
+          "terminal": 404,
+          "frontier": 40
+        },
+        "external_claims": 261,
+        "max_evidence": 108
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed",
+          "by_priority",
+          "by_degree",
+          "random"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "clusters",
+          "sensitivity",
+          "elapsed_seconds",
+          "stage_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    },
+    "review/out1": {
+      "clusters.csv": {
+        "rows": 45,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis",
+          "role_counts"
+        ]
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 2248,
+        "edges": 3119
+      },
+      "nodes_roles.csv": {
+        "rows": 2248,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "in_tx",
+          "out_tx",
+          "pass_ratio",
+          "n_seed_upstream",
+          "betweenness",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "coordinator": 158,
+          "peripheral": 532,
+          "terminal": 1024,
+          "distributor": 14,
+          "consolidator": 21,
+          "transit": 55,
+          "frontier": 444
+        },
+        "max_breakdown_error": 0.28485323461694734,
+        "bad_breakdown": 2248,
+        "example": {
+          "gid": "100000003684369100",
+          "role": "coordinator",
+          "role_score": "1.0",
+          "cluster_id": "5",
+          "priority_score": "0.6991467653830526",
+          "evidence": "Кандидат в координирующий узел: 24 плательщиков → 62 получателей; сигналы S2",
+          "depth": "0",
+          "is_seed": "True",
+          "in_deg": "24",
+          "out_deg": "62",
+          "in_kzt": "3848436.0",
+          "out_kzt": "8588655.0",
+          "in_tx": "58",
+          "out_tx": "67",
+          "pass_ratio": "",
+          "n_seed_upstream": "3",
+          "betweenness": "0.002271159210598796",
+          "flags": "distributor;S2",
+          "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+        },
+        "frontier_roles": {
+          "frontier": 444
+        },
+        "external_claims": 251,
+        "max_evidence": 106
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "elapsed_seconds",
+          "stage_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    },
+    "review/out3": {
+      "clusters.csv": {
+        "rows": 45,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis",
+          "role_counts"
+        ]
+      },
+      "cycles.json": {
+        "type": "list",
+        "keys": 387
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 2248,
+        "edges": 3119
+      },
+      "nodes_roles.csv": {
+        "rows": 2248,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "in_tx",
+          "out_tx",
+          "pass_ratio",
+          "seed_flow_kzt",
+          "seed_share",
+          "n_seed_upstream",
+          "p_terminal",
+          "betweenness",
+          "fast_pass_share",
+          "max_sync_payers",
+          "near_threshold_share",
+          "n_cycles",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "coordinator": 54,
+          "peripheral": 577,
+          "terminal": 1477,
+          "distributor": 14,
+          "consolidator": 24,
+          "transit": 62,
+          "frontier": 40
+        },
+        "max_breakdown_error": 0.27755254999004486,
+        "bad_breakdown": 2248,
+        "example": {
+          "gid": "100000003684369100",
+          "role": "coordinator",
+          "role_score": "1.0",
+          "cluster_id": "5",
+          "priority_score": "0.6974474500099551",
+          "evidence": "Кандидат в координирующий узел: 24 плательщиков → 62 получателей; сигналы S2",
+          "depth": "0",
+          "is_seed": "True",
+          "in_deg": "24",
+          "out_deg": "62",
+          "in_kzt": "3848436.0",
+          "out_kzt": "8588655.0",
+          "in_tx": "58",
+          "out_tx": "67",
+          "pass_ratio": "",
+          "seed_flow_kzt": "500392.2515996266",
+          "seed_share": "1.0",
+          "n_seed_upstream": "3",
+          "p_terminal": "0.0",
+          "betweenness": "0.002271159210598796",
+          "fast_pass_share": "0.7794862640303749",
+          "max_sync_payers": "6",
+          "near_threshold_share": "0.0",
+          "n_cycles": "1",
+          "flags": "fast_pass;sync_in;cycles;bridge;distributor;S2",
+          "score_breakdown": "{\"betweenness\": 0.149, \"degree\": 0.1, \"n_seed_upstream\": 0.198, \"role\": 0.198, \"seed_flow_kzt\": 0.248, \"temporal\": 0.082}"
+        },
+        "frontier_roles": {
+          "terminal": 404,
+          "frontier": 40
+        },
+        "external_claims": 261,
+        "max_evidence": 108
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed",
+          "by_priority",
+          "by_degree",
+          "random"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "clusters",
+          "sensitivity",
+          "elapsed_seconds",
+          "stage_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    }
+  },
+  "stage2-extension": {
+    "out": {
+      "clusters.csv": {
+        "rows": 45,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis",
+          "role_counts"
+        ]
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 2248,
+        "edges": 3119
+      },
+      "nodes_roles.csv": {
+        "rows": 2248,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "pass_ratio",
+          "n_seed_upstream",
+          "betweenness",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "coordinator": 158,
+          "peripheral": 532,
+          "terminal": 1024,
+          "distributor": 14,
+          "consolidator": 21,
+          "transit": 55,
+          "frontier": 444
+        },
+        "max_breakdown_error": 0.28485323461694734,
+        "bad_breakdown": 2248,
+        "example": {
+          "gid": "100000003684369100",
+          "role": "coordinator",
+          "role_score": "1.0",
+          "cluster_id": "5",
+          "priority_score": "0.6991467653830526",
+          "evidence": "Кандидат в координирующий узел: 24 плательщиков → 62 получателей; сигналы S2",
+          "depth": "0",
+          "is_seed": "True",
+          "in_deg": "24",
+          "out_deg": "62",
+          "in_kzt": "3848436.0",
+          "out_kzt": "8588655.0",
+          "pass_ratio": "",
+          "n_seed_upstream": "3",
+          "betweenness": "0.002271159210598796",
+          "flags": "distributor;S2",
+          "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+        },
+        "frontier_roles": {
+          "frontier": 444
+        },
+        "external_claims": 251,
+        "max_evidence": 106
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "elapsed_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    },
+    "review/out1": {
+      "clusters.csv": {
+        "rows": 45,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis",
+          "role_counts"
+        ]
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 2248,
+        "edges": 3119
+      },
+      "nodes_roles.csv": {
+        "rows": 2248,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "pass_ratio",
+          "n_seed_upstream",
+          "betweenness",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "coordinator": 158,
+          "peripheral": 532,
+          "terminal": 1024,
+          "distributor": 14,
+          "consolidator": 21,
+          "transit": 55,
+          "frontier": 444
+        },
+        "max_breakdown_error": 0.28485323461694734,
+        "bad_breakdown": 2248,
+        "example": {
+          "gid": "100000003684369100",
+          "role": "coordinator",
+          "role_score": "1.0",
+          "cluster_id": "5",
+          "priority_score": "0.6991467653830526",
+          "evidence": "Кандидат в координирующий узел: 24 плательщиков → 62 получателей; сигналы S2",
+          "depth": "0",
+          "is_seed": "True",
+          "in_deg": "24",
+          "out_deg": "62",
+          "in_kzt": "3848436.0",
+          "out_kzt": "8588655.0",
+          "pass_ratio": "",
+          "n_seed_upstream": "3",
+          "betweenness": "0.002271159210598796",
+          "flags": "distributor;S2",
+          "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+        },
+        "frontier_roles": {
+          "frontier": 444
+        },
+        "external_claims": 251,
+        "max_evidence": 106
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "elapsed_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    },
+    "review/out2": {
+      "clusters.csv": {
+        "rows": 45,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis",
+          "role_counts"
+        ]
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 2248,
+        "edges": 3119
+      },
+      "nodes_roles.csv": {
+        "rows": 2248,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "pass_ratio",
+          "n_seed_upstream",
+          "betweenness",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "coordinator": 158,
+          "peripheral": 532,
+          "terminal": 1024,
+          "distributor": 14,
+          "consolidator": 21,
+          "transit": 55,
+          "frontier": 444
+        },
+        "max_breakdown_error": 0.28485323461694734,
+        "bad_breakdown": 2248,
+        "example": {
+          "gid": "100000003684369100",
+          "role": "coordinator",
+          "role_score": "1.0",
+          "cluster_id": "5",
+          "priority_score": "0.6991467653830526",
+          "evidence": "Кандидат в координирующий узел: 24 плательщиков → 62 получателей; сигналы S2",
+          "depth": "0",
+          "is_seed": "True",
+          "in_deg": "24",
+          "out_deg": "62",
+          "in_kzt": "3848436.0",
+          "out_kzt": "8588655.0",
+          "pass_ratio": "",
+          "n_seed_upstream": "3",
+          "betweenness": "0.002271159210598796",
+          "flags": "distributor;S2",
+          "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+        },
+        "frontier_roles": {
+          "frontier": 444
+        },
+        "external_claims": 251,
+        "max_evidence": 106
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "elapsed_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    }
+  },
+  "stage2-final": {
+    "out": {
+      "clusters.csv": {
+        "rows": 5,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis"
+        ]
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 300,
+        "edges": 900
+      },
+      "nodes_roles.csv": {
+        "rows": 300,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "pass_ratio",
+          "n_seed_upstream",
+          "betweenness",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "consolidator": 43,
+          "transit": 43,
+          "distributor": 43,
+          "terminal": 43,
+          "coordinator": 43,
+          "peripheral": 43,
+          "frontier": 42
+        },
+        "max_breakdown_error": 0.34299999999999997,
+        "bad_breakdown": 299,
+        "example": {
+          "gid": "100000000000000116",
+          "role": "coordinator",
+          "role_score": "0.99",
+          "cluster_id": "1",
+          "priority_score": "0.37",
+          "evidence": "Mock evidence: 7 links; 549,772 KZT.",
+          "depth": "1",
+          "is_seed": "False",
+          "in_deg": "0",
+          "out_deg": "6",
+          "in_kzt": "948604",
+          "out_kzt": "549772",
+          "pass_ratio": "0.88",
+          "n_seed_upstream": "0",
+          "betweenness": "0.16",
+          "flags": "",
+          "score_breakdown": "{\"flow\":0.1665,\"structure\":0.3465,\"risk\":0.2}"
+        },
+        "frontier_roles": {
+          "coordinator": 9,
+          "distributor": 9,
+          "consolidator": 9,
+          "peripheral": 9,
+          "terminal": 8,
+          "transit": 8,
+          "frontier": 8
+        },
+        "external_claims": 0,
+        "max_evidence": 39
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "elapsed_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    },
+    "review/out1": {
+      "clusters.csv": {
+        "rows": 45,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis",
+          "role_counts"
+        ]
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 2248,
+        "edges": 3119
+      },
+      "nodes_roles.csv": {
+        "rows": 2248,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "pass_ratio",
+          "n_seed_upstream",
+          "betweenness",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "coordinator": 158,
+          "peripheral": 532,
+          "terminal": 1024,
+          "distributor": 14,
+          "consolidator": 21,
+          "transit": 55,
+          "frontier": 444
+        },
+        "max_breakdown_error": 0.28485323461694734,
+        "bad_breakdown": 2248,
+        "example": {
+          "gid": "100000003684369100",
+          "role": "coordinator",
+          "role_score": "1.0",
+          "cluster_id": "5",
+          "priority_score": "0.6991467653830526",
+          "evidence": "Кандидат в координирующий узел: 24 плательщиков → 62 получателей; сигналы S2",
+          "depth": "0",
+          "is_seed": "True",
+          "in_deg": "24",
+          "out_deg": "62",
+          "in_kzt": "3848436.0",
+          "out_kzt": "8588655.0",
+          "pass_ratio": "",
+          "n_seed_upstream": "3",
+          "betweenness": "0.002271159210598796",
+          "flags": "distributor;S2",
+          "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+        },
+        "frontier_roles": {
+          "frontier": 444
+        },
+        "external_claims": 251,
+        "max_evidence": 106
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "elapsed_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    },
+    "review/out2": {
+      "clusters.csv": {
+        "rows": 45,
+        "columns": [
+          "cluster_id",
+          "n_nodes",
+          "n_seed",
+          "sum_kzt_internal",
+          "top_gids",
+          "hypothesis",
+          "role_counts"
+        ]
+      },
+      "graph.json": {
+        "type": "dict",
+        "keys": [
+          "nodes",
+          "edges"
+        ],
+        "nodes": 2248,
+        "edges": 3119
+      },
+      "nodes_roles.csv": {
+        "rows": 2248,
+        "columns": [
+          "gid",
+          "role",
+          "role_score",
+          "cluster_id",
+          "priority_score",
+          "evidence",
+          "depth",
+          "is_seed",
+          "in_deg",
+          "out_deg",
+          "in_kzt",
+          "out_kzt",
+          "pass_ratio",
+          "n_seed_upstream",
+          "betweenness",
+          "flags",
+          "score_breakdown"
+        ],
+        "roles": {
+          "coordinator": 158,
+          "peripheral": 532,
+          "terminal": 1024,
+          "distributor": 14,
+          "consolidator": 21,
+          "transit": 55,
+          "frontier": 444
+        },
+        "max_breakdown_error": 0.28485323461694734,
+        "bad_breakdown": 2248,
+        "example": {
+          "gid": "100000003684369100",
+          "role": "coordinator",
+          "role_score": "1.0",
+          "cluster_id": "5",
+          "priority_score": "0.6991467653830526",
+          "evidence": "Кандидат в координирующий узел: 24 плательщиков → 62 получателей; сигналы S2",
+          "depth": "0",
+          "is_seed": "True",
+          "in_deg": "24",
+          "out_deg": "62",
+          "in_kzt": "3848436.0",
+          "out_kzt": "8588655.0",
+          "pass_ratio": "",
+          "n_seed_upstream": "3",
+          "betweenness": "0.002271159210598796",
+          "flags": "distributor;S2",
+          "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+        },
+        "frontier_roles": {
+          "frontier": 444
+        },
+        "external_claims": 251,
+        "max_evidence": 106
+      },
+      "resilience.json": {
+        "type": "dict",
+        "keys": [
+          "n_removed"
+        ]
+      },
+      "summary.json": {
+        "type": "dict",
+        "keys": [
+          "role_counts",
+          "n_clusters",
+          "elapsed_seconds",
+          "thresholds",
+          "frontier"
+        ]
+      },
+      "top_nodes.csv": {
+        "rows": 50,
+        "columns": [
+          "rank",
+          "gid",
+          "role",
+          "priority_score",
+          "why"
+        ]
+      }
+    }
+  }
+}

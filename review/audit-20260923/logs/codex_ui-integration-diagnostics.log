@@ -1,0 +1,330 @@
+C:\Users\dkapa\Desktop\hackalem\repo-audit\review\audit-20260923\scratch\codex_ui-integration-env\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+{
+  "branch": "codex_ui-integration",
+  "source": {
+    "nodes": 2248,
+    "edges": 3119,
+    "transactions": 4840,
+    "seeds": 81,
+    "isolates": 19,
+    "wcc": 35,
+    "duplicates_tx": 97,
+    "nulls": 0,
+    "total_kzt": 365890012.01,
+    "n_tx_match": true,
+    "sum_max_error": 5.820766091346741e-11,
+    "depth_counts": {
+      "0": 81,
+      "1": 472,
+      "2": 462,
+      "3": 789,
+      "4": 444
+    },
+    "dtypes": {
+      "nodes": {
+        "gid": "int64",
+        "depth": "int64",
+        "is_seed": "bool"
+      },
+      "edges": {
+        "src": "int64",
+        "dst": "int64",
+        "sum_kzt": "float64",
+        "n_tx": "int64",
+        "depth": "int8"
+      },
+      "transactions": {
+        "src": "int64",
+        "dst": "int64",
+        "date": "object",
+        "sum_kzt": "float64"
+      }
+    }
+  },
+  "versions": {
+    "pandas": "2.3.3",
+    "numpy": "2.5.1",
+    "networkx": "3.4.2",
+    "pyarrow": "20.0.0",
+    "scikit-learn": "1.7.1",
+    "fastapi": "0.138.0",
+    "pytest": "9.0.3"
+  },
+  "committed_output": {
+    "rows": 2248,
+    "exact_gid_set": true,
+    "unique": true,
+    "required_nonnull": true,
+    "scores_finite_range": true,
+    "evidence_max_len": 106,
+    "roles": {
+      "terminal": 1024,
+      "peripheral": 532,
+      "frontier": 444,
+      "coordinator": 158,
+      "transit": 55,
+      "consolidator": 21,
+      "distributor": 14
+    },
+    "graph_nodes": 2248,
+    "graph_edges": 3119,
+    "graph_gid_exact": true,
+    "graph_string_ids": true,
+    "clusters": 45,
+    "cluster_n_nodes": 2248,
+    "cluster_n_seed": 81,
+    "top_count": 50,
+    "top_unique_real": true,
+    "top_sorted": true,
+    "breakdown_max_error": 0.28485323461694734,
+    "breakdown_bad_002": 2248,
+    "breakdown_example": {
+      "gid": "100000003684369100",
+      "priority_score": 0.6991467653830526,
+      "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+    },
+    "frontier_roles": {
+      "frontier": 444
+    },
+    "external_claims": [
+      {
+        "gid": "100000000267734100",
+        "evidence": "\u041f\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u0439\u043d\u044b\u0439 \u0443\u0437\u0435\u043b: 2 \u0432\u0445\u043e\u0434\u044f\u0449\u0438\u0445, 7 \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0445, \u043e\u0431\u043e\u0440\u043e\u0442 462 \u0442\u044b\u0441.; \u0435\u0441\u0442\u044c \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0438 \u0432\u043d\u0435 \u0432\u044b\u0431\u043e\u0440\u043a\u0438"
+      },
+      {
+        "gid": "100000001380054100",
+        "evidence": "\u041f\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u0439\u043d\u044b\u0439 \u0443\u0437\u0435\u043b: 2 \u0432\u0445\u043e\u0434\u044f\u0449\u0438\u0445, 3 \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0445, \u043e\u0431\u043e\u0440\u043e\u0442 487 \u0442\u044b\u0441.; \u0435\u0441\u0442\u044c \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0438 \u0432\u043d\u0435 \u0432\u044b\u0431\u043e\u0440\u043a\u0438"
+      },
+      {
+        "gid": "100000005527892100",
+        "evidence": "\u041f\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u0439\u043d\u044b\u0439 \u0443\u0437\u0435\u043b: 3 \u0432\u0445\u043e\u0434\u044f\u0449\u0438\u0445, 8 \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0445, \u043e\u0431\u043e\u0440\u043e\u0442 772 \u0442\u044b\u0441.; \u0435\u0441\u0442\u044c \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0438 \u0432\u043d\u0435 \u0432\u044b\u0431\u043e\u0440\u043a\u0438"
+      }
+    ],
+    "seed_consolidators": [
+      {
+        "gid": "100000004019124100",
+        "in_kzt": 193000.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u0438: 3 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u0434\u0435\u043d\u044c\u0433\u0438 \u043e\u0442 4 seed \u0437\u0430 \u22642 \u043a\u043e\u043b\u0435\u043d\u0430, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 193 \u0442\u044b\u0441., \u0434\u0430\u043b\u044c\u0448\u0435 \u0443\u0448\u043b\u043e 0%"
+      },
+      {
+        "gid": "100000005382566100",
+        "in_kzt": 393066.0,
+        "out_kzt": 50000.0,
+        "pass_ratio": NaN,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u0438: 7 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u0434\u0435\u043d\u044c\u0433\u0438 \u043e\u0442 6 seed \u0437\u0430 \u22642 \u043a\u043e\u043b\u0435\u043d\u0430, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 393 \u0442\u044b\u0441., \u0434\u0430\u043b\u044c\u0448\u0435 \u0443\u0448\u043b\u043e 0%"
+      },
+      {
+        "gid": "100000005668605100",
+        "in_kzt": 94500.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u0438: 3 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u0434\u0435\u043d\u044c\u0433\u0438 \u043e\u0442 4 seed \u0437\u0430 \u22642 \u043a\u043e\u043b\u0435\u043d\u0430, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 94 \u0442\u044b\u0441., \u0434\u0430\u043b\u044c\u0448\u0435 \u0443\u0448\u043b\u043e 0%"
+      },
+      {
+        "gid": "100000008516839100",
+        "in_kzt": 155000.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u0438: 3 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u0434\u0435\u043d\u044c\u0433\u0438 \u043e\u0442 3 seed \u0437\u0430 \u22642 \u043a\u043e\u043b\u0435\u043d\u0430, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 155 \u0442\u044b\u0441., \u0434\u0430\u043b\u044c\u0448\u0435 \u0443\u0448\u043b\u043e 0%"
+      }
+    ],
+    "cluster_errors": [],
+    "graph_csv_match": true,
+    "examples": [
+      {
+        "gid": "100000007908818100",
+        "role": "coordinator",
+        "priority_score": 0.9879915127985192,
+        "evidence": "\u041a\u0430\u043d\u0434\u0438\u0434\u0430\u0442 \u0432 \u043a\u043e\u043e\u0440\u0434\u0438\u043d\u0438\u0440\u0443\u044e\u0449\u0438\u0439 \u0443\u0437\u0435\u043b: 4 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432 \u2192 6 \u043f\u043e\u043b\u0443\u0447\u0430\u0442\u0435\u043b\u0435\u0439; \u0441\u0438\u0433\u043d\u0430\u043b\u044b S3"
+      },
+      {
+        "gid": "100000004015047100",
+        "role": "consolidator",
+        "priority_score": 0.957857433072999,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u0438: 9 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u0434\u0435\u043d\u044c\u0433\u0438 \u043e\u0442 4 seed \u0437\u0430 \u22642 \u043a\u043e\u043b\u0435\u043d\u0430, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 919 \u0442\u044b\u0441., \u0434\u0430\u043b\u044c\u0448\u0435 \u0443\u0448\u043b\u043e 8%"
+      },
+      {
+        "gid": "100000002670860100",
+        "role": "coordinator",
+        "priority_score": 0.741253216559072,
+        "evidence": "\u041a\u0430\u043d\u0434\u0438\u0434\u0430\u0442 \u0432 \u043a\u043e\u043e\u0440\u0434\u0438\u043d\u0438\u0440\u0443\u044e\u0449\u0438\u0439 \u0443\u0437\u0435\u043b: 2 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432 \u2192 0 \u043f\u043e\u043b\u0443\u0447\u0430\u0442\u0435\u043b\u0435\u0439; \u0441\u0438\u0433\u043d\u0430\u043b\u044b S3"
+      },
+      {
+        "gid": "100000004527381100",
+        "role": "peripheral",
+        "priority_score": 0.6052322694235024,
+        "evidence": "\u041f\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u0439\u043d\u044b\u0439 \u0443\u0437\u0435\u043b: 1 \u0432\u0445\u043e\u0434\u044f\u0449\u0438\u0445, 1 \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0445, \u043e\u0431\u043e\u0440\u043e\u0442 393 \u0442\u044b\u0441.; \u0435\u0441\u0442\u044c \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0438 \u0432\u043d\u0435 \u0432\u044b\u0431\u043e\u0440\u043a\u0438"
+      },
+      {
+        "gid": "100000008568512100",
+        "role": "terminal",
+        "priority_score": 0.4271703309105684,
+        "evidence": "\u0412\u0435\u0440\u043e\u044f\u0442\u043d\u044b\u0439 \u043a\u043e\u043d\u0435\u0447\u043d\u044b\u0439 \u043f\u043e\u043b\u0443\u0447\u0430\u0442\u0435\u043b\u044c: 1 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 200 \u0442\u044b\u0441., \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0445 \u043d\u0435\u0442"
+      },
+      {
+        "gid": "100000005171642100",
+        "role": "transit",
+        "priority_score": 0.6518780190510587,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u0442\u0440\u0430\u043d\u0437\u0438\u0442\u0430: \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 697 \u0442\u044b\u0441., \u043e\u0442\u0434\u0430\u043d\u043e 98%, 2\u21921 \u043a\u043e\u043d\u0442\u0440\u0430\u0433\u0435\u043d\u0442\u0430"
+      },
+      {
+        "gid": "100000005075949100",
+        "role": "frontier",
+        "priority_score": 0.3277617263328969,
+        "evidence": "4-\u0435 \u043a\u043e\u043b\u0435\u043d\u043e, \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0435 \u043d\u0435 \u043d\u0430\u0431\u043b\u044e\u0434\u0430\u043b\u0438\u0441\u044c (\u043e\u0431\u0440\u044b\u0432 \u043e\u0431\u0445\u043e\u0434\u0430), \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 2.23 \u043c\u043b\u043d"
+      }
+    ]
+  },
+  "fresh_output": {
+    "rows": 2248,
+    "exact_gid_set": true,
+    "unique": true,
+    "required_nonnull": true,
+    "scores_finite_range": true,
+    "evidence_max_len": 106,
+    "roles": {
+      "terminal": 1024,
+      "peripheral": 532,
+      "frontier": 444,
+      "coordinator": 158,
+      "transit": 55,
+      "consolidator": 21,
+      "distributor": 14
+    },
+    "graph_nodes": 2248,
+    "graph_edges": 3119,
+    "graph_gid_exact": true,
+    "graph_string_ids": true,
+    "clusters": 45,
+    "cluster_n_nodes": 2248,
+    "cluster_n_seed": 81,
+    "top_count": 50,
+    "top_unique_real": true,
+    "top_sorted": true,
+    "breakdown_max_error": 0.28485323461694734,
+    "breakdown_bad_002": 2248,
+    "breakdown_example": {
+      "gid": "100000003684369100",
+      "priority_score": 0.6991467653830526,
+      "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+    },
+    "frontier_roles": {
+      "frontier": 444
+    },
+    "external_claims": [
+      {
+        "gid": "100000000267734100",
+        "evidence": "\u041f\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u0439\u043d\u044b\u0439 \u0443\u0437\u0435\u043b: 2 \u0432\u0445\u043e\u0434\u044f\u0449\u0438\u0445, 7 \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0445, \u043e\u0431\u043e\u0440\u043e\u0442 462 \u0442\u044b\u0441.; \u0435\u0441\u0442\u044c \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0438 \u0432\u043d\u0435 \u0432\u044b\u0431\u043e\u0440\u043a\u0438"
+      },
+      {
+        "gid": "100000001380054100",
+        "evidence": "\u041f\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u0439\u043d\u044b\u0439 \u0443\u0437\u0435\u043b: 2 \u0432\u0445\u043e\u0434\u044f\u0449\u0438\u0445, 3 \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0445, \u043e\u0431\u043e\u0440\u043e\u0442 487 \u0442\u044b\u0441.; \u0435\u0441\u0442\u044c \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0438 \u0432\u043d\u0435 \u0432\u044b\u0431\u043e\u0440\u043a\u0438"
+      },
+      {
+        "gid": "100000005527892100",
+        "evidence": "\u041f\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u0439\u043d\u044b\u0439 \u0443\u0437\u0435\u043b: 3 \u0432\u0445\u043e\u0434\u044f\u0449\u0438\u0445, 8 \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0445, \u043e\u0431\u043e\u0440\u043e\u0442 772 \u0442\u044b\u0441.; \u0435\u0441\u0442\u044c \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0438 \u0432\u043d\u0435 \u0432\u044b\u0431\u043e\u0440\u043a\u0438"
+      }
+    ],
+    "seed_consolidators": [
+      {
+        "gid": "100000004019124100",
+        "in_kzt": 193000.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u0438: 3 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u0434\u0435\u043d\u044c\u0433\u0438 \u043e\u0442 4 seed \u0437\u0430 \u22642 \u043a\u043e\u043b\u0435\u043d\u0430, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 193 \u0442\u044b\u0441., \u0434\u0430\u043b\u044c\u0448\u0435 \u0443\u0448\u043b\u043e 0%"
+      },
+      {
+        "gid": "100000005382566100",
+        "in_kzt": 393066.0,
+        "out_kzt": 50000.0,
+        "pass_ratio": NaN,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u0438: 7 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u0434\u0435\u043d\u044c\u0433\u0438 \u043e\u0442 6 seed \u0437\u0430 \u22642 \u043a\u043e\u043b\u0435\u043d\u0430, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 393 \u0442\u044b\u0441., \u0434\u0430\u043b\u044c\u0448\u0435 \u0443\u0448\u043b\u043e 0%"
+      },
+      {
+        "gid": "100000005668605100",
+        "in_kzt": 94500.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u0438: 3 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u0434\u0435\u043d\u044c\u0433\u0438 \u043e\u0442 4 seed \u0437\u0430 \u22642 \u043a\u043e\u043b\u0435\u043d\u0430, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 94 \u0442\u044b\u0441., \u0434\u0430\u043b\u044c\u0448\u0435 \u0443\u0448\u043b\u043e 0%"
+      },
+      {
+        "gid": "100000008516839100",
+        "in_kzt": 155000.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u0438: 3 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u0434\u0435\u043d\u044c\u0433\u0438 \u043e\u0442 3 seed \u0437\u0430 \u22642 \u043a\u043e\u043b\u0435\u043d\u0430, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 155 \u0442\u044b\u0441., \u0434\u0430\u043b\u044c\u0448\u0435 \u0443\u0448\u043b\u043e 0%"
+      }
+    ],
+    "cluster_errors": [],
+    "graph_csv_match": true,
+    "examples": [
+      {
+        "gid": "100000007908818100",
+        "role": "coordinator",
+        "priority_score": 0.9879915127985192,
+        "evidence": "\u041a\u0430\u043d\u0434\u0438\u0434\u0430\u0442 \u0432 \u043a\u043e\u043e\u0440\u0434\u0438\u043d\u0438\u0440\u0443\u044e\u0449\u0438\u0439 \u0443\u0437\u0435\u043b: 4 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432 \u2192 6 \u043f\u043e\u043b\u0443\u0447\u0430\u0442\u0435\u043b\u0435\u0439; \u0441\u0438\u0433\u043d\u0430\u043b\u044b S3"
+      },
+      {
+        "gid": "100000004015047100",
+        "role": "consolidator",
+        "priority_score": 0.957857433072999,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u0438: 9 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u0434\u0435\u043d\u044c\u0433\u0438 \u043e\u0442 4 seed \u0437\u0430 \u22642 \u043a\u043e\u043b\u0435\u043d\u0430, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 919 \u0442\u044b\u0441., \u0434\u0430\u043b\u044c\u0448\u0435 \u0443\u0448\u043b\u043e 8%"
+      },
+      {
+        "gid": "100000002670860100",
+        "role": "coordinator",
+        "priority_score": 0.741253216559072,
+        "evidence": "\u041a\u0430\u043d\u0434\u0438\u0434\u0430\u0442 \u0432 \u043a\u043e\u043e\u0440\u0434\u0438\u043d\u0438\u0440\u0443\u044e\u0449\u0438\u0439 \u0443\u0437\u0435\u043b: 2 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432 \u2192 0 \u043f\u043e\u043b\u0443\u0447\u0430\u0442\u0435\u043b\u0435\u0439; \u0441\u0438\u0433\u043d\u0430\u043b\u044b S3"
+      },
+      {
+        "gid": "100000004527381100",
+        "role": "peripheral",
+        "priority_score": 0.6052322694235024,
+        "evidence": "\u041f\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u0439\u043d\u044b\u0439 \u0443\u0437\u0435\u043b: 1 \u0432\u0445\u043e\u0434\u044f\u0449\u0438\u0445, 1 \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0445, \u043e\u0431\u043e\u0440\u043e\u0442 393 \u0442\u044b\u0441.; \u0435\u0441\u0442\u044c \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0438 \u0432\u043d\u0435 \u0432\u044b\u0431\u043e\u0440\u043a\u0438"
+      },
+      {
+        "gid": "100000008568512100",
+        "role": "terminal",
+        "priority_score": 0.4271703309105684,
+        "evidence": "\u0412\u0435\u0440\u043e\u044f\u0442\u043d\u044b\u0439 \u043a\u043e\u043d\u0435\u0447\u043d\u044b\u0439 \u043f\u043e\u043b\u0443\u0447\u0430\u0442\u0435\u043b\u044c: 1 \u043f\u043b\u0430\u0442\u0435\u043b\u044c\u0449\u0438\u043a\u043e\u0432, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 200 \u0442\u044b\u0441., \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0445 \u043d\u0435\u0442"
+      },
+      {
+        "gid": "100000005171642100",
+        "role": "transit",
+        "priority_score": 0.6518780190510587,
+        "evidence": "\u041f\u0440\u0438\u0437\u043d\u0430\u043a\u0438 \u0442\u0440\u0430\u043d\u0437\u0438\u0442\u0430: \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 697 \u0442\u044b\u0441., \u043e\u0442\u0434\u0430\u043d\u043e 98%, 2\u21921 \u043a\u043e\u043d\u0442\u0440\u0430\u0433\u0435\u043d\u0442\u0430"
+      },
+      {
+        "gid": "100000005075949100",
+        "role": "frontier",
+        "priority_score": 0.3277617263328969,
+        "evidence": "4-\u0435 \u043a\u043e\u043b\u0435\u043d\u043e, \u0438\u0441\u0445\u043e\u0434\u044f\u0449\u0438\u0435 \u043d\u0435 \u043d\u0430\u0431\u043b\u044e\u0434\u0430\u043b\u0438\u0441\u044c (\u043e\u0431\u0440\u044b\u0432 \u043e\u0431\u0445\u043e\u0434\u0430), \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043e 2.23 \u043c\u043b\u043d"
+      }
+    ]
+  },
+  "corrupt_aggregate_accepted": true,
+  "api": {
+    "top_gid_type": "int",
+    "node_gid_type": "int",
+    "search_exact": [
+      {
+        "gid": "100000000343175100",
+        "role": "coordinator",
+        "priority": 0.6978432124960499
+      }
+    ],
+    "isolate_search": [
+      {
+        "gid": "100000000456947100",
+        "role": "peripheral",
+        "priority": 0.14982167847952688
+      }
+    ],
+    "isolate_status": 200,
+    "missing_status": 404,
+    "graph_count": 2248
+  }
+}

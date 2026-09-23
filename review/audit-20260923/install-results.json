@@ -1,0 +1,77 @@
+[
+  {
+    "branch": "main",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\docs-env\\Scripts\\python.exe",
+      "-m",
+      "pip",
+      "--python",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\main-env\\Scripts\\python.exe",
+      "install",
+      "-r",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\main\\requirements.txt"
+    ],
+    "returncode": 2,
+    "seconds": 41.72148839989677
+  },
+  {
+    "branch": "pipeline",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\docs-env\\Scripts\\python.exe",
+      "-m",
+      "pip",
+      "--python",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\pipeline-env\\Scripts\\python.exe",
+      "install",
+      "-r",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\pipeline\\requirements.txt"
+    ],
+    "returncode": 1,
+    "seconds": 11.511638899915852
+  },
+  {
+    "branch": "codex_ui-integration",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\docs-env\\Scripts\\python.exe",
+      "-m",
+      "pip",
+      "--python",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\codex_ui-integration-env\\Scripts\\python.exe",
+      "install",
+      "-r",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\codex_ui-integration\\requirements.txt"
+    ],
+    "returncode": 2,
+    "seconds": 116.81934699998237
+  },
+  {
+    "branch": "stage2-extension",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\docs-env\\Scripts\\python.exe",
+      "-m",
+      "pip",
+      "--python",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\stage2-extension-env\\Scripts\\python.exe",
+      "install",
+      "-r",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\stage2-extension\\requirements.txt"
+    ],
+    "returncode": 0,
+    "seconds": 570.9308775999816
+  },
+  {
+    "branch": "stage2-final",
+    "command": [
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\docs-env\\Scripts\\python.exe",
+      "-m",
+      "pip",
+      "--python",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\stage2-final-env\\Scripts\\python.exe",
+      "install",
+      "-r",
+      "C:\\Users\\dkapa\\Desktop\\hackalem\\repo-audit\\review\\audit-20260923\\scratch\\stage2-final\\requirements.txt"
+    ],
+    "returncode": 0,
+    "seconds": 465.0384345999919
+  }
+]

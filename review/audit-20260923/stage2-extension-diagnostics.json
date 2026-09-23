@@ -1,0 +1,345 @@
+{
+  "branch": "stage2-extension",
+  "source": {
+    "nodes": 2248,
+    "edges": 3119,
+    "transactions": 4840,
+    "seeds": 81,
+    "isolates": 19,
+    "wcc": 35,
+    "duplicates_tx": 97,
+    "nulls": 0,
+    "total_kzt": 365890012.01,
+    "n_tx_match": true,
+    "sum_max_error": 5.820766091346741e-11,
+    "depth_counts": {
+      "0": 81,
+      "1": 472,
+      "2": 462,
+      "3": 789,
+      "4": 444
+    },
+    "dtypes": {
+      "nodes": {
+        "gid": "int64",
+        "depth": "int64",
+        "is_seed": "bool"
+      },
+      "edges": {
+        "src": "int64",
+        "dst": "int64",
+        "sum_kzt": "float64",
+        "n_tx": "int64",
+        "depth": "int8"
+      },
+      "transactions": {
+        "src": "int64",
+        "dst": "int64",
+        "date": "object",
+        "sum_kzt": "float64"
+      }
+    }
+  },
+  "versions": {
+    "pandas": "2.3.3",
+    "numpy": "2.5.1",
+    "networkx": "3.4.2",
+    "pyarrow": "23.0.1",
+    "scikit-learn": "1.9.0",
+    "fastapi": "0.138.0",
+    "pytest": "9.0.3"
+  },
+  "committed_output": {
+    "rows": 2248,
+    "exact_gid_set": true,
+    "unique": true,
+    "required_nonnull": true,
+    "scores_finite_range": true,
+    "evidence_max_len": 106,
+    "roles": {
+      "terminal": 1024,
+      "peripheral": 532,
+      "frontier": 444,
+      "coordinator": 158,
+      "transit": 55,
+      "consolidator": 21,
+      "distributor": 14
+    },
+    "graph_nodes": 2248,
+    "graph_edges": 3119,
+    "graph_gid_exact": true,
+    "graph_string_ids": true,
+    "clusters": 45,
+    "cluster_n_nodes": 2248,
+    "cluster_n_seed": 81,
+    "top_count": 50,
+    "top_unique_real": true,
+    "top_sorted": true,
+    "breakdown_max_error": 0.28485323461694734,
+    "breakdown_bad_002": 2248,
+    "breakdown_example": {
+      "gid": "100000003684369100",
+      "priority_score": 0.6991467653830526,
+      "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+    },
+    "frontier_roles": {
+      "frontier": 444
+    },
+    "external_claims": [
+      {
+        "gid": "100000000267734100",
+        "evidence": "Периферийный узел: 2 входящих, 7 исходящих, оборот 462 тыс.; есть источники вне выборки"
+      },
+      {
+        "gid": "100000001380054100",
+        "evidence": "Периферийный узел: 2 входящих, 3 исходящих, оборот 487 тыс.; есть источники вне выборки"
+      },
+      {
+        "gid": "100000005527892100",
+        "evidence": "Периферийный узел: 3 входящих, 8 исходящих, оборот 772 тыс.; есть источники вне выборки"
+      }
+    ],
+    "seed_consolidators": [
+      {
+        "gid": "100000004019124100",
+        "in_kzt": 193000.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "Признаки консолидации: 3 плательщиков, деньги от 4 seed за ≤2 колена, получено 193 тыс., дальше ушло 0%"
+      },
+      {
+        "gid": "100000005382566100",
+        "in_kzt": 393066.0,
+        "out_kzt": 50000.0,
+        "pass_ratio": NaN,
+        "evidence": "Признаки консолидации: 7 плательщиков, деньги от 6 seed за ≤2 колена, получено 393 тыс., дальше ушло 0%"
+      },
+      {
+        "gid": "100000005668605100",
+        "in_kzt": 94500.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "Признаки консолидации: 3 плательщиков, деньги от 4 seed за ≤2 колена, получено 94 тыс., дальше ушло 0%"
+      },
+      {
+        "gid": "100000008516839100",
+        "in_kzt": 155000.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "Признаки консолидации: 3 плательщиков, деньги от 3 seed за ≤2 колена, получено 155 тыс., дальше ушло 0%"
+      }
+    ],
+    "cluster_errors": [],
+    "graph_csv_match": true,
+    "examples": [
+      {
+        "gid": "100000007908818100",
+        "role": "coordinator",
+        "priority_score": 0.9879915127985192,
+        "evidence": "Кандидат в координирующий узел: 4 плательщиков → 6 получателей; сигналы S3"
+      },
+      {
+        "gid": "100000004015047100",
+        "role": "consolidator",
+        "priority_score": 0.957857433072999,
+        "evidence": "Признаки консолидации: 9 плательщиков, деньги от 4 seed за ≤2 колена, получено 919 тыс., дальше ушло 8%"
+      },
+      {
+        "gid": "100000002670860100",
+        "role": "coordinator",
+        "priority_score": 0.741253216559072,
+        "evidence": "Кандидат в координирующий узел: 2 плательщиков → 0 получателей; сигналы S3"
+      },
+      {
+        "gid": "100000004527381100",
+        "role": "peripheral",
+        "priority_score": 0.6052322694235024,
+        "evidence": "Периферийный узел: 1 входящих, 1 исходящих, оборот 393 тыс.; есть источники вне выборки"
+      },
+      {
+        "gid": "100000008568512100",
+        "role": "terminal",
+        "priority_score": 0.4271703309105684,
+        "evidence": "Вероятный конечный получатель: 1 плательщиков, получено 200 тыс., исходящих нет"
+      },
+      {
+        "gid": "100000005171642100",
+        "role": "transit",
+        "priority_score": 0.6518780190510587,
+        "evidence": "Признаки транзита: получено 697 тыс., отдано 98%, 2→1 контрагента"
+      },
+      {
+        "gid": "100000005075949100",
+        "role": "frontier",
+        "priority_score": 0.3277617263328969,
+        "evidence": "4-е колено, исходящие не наблюдались (обрыв обхода), получено 2.23 млн"
+      }
+    ]
+  },
+  "fresh_output": {
+    "rows": 2248,
+    "exact_gid_set": true,
+    "unique": true,
+    "required_nonnull": true,
+    "scores_finite_range": true,
+    "evidence_max_len": 106,
+    "roles": {
+      "terminal": 1024,
+      "peripheral": 532,
+      "frontier": 444,
+      "coordinator": 158,
+      "transit": 55,
+      "consolidator": 21,
+      "distributor": 14
+    },
+    "graph_nodes": 2248,
+    "graph_edges": 3119,
+    "graph_gid_exact": true,
+    "graph_string_ids": true,
+    "clusters": 45,
+    "cluster_n_nodes": 2248,
+    "cluster_n_seed": 81,
+    "top_count": 50,
+    "top_unique_real": true,
+    "top_sorted": true,
+    "breakdown_max_error": 0.28485323461694734,
+    "breakdown_bad_002": 2248,
+    "breakdown_example": {
+      "gid": "100000003684369100",
+      "priority_score": 0.6991467653830526,
+      "score_breakdown": "{\"betweenness\": 0.198, \"degree\": 0.15, \"n_seed_upstream\": 0.346, \"role\": 0.29}"
+    },
+    "frontier_roles": {
+      "frontier": 444
+    },
+    "external_claims": [
+      {
+        "gid": "100000000267734100",
+        "evidence": "Периферийный узел: 2 входящих, 7 исходящих, оборот 462 тыс.; есть источники вне выборки"
+      },
+      {
+        "gid": "100000001380054100",
+        "evidence": "Периферийный узел: 2 входящих, 3 исходящих, оборот 487 тыс.; есть источники вне выборки"
+      },
+      {
+        "gid": "100000005527892100",
+        "evidence": "Периферийный узел: 3 входящих, 8 исходящих, оборот 772 тыс.; есть источники вне выборки"
+      }
+    ],
+    "seed_consolidators": [
+      {
+        "gid": "100000004019124100",
+        "in_kzt": 193000.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "Признаки консолидации: 3 плательщиков, деньги от 4 seed за ≤2 колена, получено 193 тыс., дальше ушло 0%"
+      },
+      {
+        "gid": "100000005382566100",
+        "in_kzt": 393066.0,
+        "out_kzt": 50000.0,
+        "pass_ratio": NaN,
+        "evidence": "Признаки консолидации: 7 плательщиков, деньги от 6 seed за ≤2 колена, получено 393 тыс., дальше ушло 0%"
+      },
+      {
+        "gid": "100000005668605100",
+        "in_kzt": 94500.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "Признаки консолидации: 3 плательщиков, деньги от 4 seed за ≤2 колена, получено 94 тыс., дальше ушло 0%"
+      },
+      {
+        "gid": "100000008516839100",
+        "in_kzt": 155000.0,
+        "out_kzt": 0.0,
+        "pass_ratio": NaN,
+        "evidence": "Признаки консолидации: 3 плательщиков, деньги от 3 seed за ≤2 колена, получено 155 тыс., дальше ушло 0%"
+      }
+    ],
+    "cluster_errors": [],
+    "graph_csv_match": true,
+    "examples": [
+      {
+        "gid": "100000007908818100",
+        "role": "coordinator",
+        "priority_score": 0.9879915127985192,
+        "evidence": "Кандидат в координирующий узел: 4 плательщиков → 6 получателей; сигналы S3"
+      },
+      {
+        "gid": "100000004015047100",
+        "role": "consolidator",
+        "priority_score": 0.957857433072999,
+        "evidence": "Признаки консолидации: 9 плательщиков, деньги от 4 seed за ≤2 колена, получено 919 тыс., дальше ушло 8%"
+      },
+      {
+        "gid": "100000002670860100",
+        "role": "coordinator",
+        "priority_score": 0.741253216559072,
+        "evidence": "Кандидат в координирующий узел: 2 плательщиков → 0 получателей; сигналы S3"
+      },
+      {
+        "gid": "100000004527381100",
+        "role": "peripheral",
+        "priority_score": 0.6052322694235024,
+        "evidence": "Периферийный узел: 1 входящих, 1 исходящих, оборот 393 тыс.; есть источники вне выборки"
+      },
+      {
+        "gid": "100000008568512100",
+        "role": "terminal",
+        "priority_score": 0.4271703309105684,
+        "evidence": "Вероятный конечный получатель: 1 плательщиков, получено 200 тыс., исходящих нет"
+      },
+      {
+        "gid": "100000005171642100",
+        "role": "transit",
+        "priority_score": 0.6518780190510587,
+        "evidence": "Признаки транзита: получено 697 тыс., отдано 98%, 2→1 контрагента"
+      },
+      {
+        "gid": "100000005075949100",
+        "role": "frontier",
+        "priority_score": 0.3277617263328969,
+        "evidence": "4-е колено, исходящие не наблюдались (обрыв обхода), получено 2.23 млн"
+      }
+    ]
+  },
+  "corrupt_aggregate_accepted": true,
+  "api": {
+    "top_gid_type": "int",
+    "node_gid_type": "int",
+    "search_exact": [
+      {
+        "gid": "100000000343175100",
+        "role": "coordinator",
+        "priority": 0.6978432124960499
+      }
+    ],
+    "isolate_search": [
+      {
+        "gid": "100000000456947100",
+        "role": "peripheral",
+        "priority": 0.14982167847952688
+      }
+    ],
+    "isolate_status": 200,
+    "missing_status": 404,
+    "graph_count": 2248,
+    "ego": {
+      "gid": "100000002578405100",
+      "returned": 269,
+      "actual": 269,
+      "keys": [
+        "center",
+        "k",
+        "direction",
+        "nodes",
+        "edges"
+      ]
+    },
+    "assistant_without_key": 503,
+    "top_cluster_filter": {
+      "cluster": 8,
+      "rows": 0
+    }
+  }
+}
