@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from api.main import get_graph, get_node, get_node_card, get_resilience, get_summary, get_top, health, reload_data, search
+from api.main import CommonRequest, get_common, get_ego, get_graph, get_node, get_node_card, get_path, get_resilience, get_summary, get_top, health, reload_data, search
 
 
 def setup_module():
@@ -58,3 +58,15 @@ def test_node_card_has_next_steps_and_string_gid():
 def test_summary_and_resilience_are_available():
     assert isinstance(get_summary(), dict)
     assert isinstance(get_resilience(), dict)
+
+
+def test_ego_path_common_keep_gid_strings():
+    graph = get_graph()
+    first, second = graph["nodes"][0]["id"], graph["nodes"][1]["id"]
+    ego = get_ego(first, k=1, direction="both", max_nodes=10)
+    assert ego["center"] == first
+    assert all(isinstance(node["id"], str) for node in ego["nodes"])
+    path = get_path(first, second)
+    assert path["gids"][0] == first and path["gids"][-1] == second
+    common = get_common(CommonRequest(gids=[first, second]))
+    assert all(isinstance(gid, str) for gid in common["common_receivers"] + common["common_senders"])

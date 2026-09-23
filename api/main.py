@@ -10,6 +10,7 @@ from typing import Any
 
 import networkx as nx
 from fastapi import FastAPI, HTTPException, Query
+from pydantic import BaseModel, Field
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from .cards import build_card
@@ -28,6 +29,10 @@ top_data: list[dict[str, Any]] = []
 summary_data: dict[str, Any] = {}
 resilience_data: dict[str, Any] = {}
 graph = nx.DiGraph()
+
+
+class CommonRequest(BaseModel):
+    gids: list[str] = Field(min_length=1, max_length=20)
 
 
 def parse_value(value: str) -> Any:
@@ -131,6 +136,56 @@ def get_node(gid: str) -> dict[str, Any]:
 def get_node_card(gid: str) -> dict[str, Any]:
     node = get_node(gid)
     return build_card(str(gid), node, node["incoming"], node["outgoing"], nodes_by_id)
+
+
+@app.get("/api/node/{gid}/ego")
+def get_ego(gid: str, k: int = Query(default=1, ge=1, le=3), direction: str = Query(default="both"), max_nodes: int = Query(default=300, ge=1, le=300)) -> dict[str, Any]:
+    gid = str(gid)
+    if gid not in nodes_by_id:
+        raise HTTPException(status_code=404, detail=f"Node {gid} was not found in the loaded graph")
+    if direction not in {"up", "down", "both"}:
+        raise HTTPException(status_code=400, detail="direction must be up, down, or both")
+    seen = {gid}
+    frontier = {gid}
+    for _ in range(k):
+        neighbors: set[str] = set()
+        for item in frontier:
+            if direction in {"up", "both"}:
+                neighbors.update(str(value) for value in graph.predecessors(item))
+            if direction in {"down", "both"}:
+                neighbors.update(str(value) for value in graph.successors(item))
+        neighbors -= seen
+        seen.update(neighbors)
+        frontier = neighbors
+    if len(seen) > max_nodes:
+        ranked = sorted(seen - {gid}, key=lambda item: sum(float(graph[item][neighbor].get("sum_kzt", 0)) for neighbor in graph.successors(item)) + sum(float(graph[neighbor][item].get("sum_kzt", 0)) for neighbor in graph.predecessors(item)), reverse=True)
+        seen = {gid, *ranked[: max_nodes - 1]}
+    edges = [edge for edge in graph_data["edges"] if edge["source"] in seen and edge["target"] in seen]
+    return {"center": gid, "k": k, "direction": direction, "nodes": [nodes_by_id[item] for item in seen], "edges": edges}
+
+
+@app.get("/api/path")
+def get_path(src: str, dst: str) -> dict[str, Any]:
+    src, dst = str(src), str(dst)
+    if src not in nodes_by_id or dst not in nodes_by_id:
+        raise HTTPException(status_code=404, detail="Both src and dst must exist in the graph")
+    try:
+        path = nx.shortest_path(graph, src, dst)
+    except nx.NetworkXNoPath:
+        raise HTTPException(status_code=404, detail=f"No directed path from {src} to {dst}")
+    edge_map = {(str(edge["source"]), str(edge["target"])): edge for edge in graph_data["edges"]}
+    return {"src": src, "dst": dst, "gids": [str(item) for item in path], "edges": [edge_map[(str(a), str(b))] for a, b in zip(path, path[1:])]}
+
+
+@app.post("/api/common")
+def get_common(request: CommonRequest) -> dict[str, Any]:
+    gids = [str(gid) for gid in request.gids]
+    missing = [gid for gid in gids if gid not in nodes_by_id]
+    if missing:
+        raise HTTPException(status_code=404, detail=f"Unknown gid: {missing[0]}")
+    receiver_sets = [{str(value) for value in graph.successors(gid)} for gid in gids]
+    sender_sets = [{str(value) for value in graph.predecessors(gid)} for gid in gids]
+    return {"gids": gids, "common_receivers": sorted(set.intersection(*receiver_sets)) if receiver_sets else [], "common_senders": sorted(set.intersection(*sender_sets)) if sender_sets else []}
 
 
 @app.get("/api/top")
