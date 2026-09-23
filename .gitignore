@@ -31,3 +31,6 @@ out/
 *.njsproj
 *.sln
 *.swp
+/api/__pycache__
+/pipeline/__pycache__
+/tests/__pycache__
