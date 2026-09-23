@@ -14,7 +14,7 @@ def export_all(features: pd.DataFrame, edges: pd.DataFrame, clusters: pd.DataFra
     export_started = time.perf_counter()
     out = Path(cfg["_out"]); out.mkdir(parents=True, exist_ok=True)
     result = features.merge(layout, on="gid", how="left")
-    columns = ["gid", "role", "role_score", "cluster_id", "priority_score", "evidence", "depth", "is_seed", "in_deg", "out_deg", "in_kzt", "out_kzt", "in_tx", "out_tx", "pass_ratio", "n_seed_upstream", "p_terminal", "betweenness", "flags", "score_breakdown"]
+    columns = ["gid", "role", "role_score", "cluster_id", "priority_score", "evidence", "depth", "is_seed", "in_deg", "out_deg", "in_kzt", "out_kzt", "in_tx", "out_tx", "pass_ratio", "seed_flow_kzt", "seed_share", "n_seed_upstream", "p_terminal", "betweenness", "flags", "score_breakdown"]
     result[columns].to_csv(out / "nodes_roles.csv", index=False)
     clusters.to_csv(out / "clusters.csv", index=False)
     top.to_csv(out / "top_nodes.csv", index=False)

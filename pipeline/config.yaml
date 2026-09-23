@@ -44,6 +44,13 @@ roles:
     min_in_deg: 1
 
 scoring:
+  weights:
+    seed_flow_kzt: 0.25
+    n_seed_upstream: 0.20
+    role: 0.20
+    betweenness: 0.15
+    degree: 0.10
+    temporal: 0.10
   must_have_weights:
     n_seed_upstream: 0.35
     role: 0.30
@@ -59,6 +66,10 @@ scoring:
     peripheral: 0.0
   seed_multiplier: 0.7
   top_n: 50
+
+flow:
+  max_iter: 200
+  tol: 0.000001
 
 clusters:
   resolution: 1.0

@@ -92,7 +92,7 @@ def assign_base_roles(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
         elif _is_consolidator(row, cfg):
             c = cfg["roles"]["consolidator"]
             score = max(_score(row.in_deg, c["min_in_deg"], result.in_deg, cfg), _score(row.n_seed_upstream, c["min_seed_upstream"], result.n_seed_upstream, cfg))
-            role, ev = "consolidator", f"Признаки консолидации: {row.in_deg} плательщиков, деньги от {row.n_seed_upstream} seed за ≤2 колена, получено {format_kzt(row.in_kzt)}, дальше ушло {row.pass_ratio * 100 if pd.notna(row.pass_ratio) else 0:.0f}%"
+            role, ev = "consolidator", f"Признаки консолидации: {row.in_deg} плательщиков, деньги от {row.n_seed_upstream} seed за ≤2 колена, seed-поток {format_kzt(row.seed_flow_kzt)}, дальше ушло {row.pass_ratio * 100 if pd.notna(row.pass_ratio) else 0:.0f}%"
         elif _is_transit(row, cfg):
             c = cfg["roles"]["transit"]
             role, score = "transit", _score(row.pass_ratio, c["min_pass"], result.pass_ratio.dropna(), cfg)

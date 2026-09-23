@@ -8,6 +8,7 @@ import yaml
 from .clusters import cluster_nodes, renumber_and_describe
 from .export import export_all
 from .features import basic_features, enrich_features
+from .flow import add_seed_flow
 from .frontier import add_frontier_probability
 from .layout import make_layout
 from .load import build_graph, load, sanity_check
@@ -40,6 +41,7 @@ def main() -> None:
     graph = _run_stage(stage_seconds, "build_graph", build_graph, edges, nodes)
     features = _run_stage(stage_seconds, "basic_features", basic_features, graph, nodes)
     features = _run_stage(stage_seconds, "enrich_features", enrich_features, graph, features, cfg)
+    features = _run_stage(stage_seconds, "flow", add_seed_flow, graph, features, cfg)
     features, frontier = _run_stage(stage_seconds, "frontier", add_frontier_probability, features, transactions, cfg)
     features = _run_stage(stage_seconds, "assign_base_roles", assign_base_roles, features, cfg)
     features = _run_stage(stage_seconds, "apply_coordinators", apply_coordinators, features, graph, cfg)
