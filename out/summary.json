@@ -1,15 +1,44 @@
 {
   "role_counts": {
-    "consolidator": 21,
-    "coordinator": 158,
+    "consolidator": 24,
+    "coordinator": 54,
     "distributor": 14,
-    "frontier": 444,
-    "peripheral": 532,
-    "terminal": 1024,
-    "transit": 55
+    "frontier": 40,
+    "peripheral": 577,
+    "terminal": 1477,
+    "transit": 62
   },
   "n_clusters": 44,
-  "elapsed_seconds": 5.370541124953888,
+  "clusters": {
+    "n": 44,
+    "ari_mean": 0.6597578065605183
+  },
+  "sensitivity": {
+    "0.8": 0.9,
+    "1.2": 0.95
+  },
+  "elapsed_seconds": 8.251414750004187,
+  "stage_seconds": {
+    "load": 0.08822183305164799,
+    "sanity_check": 0.00864483299665153,
+    "build_graph": 0.024624250014312565,
+    "basic_features": 0.01275804196484387,
+    "enrich_features": 0.9993380410014652,
+    "flow": 0.29635741701349616,
+    "temporal": 0.9839946659631096,
+    "frontier": 0.02441233303397894,
+    "assign_base_roles": 0.08624254202004522,
+    "cluster_nodes": 0.23934170801658183,
+    "bridge_flags": 0.006075540964957327,
+    "apply_coordinators": 0.047991791972890496,
+    "score_nodes": 0.02843741700053215,
+    "sensitivity": 0.32115008297841996,
+    "renumber_and_describe": 0.02392662497004494,
+    "layout": 4.130904832971282,
+    "resilience": 0.878175750025548,
+    "top_nodes": 0.001962583977729082,
+    "export": 0.04443883401108906
+  },
   "thresholds": {
     "seed": 42,
     "data": {
@@ -30,6 +59,7 @@
         "s2_min_in_deg": 5,
         "s2_min_out_deg": 20,
         "s3_min_hub_payers": 2,
+        "s3_min_in_or_out_deg": 5,
         "max_expected": 40
       },
       "distributor": {
@@ -48,16 +78,38 @@
         "max_in_deg": 3,
         "max_out_deg": 3,
         "min_pass": 0.8,
-        "max_pass": 1.2
+        "max_pass": 1.2,
+        "fast_pass_bonus": 0.1
+      },
+      "temporal": {
+        "fast_pass_min_share": 0.5,
+        "sync_min_payers": 3,
+        "near_threshold_min_share": 0.0,
+        "cycles_min_count": 1
       },
       "frontier": {
-        "score": 0.5
+        "terminal_threshold": 0.5,
+        "train_depths": [
+          1,
+          2,
+          3
+        ],
+        "cv_folds": 5,
+        "max_iter": 1000
       },
       "terminal": {
         "min_in_deg": 1
       }
     },
     "scoring": {
+      "weights": {
+        "seed_flow_kzt": 0.25,
+        "n_seed_upstream": 0.2,
+        "role": 0.2,
+        "betweenness": 0.15,
+        "degree": 0.1,
+        "temporal": 0.1
+      },
       "must_have_weights": {
         "n_seed_upstream": 0.35,
         "role": 0.3,
@@ -76,12 +128,36 @@
       "seed_multiplier": 0.7,
       "top_n": 50
     },
+    "flow": {
+      "max_iter": 200,
+      "tol": 1e-06
+    },
+    "temporal": {
+      "fast_pass_max_days": 2,
+      "fast_pass_min_ratio": 0.5,
+      "fast_pass_max_ratio": 1.2,
+      "near_threshold_min_kzt": 5000,
+      "near_threshold_max_kzt": 6000,
+      "round_kzt": 10000,
+      "cycle_length_bound": 4,
+      "cycle2_min_kzt": 5000
+    },
     "clusters": {
       "resolution": 1.0,
       "isolated_cluster_id": 0,
       "top_gids": 5,
       "min_seeds_for_collection": 2,
-      "small_fragment_max_nodes": 20
+      "small_fragment_max_nodes": 20,
+      "min_transit_share": 0.2,
+      "stability_runs": 5,
+      "bridge_betweenness_percentile": 98.0
+    },
+    "sensitivity": {
+      "role_threshold_factors": [
+        0.8,
+        1.2
+      ],
+      "top_n": 20
     },
     "export": {
       "evidence_max_chars": 200
@@ -89,9 +165,30 @@
     "layout": {
       "scale": 4000,
       "iterations": 50
+    },
+    "resilience": {
+      "n_removed": [
+        0,
+        5,
+        10,
+        20,
+        50
+      ],
+      "random_runs": 20
     }
   },
   "frontier": {
-    "auc": null
+    "auc": 0.6841486826426585,
+    "coefficients": {
+      "log1p_in_kzt": -0.3536752248192,
+      "log1p_in_amount": 0.4212058784117881,
+      "in_deg": -0.2690758086726543,
+      "log1p_in_tx": -0.37929604489875823,
+      "first_in_day": 0.24438929061288872,
+      "last_in_day": -0.21872054904667895
+    },
+    "n_train": 1723,
+    "n_terminal_est": 404,
+    "n_frontier": 40
   }
 }

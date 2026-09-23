@@ -1,7 +1,10 @@
 """Детерминированные правила ролей и доказательные формулировки."""
-import json
+import logging
 import numpy as np
 import pandas as pd
+
+
+LOG = logging.getLogger(__name__)
 
 
 def format_kzt(value: float) -> str:
@@ -44,6 +47,27 @@ def _is_transit(row: pd.Series, cfg: dict) -> bool:
             c["min_out_deg"] <= row.out_deg <= c["max_out_deg"] and c["min_pass"] <= row.pass_ratio <= c["max_pass"])
 
 
+def _is_isolated(row: pd.Series) -> bool:
+    """Правило a: узел без наблюдаемых входящих и исходящих переводов."""
+    return row.in_deg + row.out_deg == 0
+
+
+def _is_frontier(row: pd.Series, cfg: dict) -> bool:
+    """Правило b: обрыв обхода на максимальной глубине без исходящих рёбер."""
+    return row.depth == cfg["data"]["max_depth"] and row.out_deg == 0
+
+
+def _is_terminal(row: pd.Series, cfg: dict) -> bool:
+    """Правило f: конечный получатель до глубины обрыва с видимым входом."""
+    return (row.out_deg == 0 and row.depth < cfg["data"]["max_depth"] and
+            row.in_deg >= cfg["roles"]["terminal"]["min_in_deg"])
+
+
+def _peripheral_evidence(row: pd.Series) -> str:
+    """Правило g: формулирует evidence для узла без более сильного правила."""
+    return f"Периферийный узел: {row.in_deg} входящих, {row.out_deg} исходящих, оборот {format_kzt(row.in_kzt + row.out_kzt)}"
+
+
 def assign_base_roles(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     """Назначает первую сработавшую роль в порядке спецификации MUST-HAVE."""
     result = features.copy()
@@ -51,26 +75,36 @@ def assign_base_roles(features: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     minimum = cfg["data"]["min_tx_kzt"]
     for _, row in result.iterrows():
         local_flags: list[str] = []
+        temporal = cfg["roles"]["temporal"]
+        if row.fast_pass_share >= temporal["fast_pass_min_share"]: local_flags.append("fast_pass")
+        if row.max_sync_payers >= temporal["sync_min_payers"]: local_flags.append("sync_in")
+        if row.near_threshold_share > temporal["near_threshold_min_share"]: local_flags.append("near_threshold")
+        if row.n_cycles >= temporal["cycles_min_count"]: local_flags.append("cycles")
         external = pd.notna(row.pass_ratio) and row.pass_ratio > cfg["roles"]["transit"]["max_pass"]
-        if row.in_deg + row.out_deg == 0:
+        if _is_isolated(row):
             role, score, ev = "peripheral", cfg["roles"]["peripheral_isolated_score"], f"Нет переводов ≥{minimum} KZT в выгрузке"
-        elif row.depth == cfg["data"]["max_depth"] and row.out_deg == 0:
-            role, score, ev = "frontier", cfg["roles"]["frontier"]["score"], f"{cfg['data']['max_depth']}-е колено, исходящие не наблюдались (обрыв обхода), получено {format_kzt(row.in_kzt)}"
+        elif _is_frontier(row, cfg):
+            probability = float(row.p_terminal)
+            role, score = "frontier", 1.0 - probability
+            ev = f"{cfg['data']['max_depth']}-е колено, обрыв обхода; P(конечный)={probability:.2f} — оценка по аналогам"
         elif _is_distributor(row, cfg):
             role, score = "distributor", _score(row.out_deg, cfg["roles"]["distributor"]["min_out_deg"], result.out_deg, cfg)
             ev = f"Веерная рассылка: {row.out_deg} получателей, отдано {format_kzt(row.out_kzt)}"
         elif _is_consolidator(row, cfg):
             c = cfg["roles"]["consolidator"]
             score = max(_score(row.in_deg, c["min_in_deg"], result.in_deg, cfg), _score(row.n_seed_upstream, c["min_seed_upstream"], result.n_seed_upstream, cfg))
-            role, ev = "consolidator", f"Признаки консолидации: {row.in_deg} плательщиков, деньги от {row.n_seed_upstream} seed за ≤2 колена, получено {format_kzt(row.in_kzt)}, дальше ушло {row.pass_ratio * 100 if pd.notna(row.pass_ratio) else 0:.0f}%"
+            role, ev = "consolidator", f"Признаки консолидации: {row.in_deg} плательщиков, деньги от {row.n_seed_upstream} seed за ≤2 колена, seed-поток {format_kzt(row.seed_flow_kzt)}, дальше ушло {row.pass_ratio * 100 if pd.notna(row.pass_ratio) else 0:.0f}%"
         elif _is_transit(row, cfg):
             c = cfg["roles"]["transit"]
             role, score = "transit", _score(row.pass_ratio, c["min_pass"], result.pass_ratio.dropna(), cfg)
-            ev = f"Признаки транзита: получено {format_kzt(row.in_kzt)}, отдано {row.pass_ratio * 100:.0f}%, {row.in_deg}→{row.out_deg} контрагента"
-        elif row.out_deg == 0 and row.depth < cfg["data"]["max_depth"] and row.in_deg >= cfg["roles"]["terminal"]["min_in_deg"]:
+            if row.fast_pass_share >= temporal["fast_pass_min_share"]:
+                score = min(cfg["roles"]["score_ceiling"], score + c["fast_pass_bonus"])
+            timing = f", медиана задержки {row.median_lag_days:.0f} дн." if pd.notna(row.median_lag_days) else ""
+            ev = f"Признаки транзита: получено {format_kzt(row.in_kzt)}, отдано {row.pass_ratio * 100:.0f}%{timing}, {row.in_deg}→{row.out_deg} контрагента"
+        elif _is_terminal(row, cfg):
             role, score, ev = "terminal", cfg["roles"]["score_floor"], f"Вероятный конечный получатель: {row.in_deg} плательщиков, получено {format_kzt(row.in_kzt)}, исходящих нет"
         else:
-            role, score, ev = "peripheral", cfg["roles"]["score_floor"], f"Периферийный узел: {row.in_deg} входящих, {row.out_deg} исходящих, оборот {format_kzt(row.in_kzt + row.out_kzt)}"
+            role, score, ev = "peripheral", cfg["roles"]["score_floor"], _peripheral_evidence(row)
         if external:
             local_flags.append("external_funding")
             if role == "peripheral":
@@ -91,7 +125,8 @@ def apply_coordinators(features: pd.DataFrame, graph, cfg: dict) -> pd.DataFrame
         if row.pays_seeds >= c["min_pays_seeds"] and row.in_deg >= c["s1_min_in_deg"]: signals.append("S1")
         if row.in_deg >= c["s2_min_in_deg"] and row.out_deg >= c["s2_min_out_deg"]: signals.append("S2")
         hub_payers = hub_payer_counts[int(row.gid)]
-        if hub_payers >= c["s3_min_hub_payers"]: signals.append("S3")
+        if hub_payers >= c["s3_min_hub_payers"] and (row.in_deg >= c["s3_min_in_or_out_deg"] or row.out_deg >= c["s3_min_in_or_out_deg"]):
+            signals.append("S3")
         if signals:
             previous = row.role
             result.at[index, "flags"] = list(row["flags"]) + [previous] + signals
@@ -103,4 +138,7 @@ def apply_coordinators(features: pd.DataFrame, graph, cfg: dict) -> pd.DataFrame
             result.at[index, "role_score"] = max(score_parts)
             result.at[index, "evidence"] = _trim(f"Кандидат в координирующий узел: {row.in_deg} плательщиков → {row.out_deg} получателей; сигналы {', '.join(signals)}", cfg)
     result["flags"] = result["flags"].map(lambda x: ";".join(x))
+    coordinator_count = int(result["role"].eq("coordinator").sum())
+    if coordinator_count > c["max_expected"]:
+        LOG.warning("Coordinator count %d exceeds configured maximum %d; review S3 sensitivity", coordinator_count, c["max_expected"])
     return result
